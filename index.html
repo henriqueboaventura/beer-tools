@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ferramentas — Brassagem Forte</title>
+  <meta name="description" content="Ferramentas práticas para cervejeiros caseiros, por Brassagem Forte.">
+  <meta name="theme-color" content="#0b0b0b">
+  <link rel="icon" href="assets/img/brassagem-forte.jpg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/bf.css">
+  <script src="assets/js/shell.js"></script>
+  <style>
+    .dir { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--bf-line); }
+    .dir a, .dir .dir__soon {
+      display: grid;
+      grid-template-columns: 44px 1fr auto;
+      gap: 4px 12px;
+      align-items: start;
+      padding: 20px 0;
+      border-bottom: 1px solid var(--bf-line);
+      text-decoration: none;
+      color: inherit;
+    }
+    .dir__num { font: 500 13px/1.6 var(--bf-mono); color: var(--bf-mute); }
+    .dir__name {
+      font-weight: 800; font-stretch: 70%; text-transform: uppercase;
+      font-size: 28px; line-height: 1; color: var(--bf-fg);
+    }
+    .dir__desc { grid-column: 2 / 4; font-size: 14px; color: var(--bf-mute); margin: 6px 0 0; }
+    .dir__arrow { font: 500 20px/1 var(--bf-mono); color: var(--bf-fg); padding-top: 2px; }
+    .dir__soon .dir__name { color: var(--bf-line-strong); }
+    .dir a:hover .dir__name, .dir a:focus-visible .dir__name {
+      text-decoration: underline; text-decoration-thickness: 3px; text-underline-offset: 5px;
+    }
+  </style>
+</head>
+<body>
+  <header data-bf-header></header>
+
+  <main>
+    <div class="wrap">
+      <p class="bf-crumb">Diretório</p>
+      <h1 class="bf-title">Ferramentas pra quem faz cerveja</h1>
+      <p class="bf-lead">Utilitários rápidos para usar na loja, no planejamento da receita ou no meio da brassagem. Direto do celular.</p>
+
+      <section class="bf-step" aria-labelledby="indice">
+        <h2 id="indice" class="bf-step__label"><b>Índice</b></h2>
+        <ul class="dir" id="dir"></ul>
+        <noscript><p>Ative o JavaScript para ver a lista. <a href="ferramentas/substituicao-leveduras/">Substituição de leveduras</a></p></noscript>
+      </section>
+    </div>
+  </main>
+
+  <footer data-bf-footer></footer>
+
+  <script>
+    document.getElementById("dir").innerHTML = BF.ferramentas.map(function (f) {
+      var miolo =
+        '<span class="dir__num">' + f.numero + "</span>" +
+        '<span class="dir__name">' + BF.esc(f.titulo) + "</span>" +
+        (f.status === "disponivel"
+          ? '<span class="dir__arrow" aria-hidden="true">→</span>'
+          : '<span class="bf-tag">Em breve</span>') +
+        '<p class="dir__desc">' + BF.esc(f.descricao) + "</p>";
+      return f.status === "disponivel"
+        ? '<li><a href="' + BF.urlFerramenta(f) + '">' + miolo + "</a></li>"
+        : '<li><div class="dir__soon">' + miolo + "</div></li>";
+    }).join("");
+  </script>
+</body>
+</html>

@@ -1,0 +1,93 @@
+{
+  "_fonte": "AEB Brewing Yeast Substitution Guide v.5 (examples/AEB-Brewing_Yeast-substitution-guide_v.5.pdf). Transcrito à mão. Vermelho no PDF = equivalente (eq); preto = alternativa (alt). Colunas TUM, VLB, Doemens e BSI (bancos profissionais) ficaram de fora na v1.",
+  "_formato": "ref = 'fabricante:CÓDIGO' ou 'fabricante:CÓDIGO|Nome' quando a levedura pode não existir nas outras fontes.",
+  "linhas": [
+    {
+      "produto": "aeb:FERMOALE AY3|Fermoale AY3",
+      "origem": "Whitbread & Co. Ltd, Londres, Reino Unido",
+      "eq": ["fermentis:S-04"],
+      "alt": ["lallemand:LONDON", "cellarscience:English", "white-labs:WLP007", "wyeast:1099", "omega:OYL-008", "escarpment:English Ale II", "imperial:A01", "imperial:A09"]
+    },
+    {
+      "produto": "aeb:FERMOALE AY4|Fermoale AY4",
+      "origem": "Sierra Nevada, Chico, Califórnia, EUA",
+      "eq": ["fermentis:US-05", "cellarscience:Cali", "white-labs:WLP001", "wyeast:1056", "omega:OYL-004", "escarpment:Cali Ale", "imperial:A07"],
+      "alt": ["lallemand:BRY-97", "mangrove-jacks:M44", "omega:OYL-009", "omega:OYL-050|West Coast Ale IV"]
+    },
+    {
+      "produto": "aeb:FERMOALE|Fermoale",
+      "origem": "Tetley's Brewing, Leeds, Reino Unido",
+      "eq": [],
+      "alt": ["lallemand:NOTTINGHAM", "mangrove-jacks:M15", "white-labs:WLP039", "wyeast:1098", "omega:OYL-006", "escarpment:House"]
+    },
+    {
+      "produto": "aeb:FERMOALE BEL ABBEY|Fermoale Bel Abbey",
+      "origem": "Rochefort (Brasserie de Rochefort), Bélgica",
+      "eq": ["white-labs:WLP540", "wyeast:1762"],
+      "alt": ["fermentis:BE-256", "lallemand:ABBAYE", "mangrove-jacks:M41", "mangrove-jacks:M47", "cellarscience:Monk", "omega:OYL-018", "omega:OYL-028", "escarpment:West Abbey Ale", "escarpment:St. Remy Abbey Ale", "imperial:B63", "imperial:B75", "imperial:B48"]
+    },
+    {
+      "produto": "aeb:FERMOALE KVEIK SV|Fermoale Kveik SV",
+      "origem": "Sigmund Gjernes, Voss, Noruega",
+      "eq": ["lallemand:VOSS", "mangrove-jacks:M12", "cellarscience:Voss", "white-labs:WLP520", "omega:OYL-061", "escarpment:Voss Kveik", "imperial:A43"],
+      "alt": []
+    },
+    {
+      "produto": "aeb:FERMOALE NEW-E|Fermoale New-E",
+      "origem": "Boddingtons Brewery, Manchester, Reino Unido",
+      "eq": ["white-labs:WLP066", "omega:OYL-011", "escarpment:Foggy London Ale"],
+      "alt": ["fermentis:S-33", "lallemand:NEW ENGLAND", "lallemand:VERDANT IPA", "mangrove-jacks:M66", "cellarscience:Hazy", "wyeast:1318", "omega:OYL-402|Cosmic Punch Ale", "imperial:A04"]
+    },
+    {
+      "produto": "aeb:FERMOALE GERMAN K|Fermoale German K",
+      "origem": "Päffgen Brauerei, Colônia, Alemanha",
+      "eq": ["white-labs:WLP029"],
+      "alt": ["fermentis:K-97", "lallemand:KOLN", "cellarscience:Kolsch", "white-labs:WLP4061|Rhine Kölsch Ale", "wyeast:2565", "wyeast:2575", "omega:OYL-017", "omega:OYL-044", "omega:OYL-435|Kölsch II+", "escarpment:Kolsch", "imperial:G03", "imperial:G17"]
+    },
+    {
+      "produto": "aeb:FERMOALE WEISSE|Fermoale Weisse",
+      "origem": "Weihenstephan 68, Freising, Alemanha",
+      "eq": [],
+      "alt": ["fermentis:W-68", "lallemand:MUNICH CLASSIC", "mangrove-jacks:M20", "white-labs:WLP300", "wyeast:3068", "omega:OYL-025"]
+    },
+    {
+      "produto": "aeb:FERMOLAGER W|Fermolager W",
+      "origem": "Bayerische Staatsbrauerei Weihenstephan, Freising, Alemanha",
+      "eq": ["fermentis:W-34/70", "mangrove-jacks:M76", "cellarscience:German", "white-labs:WLP830", "wyeast:2206", "escarpment:Biergarten Lager", "imperial:L13"],
+      "alt": ["lallemand:DIAMOND", "lallemand:NOVALAGER", "omega:OYL-114", "omega:OYL-433|Bayern Lager+"]
+    },
+    {
+      "produto": "aeb:FERMOLAGER BERLIN|Fermolager Berlin",
+      "origem": "VLB Berlin, Alemanha",
+      "eq": ["fermentis:S-23", "cellarscience:Berlin"],
+      "alt": ["white-labs:WLP820", "wyeast:2247", "omega:OYL-109", "omega:OYL-106", "imperial:L11"]
+    },
+    {
+      "produto": "aeb:FERMOLAGER CRISP|Fermolager Crisp",
+      "origem": "Cervecería Modelo, Cidade do México, México",
+      "eq": ["white-labs:WLP940", "omega:OYL-113", "escarpment:Mexican Lager", "imperial:L09"],
+      "alt": []
+    },
+    {
+      "produto": "aeb:FERMOLAGER MUNICH HERITAGE|Fermolager Munich Heritage",
+      "origem": "Augustiner Bräu, Munique, Alemanha",
+      "eq": [],
+      "alt": ["fermentis:S-189", "lallemand:DIAMOND", "mangrove-jacks:M24", "white-labs:WLP860", "wyeast:2308", "omega:OYL-114", "omega:OYL-109"]
+    },
+    {
+      "produto": "aeb:FERMO R03|Fermo R03",
+      "origem": "AEB, Brescia, Itália",
+      "eq": [],
+      "alt": ["fermentis:F-2|SafAle F-2", "lallemand:CBC-1", "cellarscience:Prime|Prime"]
+    },
+    {
+      "produto": "aeb:FERMOBREW ACID|Fermobrew Acid",
+      "origem": "Universidade de Vinho e Vinha (IUVV), Dijon, França",
+      "eq": ["cellarscience:Acid|Acid"],
+      "alt": ["lallemand:PHILLY SOUR"]
+    },
+    { "produto": "aeb:FERMOBREW CITRUS|Fermobrew Citrus", "origem": "AEB, Brescia, Itália", "eq": [], "alt": [] },
+    { "produto": "aeb:FERMOBREW FRUITY|Fermobrew Fruity", "origem": "AEB, Brescia, Itália", "eq": [], "alt": [] },
+    { "produto": "aeb:FERMOBREW NECTAR|Fermobrew Nectar", "origem": "AEB, Brescia, Itália", "eq": [], "alt": [] }
+  ]
+}

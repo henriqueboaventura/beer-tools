@@ -1,0 +1,159 @@
+/* Estilos específicos da ferramenta 01 — Substituição de leveduras */
+
+.yx-search {
+  position: relative;
+  margin-top: 14px;
+}
+.yx-search input {
+  width: 100%;
+  appearance: none;
+  background: var(--bf-raised);
+  border: 0;
+  border-bottom: 2px solid var(--bf-fg);
+  border-radius: 0;
+  color: var(--bf-fg);
+  font: 500 20px/1 var(--bf-mono);
+  padding: 18px 48px 16px 14px;
+  min-height: 60px;
+}
+.yx-search input::placeholder { color: var(--bf-mute); }
+.yx-search input::-webkit-search-cancel-button { display: none; }
+.yx-search input:focus-visible { outline: none; background: var(--bf-raised-2); }
+.yx-search__icon {
+  position: absolute; right: 16px; top: 50%;
+  width: 16px; height: 16px;
+  margin-top: -10px;
+  border: 2px solid var(--bf-mute);
+  border-radius: 50%;
+  pointer-events: none;
+}
+.yx-search__icon::after {
+  content: ""; position: absolute; width: 8px; height: 2px;
+  background: var(--bf-mute); right: -7px; bottom: -3px; transform: rotate(45deg);
+}
+
+.yx-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border: 1px solid var(--bf-line);
+  border-top: 0;
+  max-height: 440px;
+  overflow-y: auto;
+}
+.yx-list li {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 2px 12px;
+  padding: 12px 14px;
+  min-height: 56px;
+  border-bottom: 1px solid var(--bf-line);
+  cursor: pointer;
+}
+.yx-list li:last-child { border-bottom: 0; }
+.yx-list li[aria-selected="true"], .yx-list li:hover { background: var(--bf-fg); }
+.yx-list li[aria-selected="true"] *, .yx-list li:hover * { color: var(--bf-bg) !important; }
+.yx-opt__name { color: var(--bf-fg); font-weight: 600; }
+.yx-opt__code { font: 500 13px/1.6 var(--bf-mono); color: var(--bf-fg); text-align: right; white-space: nowrap; }
+.yx-opt__meta { font: 400 12px/1.4 var(--bf-mono); color: var(--bf-mute); grid-column: 1 / 3; text-transform: uppercase; letter-spacing: .06em; }
+
+.yx-status { font-size: 14px; color: var(--bf-mute); margin: 12px 0 0; }
+.yx-status:empty { display: none; }
+
+/* Cartão da base — bloco invertido */
+.yx-base {
+  background: var(--bf-fg);
+  color: var(--bf-bg);
+  padding: 18px 16px 16px;
+  scroll-margin-top: calc(var(--bf-header-h) + 16px);
+}
+.yx-base a { color: var(--bf-bg); }
+.yx-base__top {
+  display: flex; justify-content: space-between; align-items: center; gap: 12px;
+  font: 500 12px/1.3 var(--bf-mono); letter-spacing: .12em; text-transform: uppercase;
+}
+.yx-base__name {
+  font-weight: 900; font-stretch: 62%; text-transform: uppercase;
+  font-size: 44px; line-height: .92; margin: 14px 0 4px;
+  overflow-wrap: anywhere;
+}
+.yx-base__code { font: 500 15px/1 var(--bf-mono); }
+.yx-base .bf-tag { border-color: currentColor; color: inherit; margin-left: 6px; }
+.yx-specs {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  margin: 16px 0 0;
+  border-top: 1.5px solid currentColor;
+}
+.yx-specs div { padding: 10px 0 0; min-width: 0; }
+.yx-specs div + div { padding-left: 10px; border-left: 1px solid color-mix(in srgb, currentColor 25%, transparent); }
+.yx-specs dt { font: 500 11px/1.2 var(--bf-mono); letter-spacing: .1em; text-transform: uppercase; opacity: .8; }
+.yx-specs dd { margin: 6px 0 0; font: 500 16px/1.2 var(--bf-mono); }
+.yx-base__info { font-size: 15px; margin: 14px 0 0; }
+.yx-base__info b { font: 500 11px/1.2 var(--bf-mono); letter-spacing: .1em; text-transform: uppercase; opacity: .8; display: block; margin-bottom: 4px; }
+.yx-base__info em { font-style: normal; }
+.yx-base__not { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+.yx-base__not button {
+  appearance: none; background: none; border: 1px solid currentColor; color: inherit;
+  font: 500 13px/1 var(--bf-mono); padding: 8px 10px; min-height: 40px; cursor: pointer;
+}
+.yx-base__not button::before { content: "✕ "; }
+.yx-base__actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+.yx-base .bf-btn { color: var(--bf-bg); }
+
+/* Alternativas */
+.yx-toggles { display: flex; flex-wrap: wrap; gap: 8px; margin: 8px 0 0; }
+
+.yx-group__head {
+  display: flex; align-items: center; gap: 10px;
+  margin: 28px 0 0;
+  padding: 0 0 10px;
+  border-bottom: 1px solid var(--bf-line-strong);
+  font: 500 12px/1 var(--bf-mono); letter-spacing: .12em; text-transform: uppercase;
+  color: var(--bf-fg);
+}
+.yx-group__head .n { color: var(--bf-mute); margin-left: auto; }
+
+.yx-alt {
+  padding: 16px 0;
+  border-bottom: 1px solid var(--bf-line);
+}
+.yx-alt--off { opacity: .55; }
+.yx-alt__top {
+  display: flex; justify-content: space-between; align-items: center; gap: 12px;
+  font: 500 11px/1 var(--bf-mono); letter-spacing: .12em; text-transform: uppercase; color: var(--bf-mute);
+}
+.yx-alt__tags { display: flex; gap: 6px; flex-wrap: wrap; justify-content: flex-end; }
+.yx-alt__name {
+  display: flex; align-items: baseline; justify-content: space-between; gap: 12px;
+  margin: 8px 0 0;
+}
+.yx-alt__name button {
+  appearance: none; background: none; border: 0; padding: 0; margin: 0; cursor: pointer; text-align: left;
+  font-weight: 800; font-stretch: 70%; text-transform: uppercase;
+  font-size: 26px; line-height: 1; color: var(--bf-fg);
+  overflow-wrap: anywhere;
+}
+.yx-alt__name button:hover { text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 4px; }
+.yx-alt__name code { font: 500 13px/1 var(--bf-mono); color: var(--bf-fg); white-space: nowrap; }
+.yx-alt__specs {
+  display: flex; flex-wrap: wrap; gap: 4px 16px;
+  margin: 10px 0 0;
+  font: 400 13px/1.4 var(--bf-mono); color: var(--bf-soft);
+}
+.yx-alt__specs em { font-style: normal; color: var(--bf-mute); margin-right: 4px; }
+.yx-alt__specs .diff { color: var(--bf-fg); font-weight: 500; }
+.yx-alt__note { margin: 10px 0 0; font-size: 14px; color: var(--bf-soft); }
+.yx-alt__src { margin: 10px 0 0; font: 400 11px/1.4 var(--bf-mono); color: var(--bf-mute); letter-spacing: .04em; }
+
+.yx-empty { padding: 24px 0; color: var(--bf-mute); font-size: 14px; }
+.yx-empty .bf-btn { color: var(--bf-fg); margin-top: 12px; }
+
+.yx-fontes { display: grid; gap: 14px; font-size: 14px; }
+.yx-fontes p { margin: 0; }
+.yx-fontes b { color: var(--bf-fg); }
+.yx-fontes small { display: block; font: 400 12px/1.5 var(--bf-mono); color: var(--bf-mute); }
+
+@media (min-width: 720px) {
+  .yx-base { padding: 24px; }
+  .yx-base__name { font-size: 64px; }
+}

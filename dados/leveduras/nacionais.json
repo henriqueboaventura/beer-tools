@@ -1,0 +1,968 @@
+{
+  "_fonte": "Curadoria Brassagem Forte. 'curadoria' = vínculos revisados pela Brassagem Forte comparando fichas técnicas (Levteck, Smartyeast). 'inferida' = vínculos deduzidos só pelo nome/descrição, ainda não revisados (Bio4). Nenhum fabricante nacional declara equivalências oficialmente. Levteck: catálogo oficial (levteck.com.br, 22/09/2026). Bio4: site fora do ar em 22/09/2026; catálogo arquivado (Wayback Machine, 2024–2025). 'fabricante' = substitutas indicadas pelo próprio fabricante (tabela de substituição da Levteck, enviada pela Brassagem Forte em 22/09/2026); indica produto de estilo parecido, não necessariamente a mesma cepa.",
+  "fabricantes": {
+    "levteck": {
+      "url": "https://levteck.com.br/",
+      "tabela": "Tabela de substituição da Levteck (material do fabricante)."
+    },
+    "bio4": {
+      "url": "https://bio4.com.br/",
+      "aviso": "Site oficial fora do ar em 22/09/2026. Dados do catálogo arquivado (2024–2025)."
+    },
+    "smartyeast": {}
+  },
+  "leveduras": [
+    {
+      "ref": "levteck:TB01|Residente Ale",
+      "codigo": "TeckBrew 01",
+      "temp": [
+        16,
+        22
+      ],
+      "aten": [
+        73,
+        75
+      ],
+      "floc": "alta",
+      "descr": "Origem inglesa; limpa em temperatura baixa e mais ésteres em temperatura alta. Serve para estilos ingleses e americanos.",
+      "url": "https://levteck.com.br/produto/residente-ale-teckbrew-01/",
+      "curadoria": [
+        {
+          "ref": "imperial:A01",
+          "motivo": "Quase as mesmas specs."
+        }
+      ]
+    },
+    {
+      "ref": "levteck:TB06|Juice Ale",
+      "codigo": "TeckBrew 06",
+      "temp": [
+        18,
+        23
+      ],
+      "aten": [
+        72,
+        76
+      ],
+      "floc": "média",
+      "descr": "Para cervejas de alta densidade e muito lúpulo; ésteres frutados médios e corpo mais alto.",
+      "url": "https://levteck.com.br/produto/juice-ale-teckbrew-06/",
+      "curadoria": [
+        {
+          "ref": "imperial:A38",
+          "motivo": "Exatamente as mesmas specs."
+        }
+      ]
+    },
+    {
+      "ref": "levteck:TB07|English Ale",
+      "codigo": "TeckBrew 07",
+      "foraCatalogo": true,
+      "aviso": "Aparece na tabela de substituição da Levteck, mas não no catálogo online (22/09/2026).",
+      "fabricante": [
+        "fermentis:S-04",
+        "lallemand:WINDSOR",
+        "white-labs:WLP007",
+        "wyeast:1099"
+      ]
+    },
+    {
+      "ref": "levteck:TB09|West Coast Ale",
+      "codigo": "TeckBrew 09",
+      "temp": [
+        18,
+        20
+      ],
+      "aten": [
+        76,
+        83
+      ],
+      "floc": "média–alta",
+      "descr": "Perfil muito limpo, poucos ésteres e fermentação rápida.",
+      "url": "https://levteck.com.br/produto/west-coast-ale-teckbrew-09/",
+      "curadoria": [
+        {
+          "ref": "white-labs:WLP090",
+          "motivo": "Exatamente as mesmas specs."
+        }
+      ]
+    },
+    {
+      "ref": "levteck:TB10|American Ale",
+      "codigo": "TeckBrew 10",
+      "temp": [
+        16,
+        22
+      ],
+      "aten": [
+        72,
+        76
+      ],
+      "floc": "média",
+      "descr": "Versátil, neutra e limpa, às vezes com final levemente ácido; cítrica em temperatura baixa.",
+      "url": "https://levteck.com.br/produto/american-ale-teckbrew-10/",
+      "curadoria": [
+        {
+          "ref": "wyeast:1272",
+          "motivo": "Quase as mesmas specs; muda a floculação."
+        }
+      ],
+      "fabricante": [
+        "fermentis:US-05",
+        "lallemand:BRY-97",
+        "white-labs:WLP001",
+        "wyeast:1272"
+      ]
+    },
+    {
+      "ref": "levteck:TB11|Farmhouse Saison",
+      "codigo": "TeckBrew 11",
+      "temp": [
+        18,
+        28
+      ],
+      "aten": [
+        77,
+        83
+      ],
+      "floc": "baixa",
+      "descr": "Saison versátil, muito esterificada, condimentada e cítrica; bastante atenuativa.",
+      "url": "https://levteck.com.br/produto/farmhouse-saison-teckbrew-11/",
+      "curadoria": [
+        {
+          "ref": "wyeast:3711",
+          "motivo": "Exatamente as mesmas specs."
+        }
+      ],
+      "fabricante": [
+        "fermentis:T-58",
+        "lallemand:BELLE SAISON",
+        "wyeast:3711"
+      ]
+    },
+    {
+      "ref": "levteck:TB13|London Ale",
+      "codigo": "TeckBrew 13",
+      "temp": [
+        18,
+        24
+      ],
+      "aten": [
+        71,
+        75
+      ],
+      "floc": "média–alta",
+      "descr": "Inglesa de Real Ales; realça malte e amargor, ésteres leves de maçã e pera.",
+      "url": "https://levteck.com.br/produto/london-ale-teckbrew-13/",
+      "curadoria": [
+        {
+          "ref": "wyeast:1318",
+          "motivo": "Exatamente as mesmas specs."
+        }
+      ]
+    },
+    {
+      "ref": "levteck:TB36|German Ale",
+      "codigo": "TeckBrew 36",
+      "temp": [
+        16,
+        20
+      ],
+      "aten": [
+        65,
+        72
+      ],
+      "floc": "média",
+      "descr": "Ale do norte da Alemanha, limpa e com final levemente adocicado.",
+      "url": "https://levteck.com.br/produto/german-ale-teckbrew-36/",
+      "curadoria": [
+        {
+          "ref": "white-labs:WLP036",
+          "motivo": "Quase as mesmas specs."
+        }
+      ],
+      "fabricante": [
+        "lallemand:NOTTINGHAM",
+        "white-labs:WLP036",
+        "wyeast:1007"
+      ]
+    },
+    {
+      "ref": "levteck:TB40|Abbey Ale",
+      "codigo": "TeckBrew 40",
+      "temp": [
+        19,
+        23
+      ],
+      "aten": [
+        74,
+        82
+      ],
+      "floc": "média–alta",
+      "descr": "Estilo trapista; frutado médio, bem atenuativa, final seco.",
+      "url": "https://levteck.com.br/produto/abbey-ale-teckbrew-40/",
+      "curadoria": [
+        {
+          "ref": "white-labs:WLP540",
+          "motivo": "Quase as mesmas specs."
+        }
+      ],
+      "fabricante": [
+        "fermentis:BE-256",
+        "lallemand:ABBAYE",
+        "white-labs:WLP530",
+        "wyeast:1762"
+      ]
+    },
+    {
+      "ref": "levteck:TB59|Trapista Vleteren Ale",
+      "codigo": "TeckBrew 59",
+      "temp": [
+        18,
+        24
+      ],
+      "aten": [
+        73,
+        77
+      ],
+      "floc": "média",
+      "descr": "Isolada na região de Vleteren; ésteres de ameixa, damasco e frutas secas, fenólico leve.",
+      "url": "https://levteck.com.br/produto/trapista-vleteren-ale-teckbrew-59/"
+    },
+    {
+      "ref": "levteck:TB68|Weizen Ale",
+      "codigo": "TeckBrew 68",
+      "temp": [
+        18,
+        24
+      ],
+      "aten": [
+        73,
+        77
+      ],
+      "floc": "baixa",
+      "descr": "Clássica alemã de trigo, equilíbrio entre banana e cravo.",
+      "url": "https://levteck.com.br/produto/weizen-ale-teckbrew-68/",
+      "curadoria": [
+        {
+          "ref": "wyeast:3068",
+          "motivo": "Exatamente as mesmas specs."
+        }
+      ],
+      "fabricante": [
+        "fermentis:WB-06",
+        "lallemand:MUNICH CLASSIC",
+        "white-labs:WLP300",
+        "wyeast:3068"
+      ]
+    },
+    {
+      "ref": "levteck:TB81|American Lager",
+      "codigo": "TeckBrew 81",
+      "temp": [
+        14,
+        18
+      ],
+      "aten": [
+        73,
+        77
+      ],
+      "floc": "alta",
+      "descr": "Perfil de lager fermentando mais quente; maltada, brilhante e limpa.",
+      "url": "https://levteck.com.br/produto/american-lager-teckbrew-81/",
+      "curadoria": [
+        {
+          "ref": "white-labs:WLP810",
+          "motivo": "Quase as mesmas specs; muda a faixa de atenuação."
+        }
+      ],
+      "fabricante": [
+        "fermentis:W-34/70",
+        "lallemand:DIAMOND",
+        "white-labs:WLP810",
+        "wyeast:2112"
+      ]
+    },
+    {
+      "ref": "levteck:TB84|German Lager II",
+      "codigo": "TeckBrew 84",
+      "temp": [
+        8,
+        15
+      ],
+      "aten": [
+        73,
+        77
+      ],
+      "floc": "média",
+      "descr": "Originada da Carlsberg; maltada e seca, também serve para California Common a 18–20 °C.",
+      "url": "https://levteck.com.br/produto/german-lager-ii-teckbrew-84/",
+      "curadoria": [
+        {
+          "ref": "wyeast:2124",
+          "motivo": "Exatamente as mesmas specs."
+        }
+      ],
+      "fabricante": [
+        "fermentis:S-23",
+        "white-labs:WLP800",
+        "wyeast:2124"
+      ]
+    },
+    {
+      "ref": "levteck:TB86|Czech Pils",
+      "codigo": "TeckBrew 86",
+      "temp": [
+        10,
+        14
+      ],
+      "aten": [
+        70,
+        74
+      ],
+      "floc": "média–alta",
+      "descr": "Tcheca; final seco e maltado, enxofre que some na maturação.",
+      "url": "https://levteck.com.br/produto/czech-pils-teckbrew-86/",
+      "curadoria": [
+        {
+          "ref": "wyeast:2278",
+          "motivo": "Exatamente as mesmas specs."
+        }
+      ]
+    },
+    {
+      "ref": "levteck:CF01|Belgian High Gravity",
+      "codigo": "CF #01",
+      "temp": [
+        18,
+        26
+      ],
+      "aten": [
+        74,
+        82
+      ],
+      "floc": "média",
+      "descr": "Ésteres de pera e ameixa, fenólico baixo; pode hibernar abaixo de 19 °C.",
+      "url": "https://levteck.com.br/produto/belgian-high-gravity-cf01/"
+    },
+    {
+      "ref": "levteck:BS-32|Fuller's",
+      "codigo": "BS-32",
+      "url": "https://levteck.com.br/produto/fuller-bs-32/",
+      "origem": "Fuller's (declarada no nome)"
+    },
+    {
+      "ref": "levteck:BS-33|Burton Bass Ale",
+      "codigo": "BS-33",
+      "url": "https://levteck.com.br/produto/burton-bass-bs-33/",
+      "origem": "Bass, Burton (declarada no nome)"
+    },
+    {
+      "ref": "levteck:BS-34|Yorkshire Timothy's",
+      "codigo": "BS-34",
+      "url": "https://levteck.com.br/produto/yorkshire-bs-34/",
+      "origem": "Timothy Taylor (declarada no nome)"
+    },
+    {
+      "ref": "levteck:BS-35|Hook Whitbread Ale",
+      "codigo": "BS-35",
+      "url": "https://levteck.com.br/produto/hook-whitbread-bs-35/",
+      "origem": "Whitbread (declarada no nome)"
+    },
+    {
+      "ref": "levteck:SELJESET|Seljeset Kveik",
+      "temp": [
+        25,
+        40
+      ],
+      "aten": [
+        75,
+        82
+      ],
+      "floc": "alta",
+      "descr": "Kveik de Grodås (Noruega) com várias cepas; frutado cítrico, floculação muito alta.",
+      "url": "https://levteck.com.br/produto/seljeset-kveik/",
+      "cat": "kveik"
+    },
+    {
+      "ref": "bio4:SY025|American Ale",
+      "codigo": "SY025",
+      "inferida": [
+        {
+          "ref": "wyeast:1056",
+          "motivo": "Mesmo nome da Wyeast 1056 American Ale; citada em fóruns como equivalente à US-05."
+        }
+      ]
+    },
+    {
+      "ref": "bio4:SY001|Pilsner Lager",
+      "codigo": "SY001",
+      "descr": "Aromas suaves florais e frutados, palato limpo e seco.",
+      "inferida": [
+        {
+          "ref": "white-labs:WLP800",
+          "motivo": "Mesmo nome da WLP800 Pilsner Lager."
+        }
+      ]
+    },
+    {
+      "ref": "bio4:SY055|Heffeweizen Ale",
+      "codigo": "SY055",
+      "inferida": [
+        {
+          "ref": "white-labs:WLP300",
+          "motivo": "Mesmo nome da WLP300 Hefeweizen Ale."
+        }
+      ]
+    },
+    {
+      "ref": "bio4:SY081|Norwegian Kveik",
+      "codigo": "SY081",
+      "cat": "kveik",
+      "origem": "Hornindal (declarada)",
+      "descr": "Kveik de Hornindal; maçã vermelha, fermentação rápida em temperatura alta.",
+      "inferida": [
+        {
+          "ref": "white-labs:WLP521",
+          "motivo": "Origem Hornindal declarada pelo fabricante."
+        }
+      ]
+    },
+    {
+      "ref": "bio4:SY084|Norwegian Kveik 2",
+      "codigo": "SY084",
+      "cat": "kveik",
+      "origem": "Voss, Sigmund Gjernes (declarada)",
+      "descr": "Isolada da Voss Kveik de Sigmund Gjernes; cítrica (laranja).",
+      "inferida": [
+        {
+          "ref": "white-labs:WLP520",
+          "motivo": "Origem Voss (Sigmund Gjernes) declarada pelo fabricante."
+        }
+      ]
+    },
+    {
+      "ref": "bio4:LONDON ALE III|London Ale III",
+      "inferida": [
+        {
+          "ref": "wyeast:1318",
+          "motivo": "Mesmo nome da Wyeast 1318 London Ale III."
+        }
+      ]
+    },
+    {
+      "ref": "bio4:JUICE ALE|Juice Ale",
+      "descr": "Tropical e cítrica com lúpulos aromáticos, ideal para NEIPA.",
+      "inferida": [
+        {
+          "ref": "imperial:A38",
+          "motivo": "Mesmo nome da Imperial A38 Juice."
+        }
+      ]
+    },
+    {
+      "ref": "bio4:TRAPPIST ALE|Trappist Ale",
+      "descr": "Isolada de cervejaria trapista; frutas e condimento, boa para alta densidade.",
+      "inferida": [
+        {
+          "ref": "white-labs:WLP500",
+          "motivo": "Mesmo nome da WLP500 Trappist Ale; citada em fóruns como cepa Chimay."
+        }
+      ]
+    },
+    {
+      "ref": "bio4:TRAPPIST HIGH GRAVITY|Trappist High Gravity Ale",
+      "inferida": [
+        {
+          "ref": "wyeast:3787",
+          "motivo": "Mesmo nome da Wyeast 3787 Trappist High Gravity."
+        }
+      ]
+    },
+    {
+      "ref": "bio4:ABBEY ALE|Abbey Ale",
+      "descr": "Frutado equilibrado e fenólico suave; blond, dubbel e tripel.",
+      "inferida": [
+        {
+          "ref": "white-labs:WLP530",
+          "motivo": "Mesmo nome da WLP530 Abbey Ale."
+        }
+      ]
+    },
+    {
+      "ref": "bio4:BELGIAN ALE|Belgian Ale",
+      "inferida": [
+        {
+          "ref": "white-labs:WLP550",
+          "motivo": "Mesmo nome da WLP550 Belgian Ale."
+        }
+      ]
+    },
+    {
+      "ref": "bio4:BELGIAN GOLDEN ALE|Belgian Golden Ale",
+      "inferida": [
+        {
+          "ref": "white-labs:WLP570",
+          "motivo": "Mesmo nome da WLP570 Belgian Golden Ale."
+        }
+      ]
+    },
+    {
+      "ref": "bio4:BELGIAN STRONG ALE|Belgian Strong Ale",
+      "inferida": [
+        {
+          "ref": "white-labs:WLP545",
+          "motivo": "Mesmo nome da WLP545 Belgian Strong Ale."
+        }
+      ]
+    },
+    {
+      "ref": "bio4:BELGIAN WIT|Belgian Wit",
+      "inferida": [
+        {
+          "ref": "white-labs:WLP400",
+          "motivo": "Mesmo nome da WLP400 Belgian Wit Ale."
+        }
+      ]
+    },
+    {
+      "ref": "bio4:SAISON ALE|Saison Ale",
+      "descr": "Especiarias e terroso, seca; pode ficar levemente ácida em temperatura alta.",
+      "inferida": [
+        {
+          "ref": "white-labs:WLP565",
+          "motivo": "Mesmo nome da WLP565 Saison Ale."
+        }
+      ]
+    },
+    {
+      "ref": "bio4:SAISON II|Saison Ale II",
+      "descr": "Belga vigorosa e muito atenuativa; frutado leve e condimento.",
+      "inferida": [
+        {
+          "ref": "white-labs:WLP566",
+          "motivo": "Mesmo nome da WLP566 Saison II."
+        }
+      ]
+    },
+    {
+      "ref": "bio4:ENGLISH ALE|English Ale",
+      "descr": "Alta floculação; cerveja clara com residual doce.",
+      "inferida": [
+        {
+          "ref": "white-labs:WLP002",
+          "motivo": "Mesmo nome e descrição compatível com a WLP002 English Ale."
+        }
+      ]
+    },
+    {
+      "ref": "bio4:LONDON ALE|London Ale",
+      "descr": "Estilos ingleses e alta densidade; boa atenuação e ésteres moderados.",
+      "inferida": [
+        {
+          "ref": "white-labs:WLP013",
+          "motivo": "Mesmo nome da WLP013 London Ale."
+        }
+      ]
+    },
+    {
+      "ref": "bio4:LONDON ESB|London ESB",
+      "inferida": [
+        {
+          "ref": "wyeast:1968",
+          "motivo": "Mesmo nome da Wyeast 1968 London ESB."
+        }
+      ]
+    },
+    {
+      "ref": "bio4:IRISH ALE|Irish Ale",
+      "descr": "Para alta densidade; frutada e com final seco.",
+      "inferida": [
+        {
+          "ref": "white-labs:WLP004",
+          "motivo": "Mesmo nome da WLP004 Irish Ale."
+        }
+      ]
+    },
+    {
+      "ref": "bio4:SCOTTISH ALE|Scottish Ale",
+      "descr": "Para cervejas fortes e maltadas; limpa perto de 18 °C.",
+      "inferida": [
+        {
+          "ref": "wyeast:1728",
+          "motivo": "Mesmo nome da Wyeast 1728 Scottish Ale."
+        }
+      ]
+    },
+    {
+      "ref": "bio4:EDINBURGH ALE|Edinburgh Ale",
+      "inferida": [
+        {
+          "ref": "white-labs:WLP028",
+          "motivo": "Mesmo nome da WLP028 Edinburgh Scottish Ale."
+        }
+      ]
+    },
+    {
+      "ref": "bio4:ALT YEAST|Alt Yeast",
+      "descr": "Limpa e adocicada, feita para Altbier.",
+      "inferida": [
+        {
+          "ref": "white-labs:WLP036",
+          "motivo": "Descrição compatível com a WLP036 Düsseldorf Alt."
+        }
+      ]
+    },
+    {
+      "ref": "bio4:VERMONT ALE|Vermont Ale",
+      "inferida": [
+        {
+          "ref": "white-labs:WLP095",
+          "motivo": "Mesmo nome da Escarpment Vermont Ale, equivalente à cepa Conan (WLP095)."
+        }
+      ]
+    },
+    {
+      "ref": "bio4:AMERICAN LAGER|American Lager",
+      "descr": "Neutra e maltada, corpo suave, pouco enxofre e diacetil.",
+      "inferida": [
+        {
+          "ref": "wyeast:2035",
+          "motivo": "Mesmo nome da Wyeast 2035 American Lager."
+        }
+      ]
+    },
+    {
+      "ref": "bio4:BOHEMIAN LAGER|Bohemian Lager",
+      "inferida": [
+        {
+          "ref": "wyeast:2124",
+          "motivo": "Mesmo nome da Wyeast 2124 Bohemian Lager."
+        }
+      ]
+    },
+    {
+      "ref": "bio4:CALIFORNIA LAGER|California Lager",
+      "inferida": [
+        {
+          "ref": "wyeast:2112",
+          "motivo": "Mesmo nome da Wyeast 2112 California Lager."
+        }
+      ]
+    },
+    {
+      "ref": "bio4:GERMAN BOCK LAGER|German Bock Lager",
+      "inferida": [
+        {
+          "ref": "white-labs:WLP833",
+          "motivo": "Mesmo nome da WLP833 German Bock Lager."
+        }
+      ]
+    },
+    {
+      "ref": "bio4:MEXICAN LAGER|Mexican Lager",
+      "descr": "Limpa, neutra e seca; lager de corpo leve.",
+      "inferida": [
+        {
+          "ref": "white-labs:WLP940",
+          "motivo": "Mesmo nome da WLP940 Mexican Lager."
+        }
+      ]
+    },
+    {
+      "ref": "bio4:ZURICH LAGER|Zurich Lager",
+      "descr": "Tolera mais de 10% ABV, alta atenuação.",
+      "inferida": [
+        {
+          "ref": "white-labs:WLP885",
+          "motivo": "Mesmo nome e descrição compatível com a WLP885 Zurich Lager."
+        }
+      ]
+    },
+    {
+      "ref": "bio4:GERMAN LAGER|German Lager",
+      "descr": "Maltada e encorpada, indicada para bocks e doppelbocks."
+    },
+    {
+      "ref": "bio4:CZECH LAGER|Czech Lager"
+    },
+    {
+      "ref": "bio4:KOLSCH|Kölsch"
+    },
+    {
+      "ref": "bio4:GERMAN WEIZEN|German Weizen",
+      "descr": "Trigo alemã com banana predominante e fenólico moderado."
+    },
+    {
+      "ref": "bio4:MUNICH WEIZEN|Munich Weizen Ale"
+    },
+    {
+      "ref": "bio4:HIGH GRAVITY|SuperYeast High Gravity Ale",
+      "descr": "Otimizada para alta densidade, ésteres moderados."
+    },
+    {
+      "ref": "bio4:TROPICALIZER|Tropicalizer Blend",
+      "blend": true
+    },
+    {
+      "ref": "smartyeast:SMART-502|English Ale",
+      "codigo": "SMART-502",
+      "curadoria": [
+        {
+          "ref": "white-labs:WLP002",
+          "motivo": "Exatamente as mesmas specs (a BSI-2 English Ale 1 também)."
+        }
+      ]
+    },
+    {
+      "ref": "smartyeast:SMART-504|Irish Ale",
+      "codigo": "SMART-504",
+      "curadoria": [
+        {
+          "ref": "white-labs:WLP004",
+          "motivo": "Pelo número, tudo indica que é; a faixa de atenuação é diferente."
+        }
+      ]
+    },
+    {
+      "ref": "smartyeast:SMART-509|Czech Lager",
+      "codigo": "SMART-509",
+      "curadoria": [
+        {
+          "ref": "white-labs:WLP800",
+          "motivo": "Exatamente as mesmas specs."
+        }
+      ]
+    },
+    {
+      "ref": "smartyeast:SMART-520|Juice IPA",
+      "codigo": "SMART-520",
+      "curadoria": [
+        {
+          "ref": "omega:OYL-200",
+          "motivo": "Exatamente as mesmas specs; a Omega diz que é comparável à WLP644."
+        }
+      ]
+    },
+    {
+      "ref": "smartyeast:SMART-526|German Bock",
+      "codigo": "SMART-526",
+      "curadoria": [
+        {
+          "ref": "wyeast:2206",
+          "motivo": "Exatamente as mesmas specs."
+        },
+        {
+          "ref": "omega:OYL-107",
+          "motivo": "Mesmas specs da Omega OYL-107 Oktoberfest."
+        }
+      ]
+    },
+    {
+      "ref": "smartyeast:SMART-528|German Lager",
+      "codigo": "SMART-528",
+      "curadoria": [
+        {
+          "ref": "imperial:L28",
+          "motivo": "Exatamente as mesmas specs, apesar do nome diferente; o número também bate."
+        },
+        {
+          "ref": "wyeast:2007",
+          "motivo": "Mesmas specs da Wyeast 2007 Pilsen Lager."
+        },
+        {
+          "ref": "omega:OYL-100|Lager I",
+          "motivo": "Mesmas specs da Omega OYL-100 Lager I."
+        }
+      ]
+    },
+    {
+      "ref": "smartyeast:SMART-533|California Common",
+      "codigo": "SMART-533",
+      "curadoria": [
+        {
+          "ref": "wyeast:2112",
+          "motivo": "Exatamente as mesmas specs."
+        },
+        {
+          "ref": "omega:OYL-105",
+          "motivo": "Mesmas specs da Omega OYL-105 West Coast Lager."
+        }
+      ]
+    },
+    {
+      "ref": "smartyeast:SMART-535|Kölsch",
+      "codigo": "SMART-535",
+      "curadoria": [
+        {
+          "ref": "white-labs:WLP029",
+          "motivo": "Exatamente as mesmas specs."
+        }
+      ]
+    },
+    {
+      "ref": "smartyeast:SMART-536|Alt Ale",
+      "codigo": "SMART-536",
+      "curadoria": [
+        {
+          "ref": "white-labs:WLP036",
+          "motivo": "Exatamente as mesmas specs."
+        }
+      ]
+    },
+    {
+      "ref": "smartyeast:SMART-544|French Saison",
+      "codigo": "SMART-544",
+      "curadoria": [
+        {
+          "ref": "wyeast:3711",
+          "motivo": "Exatamente as mesmas specs."
+        }
+      ]
+    },
+    {
+      "ref": "smartyeast:SMART-555|Bitter Ale",
+      "codigo": "SMART-555",
+      "curadoria": [
+        {
+          "ref": "wyeast:1275",
+          "motivo": "Quase tudo igual; a Wyeast só informa atenuação máxima (77%), não a faixa."
+        }
+      ]
+    },
+    {
+      "ref": "smartyeast:SMART-556|London Ale III",
+      "codigo": "SMART-556",
+      "curadoria": [
+        {
+          "ref": "wyeast:1318",
+          "motivo": "Quase as mesmas specs; só a floculação é diferente."
+        }
+      ]
+    },
+    {
+      "ref": "smartyeast:SMART-565|Belgian Saison",
+      "codigo": "SMART-565",
+      "curadoria": [
+        {
+          "ref": "white-labs:WLP565",
+          "motivo": "Specs quase idênticas (diferença mínima no início da faixa de atenuação); mesmo número."
+        }
+      ]
+    },
+    {
+      "ref": "smartyeast:SMART-572|Belgian Dubbel",
+      "codigo": "SMART-572",
+      "curadoria": [
+        {
+          "ref": "white-labs:WLP530",
+          "motivo": "Specs similares e mesma descrição."
+        }
+      ]
+    },
+    {
+      "ref": "smartyeast:SMART-580|East Coast Ale",
+      "codigo": "SMART-580",
+      "curadoria": [
+        {
+          "ref": "white-labs:WLP008",
+          "motivo": "Exatamente as mesmas specs."
+        },
+        {
+          "ref": "omega:OYL-032",
+          "motivo": "Mesmas specs da Omega OYL-032."
+        }
+      ]
+    },
+    {
+      "ref": "smartyeast:SMART-582|Bavarian Lager",
+      "codigo": "SMART-582",
+      "curadoria": [
+        {
+          "ref": "white-labs:WLP820",
+          "motivo": "Exatamente as mesmas specs."
+        }
+      ]
+    },
+    {
+      "ref": "smartyeast:SMART-599|High Gravity Ale",
+      "codigo": "SMART-599",
+      "curadoria": [
+        {
+          "ref": "white-labs:WLP099",
+          "motivo": "Exatamente as mesmas specs."
+        }
+      ]
+    },
+    {
+      "ref": "smartyeast:SMART-551|Lager I",
+      "codigo": "SMART-551",
+      "curadoria": [
+        {
+          "ref": "aeb:FERMOLAGER W",
+          "motivo": "Incerta: possivelmente Fermolager W / W-34/70."
+        },
+        {
+          "ref": "fermentis:W-34/70",
+          "motivo": "Incerta: possivelmente W-34/70."
+        }
+      ]
+    },
+    {
+      "ref": "smartyeast:SMART-553|Weiss",
+      "codigo": "SMART-553",
+      "curadoria": [
+        {
+          "ref": "fermentis:WB-06",
+          "motivo": "Incerta: possivelmente WB-06."
+        }
+      ]
+    },
+    {
+      "ref": "smartyeast:SMART-508|Witbier",
+      "codigo": "SMART-508"
+    },
+    {
+      "ref": "smartyeast:SMART-554|New England",
+      "codigo": "SMART-554",
+      "curadoria": [
+        {
+          "ref": "imperial:A04",
+          "motivo": "Incerta: possivelmente a cepa Conan."
+        }
+      ]
+    },
+    {
+      "ref": "smartyeast:SMART-513|American IPA",
+      "codigo": "SMART-513"
+    },
+    {
+      "ref": "smartyeast:SMART-503|Farmhouse Ale",
+      "codigo": "SMART-503"
+    },
+    {
+      "ref": "smartyeast:SMART-567|Belgian Specialty Ale",
+      "codigo": "SMART-567",
+      "curadoria": [
+        {
+          "ref": "white-labs:WLP550",
+          "motivo": "Incerta: possivelmente a cepa Ardennes (WLP550 / Wyeast 3522)."
+        }
+      ]
+    },
+    {
+      "ref": "smartyeast:SMART-568|Belgian Ale",
+      "codigo": "SMART-568",
+      "curadoria": [
+        {
+          "ref": "fermentis:S-33",
+          "motivo": "Incerta: possivelmente S-33 — só ésteres, sem fenóis e atenuação baixíssima. A Fermentis vende a S-33 como belga, o que explicaria o nome."
+        }
+      ]
+    },
+    {
+      "ref": "smartyeast:SMART-552|American Ale",
+      "codigo": "SMART-552"
+    }
+  ]
+}
