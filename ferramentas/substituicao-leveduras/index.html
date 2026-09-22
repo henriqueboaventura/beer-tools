@@ -6,12 +6,18 @@
   <title>Substituição de leveduras — Brassagem Forte</title>
   <meta name="description" content="Encontre leveduras equivalentes, secas e líquidas, para a sua receita de cerveja.">
   <meta name="theme-color" content="#0b0b0b">
-  <link rel="icon" href="../../assets/img/brassagem-forte.jpg">
+  <link rel="manifest" href="../../manifest.webmanifest">
+  <link rel="icon" href="../../assets/img/icon-192.png">
+  <link rel="apple-touch-icon" href="../../assets/img/icon-180.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-title" content="Brassagem Forte">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../../assets/css/bf.css">
   <link rel="stylesheet" href="app.css">
+  <script src="../../assets/js/versao.js"></script>
   <script src="../../assets/js/shell.js"></script>
 </head>
 <body>
@@ -29,13 +35,13 @@
             <li>Busque a levedura da receita pelo nome, código, fabricante ou origem (ex.: “Chico”).</li>
             <li>Veja as alternativas agrupadas por proximidade:
               <ul>
-                <li><span class="bf-meter" aria-hidden="true"><i class="on"></i><i class="on"></i><i class="on"></i></span> <b>Equivalente</b> — mesma cepa segundo pelo menos uma fonte.</li>
-                <li><span class="bf-meter" aria-hidden="true"><i class="on"></i><i class="on"></i><i></i></span> <b>Provável</b> — equivalência incerta, ou apontada pela curadoria da Brassagem Forte (fichas técnicas muito parecidas).</li>
-                <li><span class="bf-meter" aria-hidden="true"><i class="on"></i><i></i><i></i></span> <b>Alternativa</b> — funciona no lugar, mas não é a mesma cepa.</li>
+                <li class="yx-nivel-3"><span class="bf-meter" aria-hidden="true"><i class="on"></i><i class="on"></i><i class="on"></i></span> <b>Equivalente</b> — mesma cepa segundo pelo menos uma fonte.</li>
+                <li class="yx-nivel-2"><span class="bf-meter" aria-hidden="true"><i class="on"></i><i class="on"></i><i></i></span> <b>Provável</b> — equivalência incerta, ou apontada pela curadoria da Brassagem Forte (fichas técnicas muito parecidas).</li>
+                <li class="yx-nivel-1"><span class="bf-meter" aria-hidden="true"><i class="on"></i><i></i><i></i></span> <b>Alternativa</b> — funciona no lugar, mas não é a mesma cepa.</li>
               </ul>
             </li>
             <li>Setas ▲▼ mostram diferença relevante de atenuação em relação à original.</li>
-            <li>“Não confunda” lista leveduras que parecem equivalentes, mas não são.</li>
+            <li>A cor ao lado do fabricante identifica o laboratório; “Não confunda” (em vermelho) lista leveduras que parecem equivalentes, mas não são.</li>
           </ol>
           <p>Quando as fontes discordam, vale a ordem: Yeast Master, guia AEB, guia Imperial e curadoria. Vínculos “não revisados” foram deduzidos só pelo nome do produto e podem ser escondidos. Veja as fontes no fim da página.</p>
         </div>
@@ -70,16 +76,19 @@
         <div id="alts" aria-live="polite"></div>
       </section>
 
-      <section class="bf-step" aria-labelledby="l-fontes">
-        <h2 class="bf-step__label" id="l-fontes"><b>Fontes</b></h2>
-        <div id="fontes" class="yx-fontes"></div>
-        <p class="bf-note">Equivalências são aproximadas. A mesma cepa pode se comportar diferente entre fabricantes e lotes. Encontrou um erro? Avise a Brassagem Forte.</p>
-      </section>
+      <p class="bf-note">Equivalências são aproximadas. A mesma cepa pode se comportar diferente entre fabricantes e lotes. Encontrou um erro? Avise a Brassagem Forte.</p>
+      <details class="bf-how yx-fontes-box">
+        <summary>Fontes dos dados</summary>
+        <div class="bf-how__body">
+          <div id="fontes" class="yx-fontes"></div>
+        </div>
+      </details>
     </div>
   </main>
 
   <footer data-bf-footer></footer>
 
+  <script src="busca.js"></script>
   <script src="app.js"></script>
 </body>
 </html>

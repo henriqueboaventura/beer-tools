@@ -148,10 +148,116 @@
 .yx-empty { padding: 24px 0; color: var(--bf-mute); font-size: 14px; }
 .yx-empty .bf-btn { color: var(--bf-fg); margin-top: 12px; }
 
+.yx-fontes-box { margin-top: 24px; }
 .yx-fontes { display: grid; gap: 14px; font-size: 14px; }
 .yx-fontes p { margin: 0; }
 .yx-fontes b { color: var(--bf-fg); }
 .yx-fontes small { display: block; font: 400 12px/1.5 var(--bf-mono); color: var(--bf-mute); }
+
+/* ---------- Cores de informação ----------
+   A base é monocromática; a cor entra só para identificar o nível da
+   relação (medidor e título do grupo) e o laboratório (ponto e barra
+   lateral). Tons claros no tema escuro, tons fundos no tema claro. */
+:root {
+  --lab-fermentis: #ff7a59;
+  --lab-lallemand: #f2c14e;
+  --lab-white-labs: #5ab0f0;
+  --lab-wyeast: #5fd08a;
+  --lab-imperial: #c792ff;
+  --lab-omega: #ff6fb5;
+  --lab-mangrove-jacks: #a8d672;
+  --lab-escarpment: #3fd0c4;
+  --lab-cellarscience: #ffe08a;
+  --lab-aeb: #ff5c7a;
+  --lab-levteck: #38c6ff;
+  --lab-bio4: #ffa24c;
+  --lab-smartyeast: #9db4ff;
+  --nivel-3: #4ade80;
+  --nivel-2: #fbbf24;
+  --nivel-1: #94a3b8;
+  --nao: #f87171;
+  --nao-no-cartao: #b91c1c; /* cartão da base é invertido (fundo claro) */
+}
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    --lab-fermentis: #c2410c;
+    --lab-lallemand: #a16207;
+    --lab-white-labs: #1d6fa5;
+    --lab-wyeast: #15803d;
+    --lab-imperial: #7e22ce;
+    --lab-omega: #be185d;
+    --lab-mangrove-jacks: #4d7c0f;
+    --lab-escarpment: #0f766e;
+    --lab-cellarscience: #854d0e;
+    --lab-aeb: #be123c;
+    --lab-levteck: #0369a1;
+    --lab-bio4: #9a3412;
+    --lab-smartyeast: #3730a3;
+    --nivel-3: #15803d;
+    --nivel-2: #b45309;
+    --nivel-1: #475569;
+    --nao: #b91c1c;
+    --nao-no-cartao: #fca5a5;
+  }
+}
+:root[data-theme="light"] {
+  --lab-fermentis: #c2410c;
+  --lab-lallemand: #a16207;
+  --lab-white-labs: #1d6fa5;
+  --lab-wyeast: #15803d;
+  --lab-imperial: #7e22ce;
+  --lab-omega: #be185d;
+  --lab-mangrove-jacks: #4d7c0f;
+  --lab-escarpment: #0f766e;
+  --lab-cellarscience: #854d0e;
+  --lab-aeb: #be123c;
+  --lab-levteck: #0369a1;
+  --lab-bio4: #9a3412;
+  --lab-smartyeast: #3730a3;
+  --nivel-3: #15803d;
+  --nivel-2: #b45309;
+  --nivel-1: #475569;
+  --nao: #b91c1c;
+  --nao-no-cartao: #fca5a5;
+}
+[data-fab="fermentis"] { --lab: var(--lab-fermentis); }
+[data-fab="lallemand"] { --lab: var(--lab-lallemand); }
+[data-fab="white-labs"] { --lab: var(--lab-white-labs); }
+[data-fab="wyeast"] { --lab: var(--lab-wyeast); }
+[data-fab="imperial"] { --lab: var(--lab-imperial); }
+[data-fab="omega"] { --lab: var(--lab-omega); }
+[data-fab="mangrove-jacks"] { --lab: var(--lab-mangrove-jacks); }
+[data-fab="escarpment"] { --lab: var(--lab-escarpment); }
+[data-fab="cellarscience"] { --lab: var(--lab-cellarscience); }
+[data-fab="aeb"] { --lab: var(--lab-aeb); }
+[data-fab="levteck"] { --lab: var(--lab-levteck); }
+[data-fab="bio4"] { --lab: var(--lab-bio4); }
+[data-fab="smartyeast"] { --lab: var(--lab-smartyeast); }
+
+.yx-lab {
+  display: inline-block;
+  width: 9px; height: 9px;
+  border-radius: 50%;
+  background: var(--lab, var(--bf-mute));
+  margin-right: 7px;
+  vertical-align: 0;
+  flex: 0 0 auto;
+}
+.yx-list li[aria-selected="true"] .yx-lab, .yx-list li:hover .yx-lab { outline: 1.5px solid var(--bf-bg); }
+
+.yx-alt {
+  border-left: 3px solid var(--lab, var(--bf-line-strong));
+  padding-left: 14px;
+}
+.yx-base { border-top: 6px solid var(--lab, var(--bf-fg)); }
+
+.yx-nivel-3 { --nivel: var(--nivel-3); }
+.yx-nivel-2 { --nivel: var(--nivel-2); }
+.yx-nivel-1 { --nivel: var(--nivel-1); }
+.yx-group__head { border-bottom-color: var(--nivel, var(--bf-line-strong)); border-bottom-width: 2px; }
+.yx-group__head .bf-meter, li[class^="yx-nivel-"] .bf-meter { color: var(--nivel); }
+
+.yx-base__not button { color: var(--nao-no-cartao); border-color: var(--nao-no-cartao); font-weight: 500; }
 
 @media (min-width: 720px) {
   .yx-base { padding: 24px; }

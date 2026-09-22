@@ -1,6 +1,8 @@
 /*
- * Shell compartilhado: registro de ferramentas, header, menu, rodapé e tema.
- * Carregado no <head> de todas as páginas (sem defer) para aplicar o tema antes da pintura.
+ * Shell compartilhado: registro de ferramentas, header, menu, rodapé, tema,
+ * service worker (PWA) e aviso de nova versão.
+ * Carregado no <head> de todas as páginas (sem defer), logo depois de
+ * assets/js/versao.js, para aplicar o tema antes da pintura.
  * As páginas só declaram <header data-bf-header> e <footer data-bf-footer>; o conteúdo vem daqui.
  */
 (function () {
@@ -13,6 +15,13 @@
       titulo: "Substituição de leveduras",
       descricao: "Não achou a levedura da receita? Veja equivalentes secas e líquidas de outros fabricantes.",
       status: "disponivel"
+    },
+    {
+      numero: "02",
+      slug: "decoccao",
+      titulo: "Decocção",
+      descricao: "Monte o programa de mostura por decocção: puxadas, cronograma, gráfico e cronômetro de brassagem.",
+      status: "disponivel"
     }
   ];
 
@@ -21,6 +30,9 @@
   var LINKS = [
     { titulo: "Em breve", url: null }
   ];
+
+  var VERSAO = self.BF_VERSAO || "?";
+  var CHANGELOG = "https://github.com/henriqueboaventura/beer-tools/blob/main/CHANGELOG.md";
 
   // raiz do site, a partir do caminho deste script (funciona em /beer-tools/ no GitHub Pages)
   var script = document.currentScript;
@@ -100,7 +112,53 @@
       '<img class="bf-logo bf-footer__logo" src="' + BASE + 'assets/img/brassagem-forte-wordmark.jpg" alt="Brassagem Forte" width="94" height="56">' +
       "<span>Ferramentas gratuitas para cervejeiros caseiros.</span>" +
       (extra ? "<span>" + extra + "</span>" : "") +
+      '<span>Versão ' + esc(VERSAO) + ' · <a href="' + CHANGELOG + '" rel="noopener">Novidades</a></span>' +
     "</div>";
+  }
+
+  /* ---------- PWA: service worker e aviso de nova versão ---------- */
+  function avisoNovaVersao(worker) {
+    if (document.querySelector(".bf-update")) return;
+    var aviso = document.createElement("div");
+    aviso.className = "bf-update";
+    aviso.setAttribute("role", "status");
+    aviso.innerHTML = '<span>Nova versão disponível.</span>' +
+      '<button type="button" class="bf-update__btn">Atualizar</button>' +
+      '<button type="button" class="bf-update__close" aria-label="Agora não">✕</button>';
+    aviso.querySelector(".bf-update__btn").addEventListener("click", function () {
+      atualizando = true;
+      worker.postMessage("SKIP_WAITING");
+    });
+    aviso.querySelector(".bf-update__close").addEventListener("click", function () { aviso.remove(); });
+    document.body.appendChild(aviso);
+  }
+
+  var atualizando = false;
+  function registrarServiceWorker() {
+    if (!("serviceWorker" in navigator) || location.protocol === "file:") return;
+    navigator.serviceWorker.register(BASE + "sw.js", { scope: BASE, updateViaCache: "none" }).then(function (reg) {
+      // versão nova já baixada numa visita anterior, esperando
+      if (reg.waiting && navigator.serviceWorker.controller) avisoNovaVersao(reg.waiting);
+      reg.addEventListener("updatefound", function () {
+        var novo = reg.installing;
+        if (!novo) return;
+        novo.addEventListener("statechange", function () {
+          if (novo.state === "installed" && navigator.serviceWorker.controller) avisoNovaVersao(novo);
+        });
+      });
+      // o site fica aberto por horas no dia da brassagem: procura versão nova
+      // quando a aba volta ao primeiro plano e a cada 30 minutos
+      document.addEventListener("visibilitychange", function () {
+        if (document.visibilityState === "visible") reg.update().catch(function () {});
+      });
+      setInterval(function () { reg.update().catch(function () {}); }, 30 * 60 * 1000);
+    }).catch(function () { /* sem service worker: o site funciona normalmente, só não fica offline */ });
+
+    // recarrega só quando a troca de versão foi pedida pelo botão
+    // (na primeira instalação o controle também muda, e aí não deve recarregar)
+    navigator.serviceWorker.addEventListener("controllerchange", function () {
+      if (atualizando) location.reload();
+    });
   }
 
   function montar() {
@@ -139,9 +197,11 @@
 
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", montar);
   else montar();
+  window.addEventListener("load", registrarServiceWorker);
 
   window.BF = {
     base: BASE,
+    versao: VERSAO,
     ferramentas: FERRAMENTAS,
     esc: esc,
     urlFerramenta: urlFerramenta,

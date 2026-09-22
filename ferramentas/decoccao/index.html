@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Decocção — Brassagem Forte</title>
+  <meta name="description" content="Monte, ajuste e salve programas de decocção (simples, dupla e tripla) para mostura de cerveja.">
+  <meta name="theme-color" content="#0b0b0b">
+  <link rel="manifest" href="../../manifest.webmanifest">
+  <link rel="icon" href="../../assets/img/icon-192.png">
+  <link rel="apple-touch-icon" href="../../assets/img/icon-180.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-title" content="Brassagem Forte">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../assets/css/bf.css">
+  <link rel="stylesheet" href="app.css">
+  <script src="../../assets/js/versao.js"></script>
+  <script src="../../assets/js/shell.js"></script>
+</head>
+<body class="bf-wide">
+  <a class="skip-link" href="#paramsForm">Pular pra configurações</a>
+  <header data-bf-header></header>
+
+  <main>
+    <div class="wrap">
+      <p class="bf-crumb"><a href="../../">Ferramentas</a> / 02</p>
+      <h1 class="bf-title">Decocção</h1>
+      <p class="bf-lead">Monte o programa de mostura por decocção: quanto puxar em cada etapa, o cronograma completo, o gráfico de temperatura e um cronômetro para o dia da brassagem. <a href="sobre.html">Por que decocção?</a></p>
+
+      <section class="bf-step dc-methods" aria-labelledby="l-metodo">
+        <h2 class="bf-step__label" id="l-metodo"><b>01</b> Método</h2>
+        <div class="method-tabs" id="methodTabs" role="tablist" aria-label="Método de decocção"></div>
+        <select class="method-select" id="methodSelect" aria-label="Método de decocção"></select>
+        <p class="method-description" id="methodDescription"></p>
+        <p class="method-source" id="methodSource"></p>
+      </section>
+
+      <div class="layout" id="methodPanel" role="tabpanel" aria-label="Programa calculado para o método selecionado">
+        <section class="params-panel" aria-labelledby="paramsHeading">
+          <h2 class="bf-step__label" id="paramsHeading"><b>02</b> Parâmetros</h2>
+          <form id="paramsForm"></form>
+          <div class="toolbar">
+            <div class="select-line">
+              <select id="presetSelect" aria-label="Predefinições salvas">
+                <option value="">Predefinições…</option>
+              </select>
+              <button class="btn" id="loadPresetBtn" type="button" title="Carregar predefinição">Abrir</button>
+              <button class="btn btn--danger" id="deletePresetBtn" type="button" title="Excluir predefinição" aria-label="Excluir predefinição">✕</button>
+            </div>
+            <div class="toolbar__row">
+              <button class="btn btn--primary" id="savePresetBtn" type="button">Salvar como…</button>
+            </div>
+            <div class="toolbar__row">
+              <button class="btn btn--ghost" id="resetBtn" type="button">Restaurar padrão</button>
+            </div>
+            <div class="toolbar__row">
+              <button class="btn" id="exportBtn" type="button">Exportar JSON</button>
+              <button class="btn" id="importBtn" type="button">Importar JSON</button>
+              <input type="file" id="importFile" accept="application/json" hidden>
+            </div>
+            <p class="autosave-note" id="autosaveNote">Alterações salvas automaticamente neste dispositivo.</p>
+          </div>
+        </section>
+
+        <section class="results-panel" aria-labelledby="resultsHeading">
+          <h2 class="bf-step__label" id="resultsHeading"><b>03</b> Programa</h2>
+          <div class="panel pseudo-unreachable" id="pseudoUnreachable" role="alert" hidden>
+            <p class="pseudo-unreachable__title" id="pseudoUnreachableTitle">Alvo da mistura fora do alcance</p>
+            <p id="pseudoUnreachableText"></p>
+          </div>
+
+          <!-- Fora do #resultsNormal DE PROPÓSITO: se o aviso acima aparecer com
+               uma brassagem já rodando, o cronômetro (Pausar/Cheguei/Resetar)
+               precisa continuar acessível — sem isso o relógio segue contando
+               escondido, sem nenhum controle na tela (achado Q1). -->
+          <div class="panel timer-panel">
+            <div class="timer-display">
+              <span class="timer-clock" id="timerClock">00:00</span>
+              <span class="timer-step" id="timerStepLabel">Pronto para começar</span>
+            </div>
+            <p class="audio-warning" id="audioWarning" hidden>Som desativado · toque na tela pra ativar o alarme</p>
+            <div class="timer-controls">
+              <button class="btn btn--primary" id="timerToggleBtn" type="button">Iniciar</button>
+              <button class="btn" id="timerArriveBtn" type="button" title="Confirma que a mostura chegou à temperatura/tempo desta etapa agora">Cheguei</button>
+              <button class="btn btn--ghost" id="timerResetBtn" type="button">Resetar</button>
+            </div>
+          </div>
+
+          <div id="resultsNormal">
+            <div class="panel summary-bar">
+              <div class="summary-bar__total" id="totalTime">0<span>min</span></div>
+              <div class="summary-bar__meta">
+                <span>Etapas: <strong id="stepCount">0</strong></span>
+                <span id="mashVolumeWrap">Volume da mostura: <strong id="mashVolume">–</strong></span>
+                <span id="maxPullWrap"><span id="maxPullLabel">Maior puxada:</span> <strong id="maxPull">–</strong></span>
+                <span id="thermalLoadWrap" hidden>Carga térmica: <strong id="thermalLoad">–</strong></span>
+              </div>
+            </div>
+
+            <div class="panel chart-panel">
+              <div class="chart-legend" id="chartLegend"></div>
+              <svg id="chart" class="chart-svg" viewBox="0 0 640 218" preserveAspectRatio="none" role="img" aria-label="Curva de temperatura ao longo do tempo"></svg>
+              <div class="chart-tooltip" id="chartTooltip" hidden></div>
+              <p class="chart-enzyme-legend" id="chartEnzymeLegend"></p>
+            </div>
+
+            <div class="panel schedule-panel">
+              <h3 class="schedule-title" id="scheduleTitle">Passo a passo do programa</h3>
+              <div class="ladder" id="ladder" role="table" aria-labelledby="scheduleTitle"></div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </main>
+
+  <footer data-bf-footer></footer>
+
+  <dialog class="modal" id="saveModal" aria-labelledby="saveModalTitle">
+    <div class="modal__body">
+      <p class="modal__title" id="saveModalTitle">Salvar predefinição</p>
+      <input type="text" id="presetNameInput" placeholder="Nome da predefinição" maxlength="60">
+      <div class="modal__actions">
+        <button class="btn btn--ghost" id="cancelSaveBtn" type="button">Cancelar</button>
+        <button class="btn btn--primary" id="confirmSaveBtn" type="button">Salvar</button>
+      </div>
+    </div>
+  </dialog>
+
+  <dialog class="modal" id="deleteModal" aria-labelledby="deleteModalTitle">
+    <div class="modal__body">
+      <p class="modal__title" id="deleteModalTitle">Excluir predefinição</p>
+      <p class="modal__text" id="deleteModalText"></p>
+      <div class="modal__actions">
+        <button class="btn btn--ghost" id="cancelDeleteBtn" type="button">Cancelar</button>
+        <button class="btn btn--danger-fill" id="confirmDeleteBtn" type="button">Excluir</button>
+      </div>
+    </div>
+  </dialog>
+
+  <dialog class="modal" id="resetModal" aria-labelledby="resetModalTitle">
+    <div class="modal__body">
+      <p class="modal__title" id="resetModalTitle">Resetar cronômetro</p>
+      <p class="modal__text">Isso apaga o registro de todas as etapas já confirmadas nesta brassagem (horário real de cada uma) e zera o relógio. Não pode ser desfeito.</p>
+      <div class="modal__actions">
+        <button class="btn btn--ghost" id="cancelResetBtn" type="button">Cancelar</button>
+        <button class="btn btn--danger-fill" id="confirmResetBtn" type="button">Resetar</button>
+      </div>
+    </div>
+  </dialog>
+
+  <div class="visually-hidden" id="srAnnouncer" role="status" aria-live="polite"></div>
+
+  <div class="toast" id="toast">
+    <span class="toast__text" id="toastText"></span>
+    <button class="toast__action" id="toastAction" type="button" hidden>Recarregar</button>
+  </div>
+
+  <script src="version.js"></script>
+  <script src="methods.js"></script>
+  <script src="app-core.js"></script>
+  <script src="app.js"></script>
+  <script>
+    BF.rodape('Calculadora de Henrique Boaventura e Fábio Koerich · <a href="sobre.html">Por que decocção?</a> · ' +
+      '<a href="https://github.com/henriqueboaventura/decoccao/issues/new" rel="noopener">Reportar problema</a> · Calculadora v' + (window.APP_VERSION || "?"));
+  </script>
+</body>
+</html>

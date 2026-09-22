@@ -83,6 +83,9 @@ a { color: var(--bf-fg); text-underline-offset: 3px; }
 
 .nowrap { white-space: nowrap; }
 
+/* Ferramentas com layout de duas colunas no desktop: <body class="bf-wide"> */
+.bf-wide { --bf-max: 1200px; }
+
 .wrap {
   width: 100%;
   max-width: var(--bf-max);
@@ -373,6 +376,38 @@ main { flex: 1; }
 .bf-footer .wrap { display: grid; gap: 10px; justify-items: start; }
 .bf-footer__logo { height: 56px; }
 .bf-footer a { color: var(--bf-soft); }
+
+/* ---------- Aviso de nova versão (PWA) ---------- */
+.bf-update {
+  position: fixed;
+  left: 50%;
+  bottom: 16px;
+  transform: translateX(-50%);
+  z-index: 60;
+  width: min(calc(100% - 32px), 460px);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 10px 10px 16px;
+  background: var(--bf-fg);
+  color: var(--bf-bg);
+  font-size: 15px;
+  box-shadow: 0 0 0 1px var(--bf-bg);
+}
+.bf-update span { flex: 1; }
+.bf-update__btn, .bf-update__close {
+  appearance: none;
+  border: 1px solid var(--bf-bg);
+  background: var(--bf-bg);
+  color: var(--bf-fg);
+  font: 500 12px/1 var(--bf-mono);
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  min-height: 44px;
+  padding: 0 14px;
+  cursor: pointer;
+}
+.bf-update__close { background: none; color: var(--bf-bg); padding: 0; width: 44px; }
 
 @media (max-width: 400px) {
   .bf-brand__sub { display: none; }

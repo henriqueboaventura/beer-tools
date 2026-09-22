@@ -13,9 +13,7 @@
   var input = $("yx-input"), list = $("yx-list"), status = $("yx-status");
   var picker = $("picker"), baseEl = $("base"), altStep = $("step-alt"), altsEl = $("alts");
 
-  function norm(s) {
-    return String(s || "").normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase().replace(/[^a-z0-9]/g, "");
-  }
+  var norm = BFBusca.norm;
   // evita quebra de linha dentro de códigos como "W-34/70"
   function words(s) {
     return String(s).split(" ").map(function (w) { return '<span class="nowrap">' + esc(w) + "</span>"; }).join(" ");
@@ -54,11 +52,8 @@
 
   function iniciar(data) {
     DB = data;
-    DB.leveduras.forEach(function (y) {
-      byId[y.id] = y;
-      y._busca = norm([y.nome, y.codigo, fab(y), y.origem].join(" "));
-      y._codigo = norm(y.codigo);
-    });
+    BFBusca.indexar(DB);
+    DB.leveduras.forEach(function (y) { byId[y.id] = y; });
     DB.categorias.forEach(function (c) { catNome[c.id] = c.nome; });
     Object.keys(DB.relacoes).forEach(function (id) {
       rel[id] = DB.relacoes[id].map(function (r) {
@@ -95,24 +90,7 @@
 
   /* ---------- Combobox ---------- */
   function matches() {
-    var q = norm(state.query);
-    // cada palavra digitada precisa aparecer em algum campo, em qualquer ordem ("imperial l17", "l17 imperial")
-    var termos = state.query.split(/\s+/).map(norm).filter(Boolean);
-    return DB.leveduras.filter(function (y) {
-      if (state.cat !== "todas" && y.cat !== state.cat) return false;
-      if (!q || y._busca.indexOf(q) > -1) return true;
-      return termos.every(function (t) { return y._busca.indexOf(t) > -1; });
-    }).sort(function (a, b) {
-      // código exato, depois código/nome que começa com a busca, depois o resto
-      function peso(y) {
-        if (!q) return 2;
-        if (y._codigo === q || termos.indexOf(y._codigo) > -1) return 0;
-        var nome = norm(y.nome);
-        return termos.some(function (t) { return y._codigo.indexOf(t) === 0 || nome.indexOf(t) === 0; }) ? 1 : 2;
-      }
-      return peso(a) - peso(b) || (a.descontinuada ? 1 : 0) - (b.descontinuada ? 1 : 0) ||
-        fab(a).localeCompare(fab(b)) || a.nome.localeCompare(b.nome);
-    });
+    return BFBusca.buscar(DB, state.query, state.cat);
   }
 
   var current = [];
@@ -137,8 +115,8 @@
     list.innerHTML = current.map(function (y, i) {
       var meta = [fab(y), forma(y), y.origem || catNome[y.cat]];
       if (y.descontinuada) meta.push("descontinuada");
-      return '<li role="option" id="opt-' + i + '" data-id="' + y.id + '" aria-selected="false">' +
-        '<span class="yx-opt__name">' + esc(y.nome) + "</span>" +
+      return '<li role="option" id="opt-' + i + '" data-id="' + y.id + '" data-fab="' + y.fab + '" aria-selected="false">' +
+        '<span class="yx-opt__name"><i class="yx-lab" aria-hidden="true"></i>' + esc(y.nome) + "</span>" +
         '<span class="yx-opt__code">' + esc(codigo(y)) + "</span>" +
         '<span class="yx-opt__meta">' + esc(meta.join(" · ")) + "</span></li>";
     }).join("");
@@ -191,8 +169,8 @@
       (y.foraCatalogo ? '<span class="bf-tag">Fora do catálogo</span>' : "");
 
     baseEl.innerHTML =
-      '<article class="yx-base" id="yx-base" aria-label="Levedura base">' +
-        '<div class="yx-base__top"><span>' + esc(fab(y)) + " · " + forma(y) + tags + "</span>" +
+      '<article class="yx-base" id="yx-base" data-fab="' + y.fab + '" aria-label="Levedura base">' +
+        '<div class="yx-base__top"><span><i class="yx-lab" aria-hidden="true"></i>' + esc(fab(y)) + " · " + forma(y) + tags + "</span>" +
         '<button type="button" class="bf-btn" id="btn-trocar">Trocar</button></div>' +
         '<h3 class="yx-base__name">' + words(y.nome) + "</h3>" +
         (codigo(y) ? '<div class="yx-base__code">' + esc(codigo(y)) + "</div>" : "") +
@@ -293,7 +271,7 @@
     [3, 2, 1].forEach(function (n) {
       var group = shown.filter(function (a) { return a.nivel === n; });
       if (!group.length) return;
-      html += '<h3 class="yx-group__head">' + meter(n) + " " + NIVEL[n] + '<span class="n">' + group.length + "</span></h3>";
+      html += '<h3 class="yx-group__head yx-nivel-' + n + '">' + meter(n) + " " + NIVEL[n] + '<span class="n">' + group.length + "</span></h3>";
       group.forEach(function (a) { html += altHtml(a, base); });
     });
     altsEl.innerHTML = html;
@@ -314,8 +292,8 @@
       '<span class="bf-tag' + (y.forma === "seca" ? " bf-tag--solid" : "") + '">' + forma(y) + "</span>";
     var prefixo = a.fontes.indexOf("inferida") > -1 ? "<b>Inferida pelo nome, ainda não revisada.</b> "
       : a.fontes.indexOf("curadoria") > -1 ? "<b>Curadoria BF:</b> " : "";
-    return '<article class="yx-alt' + (y.descontinuada ? " yx-alt--off" : "") + '">' +
-      '<div class="yx-alt__top"><span>' + esc(fab(y)) + '</span><span class="yx-alt__tags">' + tags + "</span></div>" +
+    return '<article class="yx-alt yx-nivel-' + a.nivel + (y.descontinuada ? " yx-alt--off" : "") + '" data-fab="' + y.fab + '">' +
+      '<div class="yx-alt__top"><span><i class="yx-lab" aria-hidden="true"></i>' + esc(fab(y)) + '</span><span class="yx-alt__tags">' + tags + "</span></div>" +
       '<div class="yx-alt__name"><button type="button" data-id="' + y.id + '" title="Ver alternativas desta levedura">' + words(y.nome) + "</button>" +
         (codigo(y) ? "<code>" + esc(codigo(y)) + "</code>" : "") + "</div>" +
       (specs.length ? '<div class="yx-alt__specs">' + specs.join("") + "</div>" : "") +
@@ -350,16 +328,11 @@
 
   /* ---------- URL / histórico ---------- */
   function fromUrl() {
-    var id = new URLSearchParams(location.search).get("levedura");
-    if (id && !byId[id]) {
-      // aceita também só o código: ?levedura=us-05
-      var q = norm(id);
-      var achou = DB.leveduras.filter(function (y) { return y._codigo === q; })[0];
-      if (achou) id = achou.id;
-    }
-    if (id && byId[id]) { select(id, false); return; }
+    var param = new URLSearchParams(location.search).get("levedura");
+    var id = BFBusca.resolverId(DB, param);
+    if (id) { select(id, false); return; }
     state.base = null; baseEl.hidden = true; altStep.hidden = true; picker.hidden = false;
-    if (id) status.textContent = "Levedura “" + id + "” não encontrada. Busque abaixo.";
+    if (param) status.textContent = "Levedura “" + param + "” não encontrada. Busque abaixo.";
   }
   window.addEventListener("popstate", function () { if (DB) fromUrl(); });
 

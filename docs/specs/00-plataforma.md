@@ -17,6 +17,7 @@ Site estático, mobile first, publicado no GitHub Pages, que funciona como um **
 ```
 /                                    → Diretório (lista de ferramentas)
 /ferramentas/substituicao-leveduras/ → Ferramenta 01
+/ferramentas/decoccao/               → Ferramenta 02
 /ferramentas/<slug>/                 → Ferramentas futuras
 ```
 
@@ -39,7 +40,9 @@ Regras:
 
 ## 5. Sistema visual
 
-Direção: **editorial, monocromática e de alto contraste**. Títulos em tipografia condensada e pesada, dados em fonte monoespaçada, cantos retos e linhas finas. Sem gradientes, sombras ou cor de destaque: a hierarquia vem do peso da fonte, do tamanho e da **inversão** (bloco claro sobre fundo escuro, e o contrário no tema claro).
+Direção: **editorial e de alto contraste, com base monocromática**. Títulos em tipografia condensada e pesada, dados em fonte monoespaçada, cantos retos e linhas finas. Sem gradientes nem sombras. A hierarquia vem do peso da fonte, do tamanho e da **inversão** (bloco claro sobre fundo escuro, e o contrário no tema claro).
+
+**Cor só como informação.** Preto, branco e cinza são a base de toda ferramenta. Cor entra quando ajuda a identificar algo: nível de relação e laboratório nas leveduras, faixas de temperatura na decocção. Cada ferramenta define suas cores de informação no próprio CSS, em versões para os dois temas (tons claros no escuro, tons fundos no claro). Nunca use cor como único sinal: há sempre texto, forma ou traço junto.
 
 ### Tokens (semânticos)
 
@@ -67,10 +70,14 @@ Tema: segue o sistema por padrão, e o botão do header alterna e guarda a escol
 |---|---|
 | Stack | **HTML, CSS e JS puros**, sem framework nem build do site |
 | Layout compartilhado | `assets/js/shell.js` monta header, menu e rodapé em placeholders que já reservam altura (sem deslocamento de layout) |
+| Largura | Padrão 760px. Ferramentas com duas colunas no desktop usam `<body class="bf-wide">` (1200px) — header e conteúdo continuam alinhados |
+| Testes | `npm test` na raiz (só `node:test`, zero dependências): `tests/` (plataforma) + `ferramentas/*/tests/` (cada ferramenta). CI em `.github/workflows/test.yml` roda em todo push |
 | Caminhos | Relativos. `shell.js` descobre a raiz pelo próprio `src`, então funciona em `usuario.github.io/beer-tools/` |
 | Dados | JSON versionado dentro da pasta da ferramenta. Quando os dados vêm de fontes brutas, um script (só stdlib do Python) gera o JSON, e o resultado é commitado |
 | Estado | Query string (`?levedura=<id>`): link compartilhável e o botão voltar funciona |
-| Offline | Service worker — fase 2 |
+| PWA / offline | Um service worker para o site inteiro (`sw.js` na raiz) e `manifest.webmanifest`. Instalável. Rede primeiro com revalidação (`no-cache`); o cache local só responde sem conexão |
+| Versão | `assets/js/versao.js` (SemVer), no rodapé de todas as páginas. `CHANGELOG.md` na raiz. O cache do service worker tem o nome da versão, e os antigos são apagados ao ativar |
+| Nova versão | Aviso "Nova versão disponível · Atualizar" (shell). O site procura atualização ao voltar para a aba e a cada 30 min |
 | Fontes | Google Fonts com `display=swap` |
 | Analytics | Nenhum na v1 |
 | Idioma | pt-BR |
@@ -87,6 +94,7 @@ Tema: segue o sistema por padrão, e o botão do header alterna e guarda a escol
 │   ├── js/shell.js                    # registro, header, menu, rodapé, tema
 │   └── img/                           # logo
 ├── ferramentas/
+│   ├── decoccao/                      # ferramenta 02 (motor, testes, PWA próprios)
 │   └── substituicao-leveduras/
 │       ├── index.html
 │       ├── app.js
@@ -98,11 +106,29 @@ Tema: segue o sistema por padrão, e o botão do header alterna e guarda a escol
 └── docs/specs/
 ```
 
+### Como publicar uma versão
+
+1. Suba a versão em `assets/js/versao.js` e escreva a entrada no `CHANGELOG.md`, com o mesmo número. Os testes falham se os dois não baterem.
+2. Arquivo novo que a ferramenta precisa offline vai para o `PRECACHE` do `sw.js`. Os testes também conferem isso.
+3. `npm test`, e só então o merge em `main`.
+
+Quem estiver com o site aberto recebe o aviso de nova versão. Quem abrir depois já pega tudo novo, porque a rede tem prioridade.
+
+### Testes da plataforma (`tests/plataforma.test.js`)
+
+- Registro de ferramentas × pastas em `ferramentas/`.
+- Toda página: `lang`, viewport, shell (header/rodapé/`bf.css`/`versao.js` antes do `shell.js`), manifest e ícones, e **todo caminho local existindo**.
+- `sw.js`: todo item do `PRECACHE` existe, e todo JS/CSS das ferramentas está no `PRECACHE`.
+- Manifest válido, com ícones que existem.
+- Versão do site = última entrada do `CHANGELOG.md`. Versão da calculadora de decocção = última entrada do changelog dela.
+
 ### Como adicionar uma ferramenta
 
 1. Criar `ferramentas/<slug>/index.html` copiando o esqueleto da ferramenta 01 (head com `bf.css` e `shell.js`, placeholders de header e rodapé, cabeçalho padrão).
 2. Colocar JS, CSS e dados **dentro da pasta** da ferramenta. Importar só de `assets/`.
 3. Adicionar a entrada em `FERRAMENTAS`, no `shell.js`.
+4. Adicionar os arquivos dela ao `PRECACHE` do `sw.js`.
+5. Colocar os testes em `ferramentas/<slug>/tests/*.test.js`. O `npm test` já pega essa pasta.
 
 ## 7. Acessibilidade
 

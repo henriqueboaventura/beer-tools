@@ -531,7 +531,7 @@ def main():
             "id": ids[k],
             "fab": y["fab"],
             "nome": nome,
-            "forma": forma,
+            **({"forma": forma} if forma else {}),
             "cat": y.get("cat") or categoria([(y["fab"], y["codigo"])] if y["fab"] in ("white-labs", "wyeast", "imperial") else [], nome),
         }
         if y.get("codigoExibido"):

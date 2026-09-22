@@ -54,6 +54,13 @@ Vínculos da curadoria marcados como "Incerta" não se propagam para as equivale
 [Fontes] créditos e links
 ```
 
+### Cores de informação
+
+- **Nível da relação:** o medidor e o traço do título do grupo usam verde (Equivalente), âmbar (Provável) e cinza-azulado (Alternativa). O rótulo em texto aparece sempre junto.
+- **Laboratório:** cada fabricante tem uma cor, usada num ponto ao lado do nome e na barra lateral do card (e numa faixa no topo do cartão da base). Fabricantes sem cor definida ficam em cinza.
+- **Não confunda:** botões em vermelho.
+- Paletas em `app.css`, com uma versão para cada tema.
+
 ## 6. Requisitos funcionais
 
 | ID | Requisito |
@@ -68,7 +75,13 @@ Vínculos da curadoria marcados como "Incerta" não se propagam para as equivale
 | RF8 | Toda alternativa mostra a(s) fonte(s). Curadoria e inferências trazem o motivo por escrito. |
 | RF9 | Estados: carregando, erro com "Tentar de novo", nenhum resultado, sem alternativas, filtros sem resultado com "Limpar filtros". |
 
-## 7. Geração dos dados
+## 7. Código e testes
+
+- `busca.js`: funções puras da busca (`norm`, `indexar`, `buscar`, `resolverId`), em `window.BFBusca` e `module.exports`.
+- `tests/dados.test.js`: invariantes do JSON (ids únicos; relações simétricas, com nível e fontes válidos; "não confunda" sem conflito) e casos conferidos à mão contra as fontes.
+- `tests/busca.test.js`: buscas reais ("imperial l17", "us05", "wyeast 1056"…) e `?levedura=`.
+
+## 8. Geração dos dados
 
 ```
 python3 scripts/gerar_leveduras.py
@@ -78,7 +91,7 @@ O script lê a planilha (xlsx lido direto, com cores e tachado), os três JSONs 
 
 Formato de referência nos JSONs: `"fabricante:CÓDIGO"` ou `"fabricante:CÓDIGO|Nome"`.
 
-## 8. Critérios de aceite
+## 9. Critérios de aceite
 
 - [x] 360px de largura sem rolagem horizontal.
 - [x] "us05", "1056", "wlp001" e "chico" encontram as leveduras certas.
@@ -88,6 +101,6 @@ Formato de referência nos JSONs: `"fabricante:CÓDIGO"` ou `"fabricante:CÓDIGO
 - [ ] Revisão das inferências da Bio4 pela Brassagem Forte.
 - [ ] Lighthouse mobile ≥ 95 (a medir depois da publicação).
 
-## 9. Fora de escopo (v1)
+## 10. Fora de escopo (v1)
 
 Comparar duas leveduras lado a lado; ajuste automático de receita; contribuição pela interface; preço e disponibilidade em lojas.

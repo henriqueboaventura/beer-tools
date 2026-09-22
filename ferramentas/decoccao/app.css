@@ -1,0 +1,634 @@
+/*
+ * Ferramenta 02 — Decocção.
+ *
+ * O app.js gera o gráfico (SVG) e a escada de etapas usando as variáveis
+ * antigas do app (--steel, --copper, --amber, --zone-*, --line, --surface…).
+ * A interface segue o shell monocromático da Brassagem Forte; a cor fica
+ * só onde carrega informação de temperatura:
+ *   --steel   mostura (azul-aço)
+ *   --copper  fervura / decocção (cobre; linha também tracejada)
+ *   --amber   "agora" no gráfico
+ *   --zone-*  faixas de atuação das enzimas
+ * Os pontos da escada usam o gradiente de temperatura do próprio app.js.
+ */
+:root {
+  --bg: var(--bf-bg);
+  --surface: var(--bf-bg);
+  --surface-2: var(--bf-raised);
+  --line: var(--bf-line);
+  --text: var(--bf-fg);
+  --text-dim: var(--bf-mute);
+  --steel: #386079;
+  --steel-strong: #24475c;
+  --copper: #b5602c;
+  --copper-strong: #8f4a22;
+  --amber: #c98a1f;
+  --amber-strong: #8a5d00;
+  --danger: var(--bf-fg);
+  --danger-strong: var(--bf-fg);
+  --focus: var(--bf-fg);
+  --btn-bg: var(--bf-fg);
+  --btn-fg: var(--bf-bg);
+  --btn-bg-hover: var(--bf-soft);
+  /* Faixas de enzima (N8): saturadas o bastante pra passar 4,5:1 como texto
+     da legenda; no SVG entram a 14% de opacidade. */
+  --zone-glucanase: #1d4ed8;
+  --zone-protease: #7e22ce;
+  --zone-beta-amilase: #15803d;
+  --zone-alpha-amilase: #92400e;
+  --radius: 0;
+  --font-display: var(--bf-font);
+  --font-body: var(--bf-font);
+  --font-data: var(--bf-mono);
+}
+
+/* Cores de temperatura no tema escuro (valores do app original). */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --steel: #6fa0bd; --steel-strong: #8fb9d3;
+    --copper: #d17f3f; --copper-strong: #e69657;
+    --amber: #e0a83f; --amber-strong: #e0a83f;
+    --zone-glucanase: #6495ed; --zone-protease: #ba78d1;
+    --zone-beta-amilase: #6eb26e; --zone-alpha-amilase: #c4a854;
+  }
+}
+:root[data-theme="dark"] {
+  --steel: #6fa0bd; --steel-strong: #8fb9d3;
+  --copper: #d17f3f; --copper-strong: #e69657;
+  --amber: #e0a83f; --amber-strong: #e0a83f;
+  --zone-glucanase: #6495ed; --zone-protease: #ba78d1;
+  --zone-beta-amilase: #6eb26e; --zone-alpha-amilase: #c4a854;
+}
+
+[hidden] { display: none !important; }
+
+/* Tooltips "?" (.hint::after) ficam no layout com opacity 0 e podem
+   escapar da tela estreita — precisa cortar no html e no body.
+   `clip`, não `hidden`: `hidden` transforma a página num contêiner de
+   rolagem e anula o `position: sticky` do cronômetro no celular. */
+html, body { overflow-x: clip; }
+
+button, select, input { font-family: inherit; color: inherit; }
+
+.skip-link {
+  position: absolute;
+  top: -4rem;
+  left: 1rem;
+  z-index: 100;
+  background: var(--bf-fg);
+  color: var(--bf-bg);
+  padding: 10px 14px;
+  font: 500 12px/1 var(--bf-mono);
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  text-decoration: none;
+}
+.skip-link:focus { top: 8px; }
+
+/* ---------- Método ---------- */
+.method-tabs {
+  display: none;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.method-tab {
+  appearance: none;
+  background: none;
+  border: 1px solid var(--bf-line-strong);
+  color: var(--bf-soft);
+  font: 500 12px/1 var(--bf-mono);
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  min-height: 40px;
+  padding: 0 12px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.method-tab:hover { border-color: var(--bf-fg); color: var(--bf-fg); }
+.method-tab[aria-selected="true"] { background: var(--bf-fg); border-color: var(--bf-fg); color: var(--bf-bg); }
+
+.method-select {
+  display: block;
+  width: 100%;
+  appearance: none;
+  background: var(--bf-raised) linear-gradient(45deg, transparent 50%, var(--bf-fg) 50%) no-repeat right 20px center / 6px 6px;
+  border: 0;
+  border-bottom: 2px solid var(--bf-fg);
+  border-radius: 0;
+  color: var(--bf-fg);
+  /* 16px mínimo: abaixo disso o Safari iOS dá zoom automático no foco. */
+  font: 500 18px/1.2 var(--bf-mono);
+  padding: 16px 44px 14px 14px;
+  min-height: 56px;
+}
+
+@media (min-width: 861px) {
+  .method-tabs { display: flex; }
+  .method-select { display: none; }
+}
+
+.method-description {
+  margin: 16px 0 0;
+  font-size: 15px;
+  line-height: 1.55;
+  color: var(--bf-soft);
+  max-width: 68ch;
+  transition: opacity .25s ease;
+}
+.method-description.is-switching { opacity: 0; transition: none; }
+.method-source {
+  margin: 6px 0 0;
+  font: 400 12px/1.5 var(--bf-mono);
+  color: var(--bf-mute);
+}
+/* Com a brassagem em curso, a explicação do método só ocupa espaço. */
+body.is-brewing .method-description,
+body.is-brewing .method-source { display: none; }
+
+/* ---------- Layout ---------- */
+.layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0 32px;
+  align-items: start;
+}
+@media (min-width: 861px) {
+  .layout { grid-template-columns: minmax(300px, 360px) 1fr; }
+}
+
+.panel {
+  background: var(--bf-bg);
+  border: 1px solid var(--bf-line);
+}
+
+.params-panel, .results-panel { margin-top: 40px; }
+.results-panel { display: flex; flex-direction: column; gap: 12px; }
+.results-panel > .bf-step__label { margin-bottom: 2px; }
+#resultsNormal { display: contents; }
+
+/* ---------- Parâmetros ---------- */
+.param-group { margin-bottom: 20px; }
+.param-group:last-of-type { margin-bottom: 8px; }
+.param-group__title {
+  font: 500 12px/1 var(--bf-mono);
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--bf-fg);
+  margin: 0 0 6px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--bf-line-strong);
+}
+
+.advanced-settings {
+  margin-top: 8px;
+  border-top: 1px solid var(--bf-line);
+}
+.advanced-settings summary {
+  cursor: pointer;
+  list-style: none;
+  min-height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font: 500 12px/1 var(--bf-mono);
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--bf-fg);
+}
+.advanced-settings summary::-webkit-details-marker { display: none; }
+.advanced-settings summary::after { content: "+"; font-size: 18px; }
+.advanced-settings[open] summary::after { content: "−"; }
+.advanced-settings .param-group { margin-top: 12px; }
+
+.field {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--bf-line);
+}
+.field__label { display: flex; align-items: center; gap: 6px; min-width: 0; }
+.field label { font-size: 15px; color: var(--bf-soft); line-height: 1.3; }
+.field__control { display: flex; align-items: center; gap: 6px; flex: 0 0 auto; }
+.field input[type="number"] {
+  /* 16px mínimo (zoom do iOS); 5.4rem cabe "199,5" nessa fonte. */
+  width: 5.4rem;
+  background: var(--bf-raised);
+  border: 0;
+  border-bottom: 1px solid var(--bf-line-strong);
+  border-radius: 0;
+  padding: 8px;
+  min-height: 40px;
+  font: 500 16px/1 var(--bf-mono);
+  color: var(--bf-fg);
+  text-align: right;
+}
+.field input[type="number"]:focus-visible { outline: none; border-bottom-color: var(--bf-fg); background: var(--bf-raised-2); }
+.field__unit { font: 400 12px/1 var(--bf-mono); color: var(--bf-mute); min-width: 2.8rem; }
+
+/* ---------- Dica "?" ---------- */
+.hint {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  padding: 0;
+  border: 1px solid var(--bf-line-strong);
+  border-radius: 50%;
+  background: none;
+  color: var(--bf-mute);
+  font: 500 11px/1 var(--bf-mono);
+  cursor: help;
+  position: relative;
+}
+.hint:hover, .hint.is-open, .hint:focus-visible { color: var(--bf-fg); border-color: var(--bf-fg); }
+.hint::after {
+  content: attr(data-tip);
+  position: absolute;
+  z-index: 30;
+  left: 0;
+  top: 140%;
+  width: max-content;
+  max-width: min(280px, calc(100vw - 2.4rem));
+  background: var(--bf-fg);
+  color: var(--bf-bg);
+  padding: 10px 12px;
+  font: 400 13px/1.45 var(--bf-font);
+  white-space: normal;
+  text-align: left;
+  opacity: 0;
+  /* visibility tira o texto fechado da árvore de acessibilidade (achado W2). */
+  visibility: hidden;
+  transform: translateY(-2px);
+  pointer-events: none;
+  transition: opacity .12s ease, transform .12s ease;
+}
+.hint:hover::after, .hint.is-open::after, .hint:focus-visible::after { opacity: 1; visibility: visible; transform: translateY(0); }
+.hint--volume { margin: 0 4px; }
+.hint--volume::after { left: auto; right: 0; }
+.hint--flip-up::after { top: auto; bottom: 140%; transform: translateY(2px); }
+.hint--flip-up:hover::after, .hint--flip-up.is-open::after, .hint--flip-up:focus-visible::after { transform: translateY(0); }
+/* Puxada acima do limite: sempre destacada, antes mesmo do clique. */
+.hint--alarm { background: var(--bf-fg); border-color: var(--bf-fg); color: var(--bf-bg); }
+
+/* No celular a dica vira uma folha fixa na base da tela (achado Y9). */
+@media (max-width: 640px) {
+  .hint::after, .hint--volume::after, .hint--flip-up::after {
+    position: fixed;
+    left: 12px; right: 12px; top: auto; bottom: 12px;
+    width: auto; max-width: none;
+    transform: translateY(8px);
+  }
+  .hint:hover::after, .hint.is-open::after, .hint:focus-visible::after,
+  .hint--flip-up:hover::after, .hint--flip-up.is-open::after, .hint--flip-up:focus-visible::after {
+    transform: translateY(0);
+  }
+}
+
+/* ---------- Barra de ferramentas ---------- */
+.toolbar {
+  margin-top: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.toolbar__row { display: flex; gap: 8px; }
+.select-line { display: flex; gap: 8px; align-items: stretch; }
+.select-line select {
+  flex: 1;
+  min-width: 0;
+  appearance: none;
+  background: var(--bf-raised);
+  border: 1px solid var(--bf-line-strong);
+  border-radius: 0;
+  padding: 8px 10px;
+  font: 400 16px/1.2 var(--bf-font);
+  color: var(--bf-fg);
+}
+
+.btn {
+  flex: 1;
+  appearance: none;
+  background: none;
+  border: 1px solid var(--bf-line-strong);
+  border-radius: 0;
+  color: var(--bf-fg);
+  font: 500 12px/1 var(--bf-mono);
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  min-height: 44px;
+  padding: 0 12px;
+  cursor: pointer;
+}
+.btn:hover { border-color: var(--bf-fg); }
+.btn--primary { background: var(--bf-fg); border-color: var(--bf-fg); color: var(--bf-bg); }
+.btn--primary:hover { background: var(--bf-soft); border-color: var(--bf-soft); }
+.btn--ghost { border-color: var(--bf-line); color: var(--bf-soft); }
+.btn--danger { flex: 0 0 44px; }
+.btn--danger-fill { background: var(--bf-fg); border-color: var(--bf-fg); color: var(--bf-bg); }
+.btn:disabled { opacity: .4; cursor: not-allowed; }
+.btn:disabled:hover { border-color: var(--bf-line-strong); }
+
+.autosave-note { font: 400 12px/1.4 var(--bf-mono); color: var(--bf-mute); text-align: center; margin: 4px 0 0; }
+.autosave-note.flash { color: var(--bf-fg); }
+
+/* ---------- Resultados ---------- */
+.pseudo-unreachable {
+  padding: 16px;
+  background: var(--bf-fg);
+  color: var(--bf-bg);
+  border-color: var(--bf-fg);
+}
+.pseudo-unreachable__title { margin: 0 0 6px; font-weight: 800; font-stretch: 70%; font-size: 22px; text-transform: uppercase; }
+.pseudo-unreachable p:last-child { margin: 0; line-height: 1.5; }
+
+.summary-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 20px;
+  align-items: baseline;
+  padding: 14px 16px;
+}
+.summary-bar__total {
+  font-weight: 900;
+  font-stretch: 62%;
+  font-size: 48px;
+  line-height: .9;
+  color: var(--bf-fg);
+}
+.summary-bar__total span { font: 400 14px/1 var(--bf-mono); color: var(--bf-mute); margin-left: 6px; }
+/* no celular o rótulo "tempo total de processo" vai para a linha de baixo
+   em vez de quebrar no meio ao lado do número */
+@media (max-width: 620px) {
+  .summary-bar__total span { display: block; margin: 8px 0 0; }
+  .summary-bar__meta { flex-direction: column; gap: 4px; }
+}
+.summary-bar__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 18px;
+  font: 400 12px/1.5 var(--bf-mono);
+  color: var(--bf-mute);
+  text-transform: uppercase;
+  letter-spacing: .04em;
+}
+.summary-bar__meta strong { color: var(--bf-fg); font-weight: 500; }
+
+/* Cronômetro: bloco invertido, o dado mais importante no dia da brassagem. */
+.timer-panel {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 16px;
+  background: var(--bf-fg);
+  color: var(--bf-bg);
+  border-color: var(--bf-fg);
+}
+.timer-display { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+.timer-clock { font: 500 32px/1 var(--bf-mono); font-variant-numeric: tabular-nums; }
+.timer-step { font-size: 14px; }
+.timer-step strong { font-weight: 700; }
+.timer-drift { font-family: var(--bf-mono); font-weight: 500; }
+.timer-drift.is-late { text-decoration: underline; text-decoration-thickness: 2px; }
+.timer-remaining { display: inline-block; font: 700 18px/1.2 var(--bf-mono); }
+.timer-remaining.is-late { text-decoration: underline; text-decoration-thickness: 2px; }
+.audio-warning {
+  flex-basis: 100%;
+  margin: 0;
+  padding: 6px 8px;
+  border: 1px solid currentColor;
+  font: 500 12px/1.3 var(--bf-mono);
+}
+.timer-controls { display: flex; gap: 8px; flex-wrap: wrap; }
+.timer-controls .btn { flex: 0 0 auto; color: var(--bf-bg); border-color: var(--bf-bg); }
+.timer-controls .btn--primary { background: var(--bf-bg); color: var(--bf-fg); }
+.timer-controls .btn--primary:hover { background: var(--bf-raised-2); }
+.timer-controls .btn--ghost { border-color: color-mix(in srgb, var(--bf-bg) 40%, transparent); }
+.timer-panel.is-running .timer-clock { text-decoration: none; }
+
+/* No celular o timer gruda logo abaixo do header quando a rolagem chega
+   nele, e fica lá até o fim do programa. */
+@media (max-width: 860px) {
+  .timer-panel {
+    position: sticky;
+    top: calc(var(--bf-header-h) + 1px);
+    z-index: 15;
+  }
+}
+
+.chart-panel { padding: 14px 16px 10px; position: relative; }
+.chart-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 18px;
+  font: 400 12px/1.4 var(--bf-mono);
+  color: var(--bf-mute);
+  margin-bottom: 8px;
+}
+.chart-legend__dot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  margin-right: 6px;
+  vertical-align: -1px;
+}
+.chart-svg { width: 100%; height: auto; display: block; overflow: visible; cursor: crosshair; }
+.chart-enzyme-legend { margin: 8px 0 0; font: 400 11px/1.6 var(--bf-mono); color: var(--bf-mute); }
+.chart-enzyme-legend span { font-weight: 500; }
+.chart-enzyme-legend .zone-glucanase { color: var(--zone-glucanase); }
+.chart-enzyme-legend .zone-protease { color: var(--zone-protease); }
+.chart-enzyme-legend .zone-beta-amilase { color: var(--zone-beta-amilase); }
+.chart-enzyme-legend .zone-alpha-amilase { color: var(--zone-alpha-amilase); }
+
+.chart-tooltip {
+  position: absolute;
+  z-index: 5;
+  pointer-events: none;
+  background: var(--bf-fg);
+  color: var(--bf-bg);
+  padding: 8px 10px;
+  font: 400 12px/1.5 var(--bf-mono);
+  white-space: nowrap;
+}
+.chart-tooltip strong {
+  display: block;
+  font: 500 11px/1.3 var(--bf-mono);
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  margin-bottom: 2px;
+}
+.chart-tooltip span { display: block; }
+
+/* ---------- Escada de etapas ---------- */
+.schedule-panel { padding: 0; overflow: hidden; }
+.schedule-title {
+  margin: 0;
+  padding: 14px 16px 12px;
+  font: 500 12px/1 var(--bf-mono);
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--bf-fg);
+  border-bottom: 1px solid var(--bf-line-strong);
+}
+.ladder { display: flex; flex-direction: column; }
+.ladder-row {
+  display: grid;
+  grid-template-columns: 1.6rem 1fr auto auto auto;
+  gap: 12px;
+  align-items: center;
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--bf-line);
+  position: relative;
+}
+.ladder-row:last-child { border-bottom: none; }
+.ladder-row:hover { background: var(--bf-raised); }
+.ladder-row.is-active { background: color-mix(in srgb, var(--amber) 12%, transparent); box-shadow: inset 4px 0 0 var(--amber); }
+.ladder-row.is-done { opacity: .6; }
+
+.ladder-rail { position: relative; height: 100%; display: flex; align-items: center; justify-content: center; }
+.ladder-rail::before {
+  content: "";
+  position: absolute;
+  top: -1px; bottom: -1px; left: 50%;
+  width: 2px;
+  background: var(--bf-line);
+  transform: translateX(-50%);
+}
+.ladder-row:first-child .ladder-rail::before { top: 50%; }
+.ladder-row:last-child .ladder-rail::before { bottom: 50%; }
+/* A cor do ponto vem do app.js (gradiente de temperatura). */
+.ladder-dot {
+  position: relative;
+  z-index: 1;
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  border: 2px solid var(--bf-bg);
+}
+
+.ladder-label { font-size: 15px; color: var(--bf-fg); line-height: 1.25; }
+.ladder-label__line { display: inline-flex; align-items: center; gap: 6px; }
+.ladder-label small { display: block; font: 400 12px/1.4 var(--bf-mono); color: var(--bf-mute); margin-top: 2px; }
+
+.ladder-time, .ladder-temp, .ladder-volume { font: 400 13px/1.3 var(--bf-mono); text-align: right; white-space: nowrap; }
+.ladder-time { color: var(--bf-mute); }
+.ladder-time strong { color: var(--bf-fg); font-weight: 500; }
+.ladder-volume { min-width: 5.5rem; }
+.ladder-volume small { display: block; font-size: 11px; color: var(--bf-mute); margin-top: 2px; }
+
+.temp-pill {
+  display: inline-block;
+  min-width: 2.8rem;
+  padding: 3px 6px;
+  font-size: 12px;
+  text-align: center;
+  border: 1px solid var(--bf-line-strong);
+  color: var(--bf-fg);
+}
+.temp-pill--mash { border-color: transparent; background: color-mix(in srgb, var(--steel) 18%, transparent); color: var(--steel-strong); }
+.temp-pill--boil { border-color: transparent; background: color-mix(in srgb, var(--copper) 18%, transparent); color: var(--copper-strong); }
+.temp-pill--volume { background: var(--bf-fg); border-color: var(--bf-fg); color: var(--bf-bg); font-weight: 500; }
+.temp-pill--return { background: var(--bf-soft); border-color: var(--bf-soft); color: var(--bf-bg); }
+.temp-pill--empty { border-color: transparent; color: var(--bf-mute); }
+.temp-pill--alarm { background: var(--bf-bg); border: 2px solid var(--bf-fg); color: var(--bf-fg); font-weight: 700; }
+.ladder-volume small.is-alarm { color: var(--bf-fg); font-weight: 700; text-decoration: underline; }
+.ladder-volume small.is-warn { color: var(--bf-fg); font-weight: 500; }
+
+@media (max-width: 620px) {
+  /* tempo e temperaturas lado a lado na 2ª linha (na mesma área do grid
+     eles se sobrepunham) */
+  .ladder-row {
+    grid-template-columns: 1.4rem auto 1fr;
+    grid-template-areas: "rail label label" "rail time temp" "rail vol vol";
+    column-gap: 12px;
+    row-gap: 4px;
+  }
+  .ladder-rail { grid-area: rail; }
+  .ladder-label { grid-area: label; }
+  .ladder-time { grid-area: time; text-align: left; }
+  .ladder-temp { grid-area: temp; display: flex; gap: 6px; justify-content: flex-start; }
+  /* puxada + "?" + "% do volume" quebram linha em vez de vazar (320px) */
+  .ladder-volume {
+    grid-area: vol;
+    display: flex; flex-wrap: wrap; align-items: center; gap: 4px 6px;
+    white-space: normal; text-align: left; min-width: 0; margin-top: 2px;
+  }
+  .ladder-volume small { display: inline; margin: 0; }
+}
+
+/* ---------- Modais e aviso ---------- */
+dialog.modal {
+  border: 1px solid var(--bf-line-strong);
+  border-radius: 0;
+  padding: 0;
+  background: var(--bf-bg);
+  color: var(--bf-soft);
+  width: min(420px, 92vw);
+}
+dialog.modal::backdrop { background: rgba(0, 0, 0, .6); }
+.modal__body { padding: 20px; }
+.modal__title { margin: 0 0 12px; font-weight: 800; font-stretch: 70%; font-size: 26px; line-height: 1; text-transform: uppercase; color: var(--bf-fg); }
+.modal__text { font-size: 15px; margin: 0 0 16px; }
+.modal__body input[type="text"] {
+  width: 100%;
+  background: var(--bf-raised);
+  border: 0;
+  border-bottom: 2px solid var(--bf-fg);
+  border-radius: 0;
+  padding: 12px;
+  font: 400 16px/1.2 var(--bf-font);
+  color: var(--bf-fg);
+  margin-bottom: 16px;
+}
+.modal__actions { display: flex; gap: 8px; justify-content: flex-end; }
+.modal__actions .btn { flex: 0 0 auto; }
+
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: 20px;
+  transform: translate(-50%, 0);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--bf-fg);
+  color: var(--bf-bg);
+  padding: 10px 10px 10px 16px;
+  font-size: 14px;
+  z-index: 50;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .2s, transform .2s;
+  max-width: min(92vw, 26rem);
+}
+.toast.show { opacity: 1; transform: translate(-50%, -4px); }
+.toast.is-update { pointer-events: auto; }
+.toast__action {
+  flex: 0 0 auto;
+  appearance: none;
+  background: var(--bf-bg);
+  color: var(--bf-fg);
+  border: 0;
+  min-height: 36px;
+  padding: 0 12px;
+  font: 500 11px/1 var(--bf-mono);
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+/* Impressão: só o passo a passo interessa no papel (achado Y15). */
+@media print {
+  .bf-header, .bf-menu, .bf-footer, .bf-lead, .dc-methods, .params-panel, .toolbar, .chart-panel,
+  .timer-panel, .summary-bar, .toast, dialog, .skip-link, .results-panel > .bf-step__label {
+    display: none !important;
+  }
+  body, .layout { display: block; background: #fff; color: #000; }
+  .panel, .schedule-panel { border: 1px solid #999; background: #fff; color: #000; }
+  .ladder-row.is-active { background: none; box-shadow: none; }
+}
