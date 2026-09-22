@@ -58,7 +58,7 @@ Vínculos da curadoria marcados como "Incerta" não se propagam para as equivale
 
 | ID | Requisito |
 |---|---|
-| RF1 | A busca ignora acento, caixa, hífen e espaço, e cobre nome, código, fabricante e origem. |
+| RF1 | A busca ignora acento, caixa, hífen e espaço, e cobre nome, código, fabricante e origem. Com várias palavras, cada uma precisa aparecer em algum campo, em qualquer ordem ("imperial l17", "white labs wlp001", "wyeast 1056"). |
 | RF2 | A ordem dos resultados é: código exato, código/nome que começa com o termo, o resto. Descontinuadas por último. Máximo de 40 resultados, com aviso para refinar. |
 | RF3 | Chips de categoria: Todas, Ale, Lager, Trigo, Belga/Saison, Kveik, Outras. |
 | RF4 | A URL `?levedura=<id>` abre direto no resultado e também aceita só o código (`?levedura=us-05`). |

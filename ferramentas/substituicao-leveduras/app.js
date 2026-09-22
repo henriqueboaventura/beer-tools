@@ -96,12 +96,20 @@
   /* ---------- Combobox ---------- */
   function matches() {
     var q = norm(state.query);
+    // cada palavra digitada precisa aparecer em algum campo, em qualquer ordem ("imperial l17", "l17 imperial")
+    var termos = state.query.split(/\s+/).map(norm).filter(Boolean);
     return DB.leveduras.filter(function (y) {
       if (state.cat !== "todas" && y.cat !== state.cat) return false;
-      return !q || y._busca.indexOf(q) > -1;
+      if (!q || y._busca.indexOf(q) > -1) return true;
+      return termos.every(function (t) { return y._busca.indexOf(t) > -1; });
     }).sort(function (a, b) {
-      // código exato, depois código que começa com a busca, depois o resto
-      function peso(y) { return !q ? 2 : y._codigo === q ? 0 : y._codigo.indexOf(q) === 0 || norm(y.nome).indexOf(q) === 0 ? 1 : 2; }
+      // código exato, depois código/nome que começa com a busca, depois o resto
+      function peso(y) {
+        if (!q) return 2;
+        if (y._codigo === q || termos.indexOf(y._codigo) > -1) return 0;
+        var nome = norm(y.nome);
+        return termos.some(function (t) { return y._codigo.indexOf(t) === 0 || nome.indexOf(t) === 0; }) ? 1 : 2;
+      }
       return peso(a) - peso(b) || (a.descontinuada ? 1 : 0) - (b.descontinuada ? 1 : 0) ||
         fab(a).localeCompare(fab(b)) || a.nome.localeCompare(b.nome);
     });
