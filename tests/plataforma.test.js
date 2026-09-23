@@ -161,7 +161,13 @@ describe("ambientes (teste no GitHub Pages, produção no brassagemforte.com.br)
 
   test("o deploy força permissões legíveis pelo servidor web (pasta 755, arquivos 644)", () => {
     assert.match(deploy, /chmod 755 "\$PACOTE"/);
-    assert.equal((deploy.match(/--chmod=D755,F644/g) || []).length, 2);
+    assert.match(deploy, /find "\$PACOTE" -type d -exec chmod 755 \{\} \+/);
+    assert.match(deploy, /find "\$PACOTE" -type f -exec chmod 644 \{\} \+/);
+    assert.doesNotMatch(deploy, /^[^#\n]*rsync [^\n]*--chmod/m, "o rsync do macOS (openrsync) não aceita --chmod");
+  });
+
+  test("falha do rsync interrompe o deploy (não pode ser engolida por pipe/|| true)", () => {
+    assert.match(deploy, /\|\| erro "rsync falhou; nada foi confirmado em produção\."/);
   });
 
   test("credenciais (.env.deploy) ficam fora do git", () => {
