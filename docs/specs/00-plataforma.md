@@ -114,7 +114,13 @@ Tema: segue o sistema por padrão, e o botão do header alterna e guarda a escol
 - **Gerador:** `scripts/gerar_seo.py` cria as páginas por levedura, o índice e o `sitemap.xml`. Páginas sem conteúdo útil ganham `noindex` e ficam fora do sitemap. Os arquivos são gerados, então não edite à mão; o CI confere que estão em dia.
 - **Página nova no site:** inclua o caminho em `PAGINAS_FIXAS` no `gerar_seo.py`, para ela entrar no sitemap.
 - `404.html`: `noindex`, com os recursos por URL absoluta (o GitHub Pages a serve em qualquer caminho inexistente).
-- **Ícones:** `assets/img/icon.svg` (fonte do PWA), `icon-maskable.svg` e `favicon.svg`, este só com as letras para ler a 16px, além de `favicon.ico` na raiz. PNGs gerados com `rsvg-convert`.
+- **Ícones:** caneco de cerveja com chave inglesa, desenhado em vetor (não é o emoji, que muda de sistema para sistema). `assets/img/icon.svg` é a fonte do PWA; `icon-maskable.svg` mantém o conteúdo na zona segura do Android; `favicon.svg` usa o mesmo desenho, maior, para ler a 16px. Há também `favicon.ico` (16/32/48) na raiz. Os PNGs são gerados com `rsvg-convert`:
+
+  ```sh
+  cd assets/img
+  rsvg-convert -w 512 -h 512 icon.svg -o icon-512.png   # idem 192 e 180
+  rsvg-convert -w 512 -h 512 icon-maskable.svg -o icon-maskable-512.png
+  ```
 
 ### Como publicar uma versão
 

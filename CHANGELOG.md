@@ -12,6 +12,13 @@ detalhe técnico, em `ferramentas/decoccao/CHANGELOG.md`.
 invalida o cache offline antigo e faz aparecer o aviso "Nova versão
 disponível" para quem já está com o site aberto.
 
+## [1.2.1] — 2026-09-23
+
+### Alterado
+- Ícone novo para favicon e PWA: caneco de cerveja com chave inglesa, no
+  lugar do monograma "BF". Tem uma versão maior para o favicon, legível a
+  16px, e uma versão "maskable" para o Android.
+
 ## [1.2.0] — 2026-09-23
 
 ### Adicionado
@@ -26,8 +33,7 @@ disponível" para quem já está com o site aberto.
   - Open Graph e Twitter com imagem de compartilhamento para cada ferramenta;
   - dados estruturados (WebSite, WebApplication, Article, BreadcrumbList).
 - `sitemap.xml` e página 404.
-- **Ícone "BF"** novo para favicon e PWA, com versão "maskable" para o
-  Android e versão só com as letras para tamanhos pequenos.
+- Ícone novo para favicon e PWA (substituído na 1.2.1).
 - Testes de SEO: metadados de todas as páginas, sitemap, páginas geradas em
   dia com os dados, e ícones. O CI confere que as páginas geradas estão
   atualizadas.
