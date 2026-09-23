@@ -12,6 +12,17 @@ detalhe técnico, em `ferramentas/decoccao/CHANGELOG.md`.
 invalida o cache offline antigo e faz aparecer o aviso "Nova versão
 disponível" para quem já está com o site aberto.
 
+## [1.4.0] — 2026-09-23
+
+### Adicionado
+- **Ferramenta 03 — Speise**: calculadora de carbonatação natural com o
+  próprio mosto (antes um app separado, `henriqueboaventura/speise`).
+  Calcula quanto mosto reservar como speise, quanto fermentar e a dosagem
+  por garrafa. Aceita OG em SG ou °Plato. O cálculo é idêntico ao original
+  (comparado em 432 combinações de entradas), agora em `calculo.js`, com
+  testes conferidos à mão. Tem layout, PWA/offline, SEO e imagem de
+  compartilhamento no padrão do site. Números no formato brasileiro (1,32 L).
+
 ## [1.3.1] — 2026-09-23
 
 ### Corrigido

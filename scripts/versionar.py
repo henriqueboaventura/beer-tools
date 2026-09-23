@@ -18,7 +18,8 @@ RAIZ = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SITE = "https://www.brassagemforte.com.br/ferramentas/"
 # páginas escritas à mão (as de levedura são geradas pelo gerar_seo.py)
 PAGINAS = ["index.html", "404.html", "ferramentas/substituicao-leveduras/index.html",
-           "ferramentas/decoccao/index.html", "ferramentas/decoccao/sobre.html"]
+           "ferramentas/decoccao/index.html", "ferramentas/decoccao/sobre.html",
+           "ferramentas/speise/index.html"]
 REF = re.compile(r'((?:href|src)=")([^"?#]+\.(?:js|css|webmanifest))(?:\?v=[^"]*)?(")')
 
 

@@ -33,6 +33,7 @@ PAGINAS_FIXAS = [
     "ferramentas/substituicao-leveduras/levedura/",
     "ferramentas/decoccao/",
     "ferramentas/decoccao/sobre.html",
+    "ferramentas/speise/",
 ]
 
 NIVEL = {3: "Equivalente", 2: "Provável", 1: "Alternativa"}

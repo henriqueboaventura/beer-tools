@@ -1,7 +1,7 @@
 {
   "name": "Ferramentas Brassagem Forte",
   "short_name": "Brassagem Forte",
-  "description": "Ferramentas para cervejeiros caseiros: substituição de leveduras, decocção e mais.",
+  "description": "Ferramentas para cervejeiros caseiros: substituição de leveduras, decocção, speise e mais.",
   "id": "./",
   "start_url": "./",
   "scope": "./",
@@ -11,12 +11,37 @@
   "theme_color": "#0b0b0b",
   "lang": "pt-BR",
   "icons": [
-    { "src": "assets/img/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
-    { "src": "assets/img/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
-    { "src": "assets/img/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+    {
+      "src": "assets/img/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "assets/img/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "assets/img/icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
   ],
   "shortcuts": [
-    { "name": "Substituição de leveduras", "url": "ferramentas/substituicao-leveduras/" },
-    { "name": "Decocção", "url": "ferramentas/decoccao/" }
+    {
+      "name": "Substituição de leveduras",
+      "url": "ferramentas/substituicao-leveduras/"
+    },
+    {
+      "name": "Decocção",
+      "url": "ferramentas/decoccao/"
+    },
+    {
+      "name": "Speise",
+      "url": "ferramentas/speise/"
+    }
   ]
 }

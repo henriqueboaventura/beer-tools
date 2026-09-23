@@ -38,6 +38,18 @@ Calculadora de programas de mostura por decocção, de Henrique Boaventura e Fá
 
 Os detalhes técnicos (métodos, fontes, testes e histórico) estão em [`ferramentas/decoccao/README.md`](ferramentas/decoccao/README.md). O "Por que decocção?" está na própria ferramenta.
 
+### 03 — Speise
+
+`ferramentas/speise/`
+
+Calculadora de carbonatação natural com o próprio mosto, de Henrique Boaventura.
+
+- Quanto mosto reservar como speise e quanto coletar e fermentar. A speise sai do próprio lote.
+- OG em SG ou °Plato, atenuação esperada, CO₂ alvo e temperatura no envase.
+- Tabela avançada para dosar a speise garrafa por garrafa.
+
+O cálculo está em [`ferramentas/speise/calculo.js`](ferramentas/speise/calculo.js) e é explicado em [`docs/specs/03-speise.md`](docs/specs/03-speise.md).
+
 ## Rodar localmente
 
 Só precisa de Python 3 (para servir os arquivos) e Node 18 ou mais novo (para os testes). Não há dependências para instalar.
@@ -71,6 +83,7 @@ Os testes usam só o runner nativo do Node (`node:test`). Eles cobrem:
   - SEO: título único, descrição, `canonical`, Open Graph e JSON-LD em todas as páginas, sitemap igual às páginas indexáveis, e páginas geradas em dia com os dados.
 - **Substituição de leveduras** (`ferramentas/substituicao-leveduras/tests/`): consistência dos dados, casos conferidos à mão contra as fontes, e a busca.
 - **Decocção** (`ferramentas/decoccao/tests/`): o motor de cálculo, com valores conferidos contra a literatura.
+- **Speise** (`ferramentas/speise/tests/`): o cálculo, com valores conferidos à mão.
 
 O GitHub Actions roda a suíte em todo push.
 
@@ -172,4 +185,5 @@ Na decocção, mudanças na calculadora também sobem a versão dela (`ferrament
 
 - **Substituição de leveduras:** Henrique Boaventura e Fábio Koerich. Fontes dos dados: Yeast Master (David M. Taylor), AEB Brewing Yeast Substitution Guide, Imperial Yeast Strain Cross Reference Guide, tabela de substituição Levteck e curadoria da Brassagem Forte.
 - **Decocção:** Henrique Boaventura e Fábio Koerich. As fontes da literatura estão no README da ferramenta.
+- **Speise:** Henrique Boaventura.
 - Um projeto da [Brassagem Forte](https://www.brassagemforte.com.br).

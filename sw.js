@@ -49,6 +49,11 @@ const PRECACHE = [
   "ferramentas/decoccao/app-core.js",
   "ferramentas/decoccao/methods.js",
   "ferramentas/decoccao/version.js",
+  "ferramentas/speise/",
+  "ferramentas/speise/index.html",
+  "ferramentas/speise/app.css",
+  "ferramentas/speise/app.js",
+  "ferramentas/speise/calculo.js",
 ];
 
 self.addEventListener("install", (event) => {

@@ -18,6 +18,7 @@ Site estático, mobile first, publicado no GitHub Pages, que funciona como um **
 /                                    → Diretório (lista de ferramentas)
 /ferramentas/substituicao-leveduras/ → Ferramenta 01
 /ferramentas/decoccao/               → Ferramenta 02
+/ferramentas/speise/                 → Ferramenta 03
 /ferramentas/<slug>/                 → Ferramentas futuras
 ```
 
@@ -94,7 +95,8 @@ Tema: segue o sistema por padrão, e o botão do header alterna e guarda a escol
 │   ├── js/shell.js                    # registro, header, menu, rodapé, tema
 │   └── img/                           # logo
 ├── ferramentas/
-│   ├── decoccao/                      # ferramenta 02 (motor, testes, PWA próprios)
+│   ├── decoccao/                      # ferramenta 02 (motor e testes próprios)
+│   ├── speise/                        # ferramenta 03 (calculo.js + testes)
 │   └── substituicao-leveduras/
 │       ├── index.html
 │       ├── app.js

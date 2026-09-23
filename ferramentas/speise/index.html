@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Calculadora de speise: carbonatação natural com mosto | Brassagem Forte</title>
+  <meta name="description" content="Quanto mosto reservar como speise para carbonatar a cerveja naturalmente: volume de speise, mosto principal a fermentar e dosagem por garrafa.">
+  <link rel="canonical" href="https://www.brassagemforte.com.br/ferramentas/ferramentas/speise/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Ferramentas Brassagem Forte">
+  <meta property="og:locale" content="pt_BR">
+  <meta property="og:title" content="Calculadora de speise: carbonatação natural com mosto | Brassagem Forte">
+  <meta property="og:description" content="Quanto mosto reservar como speise para carbonatar a cerveja naturalmente: volume de speise, mosto principal a fermentar e dosagem por garrafa.">
+  <meta property="og:url" content="https://www.brassagemforte.com.br/ferramentas/ferramentas/speise/">
+  <meta property="og:image" content="https://www.brassagemforte.com.br/ferramentas/assets/img/og-speise.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="theme-color" content="#0b0b0b">
+  <link rel="manifest" href="../../manifest.webmanifest?v=1.4.0">
+  <link rel="icon" href="../../favicon.ico" sizes="32x32">
+  <link rel="icon" href="../../assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="../../assets/img/icon-180.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-title" content="Brassagem Forte">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../assets/css/bf.css?v=1.4.0">
+  <link rel="stylesheet" href="app.css?v=1.4.0">
+  <script src="../../assets/js/versao.js?v=1.4.0"></script>
+  <script src="../../assets/js/shell.js?v=1.4.0"></script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Calculadora de speise","url":"https://www.brassagemforte.com.br/ferramentas/ferramentas/speise/","applicationCategory":"UtilitiesApplication","operatingSystem":"Web","inLanguage":"pt-BR","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"BRL"},"author":[{"@type":"Person","name":"Henrique Boaventura"}],"publisher":{"@type":"Organization","name":"Brassagem Forte","url":"https://www.brassagemforte.com.br","logo":"https://www.brassagemforte.com.br/ferramentas/assets/img/icon-512.png"}}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Ferramentas","item":"https://www.brassagemforte.com.br/ferramentas/"},{"@type":"ListItem","position":2,"name":"Speise","item":"https://www.brassagemforte.com.br/ferramentas/ferramentas/speise/"}]}</script>
+</head>
+<body>
+  <header data-bf-header></header>
+
+  <main>
+    <div class="wrap">
+      <p class="bf-crumb"><a href="../../">Ferramentas</a> / 03</p>
+      <h1 class="bf-title">Speise</h1>
+      <p class="bf-lead">Carbonatação natural reservando parte do próprio mosto. O volume de speise sai do lote — a calculadora já desconta isso do volume a fermentar.</p>
+      <details class="bf-how">
+        <summary>Como é calculado</summary>
+        <div class="bf-how__body">
+          <ol>
+            <li>O CO₂ que continua dissolvido na cerveja no envase é estimado pela temperatura (lei de Henry). A diferença até o alvo é o CO₂ que ainda falta produzir.</li>
+            <li>A densidade original vira °Plato (extrato) e, multiplicada pela atenuação esperada, dá quanto açúcar fermentável tem cada litro de mosto reservado.</li>
+            <li>A speise é quanto desse mosto gera o CO₂ que falta (cerca de 4 g de açúcar por litro para cada volume de CO₂). Como ela é parte do lote, o mosto principal a fermentar é <b>volume final − speise</b>.</li>
+          </ol>
+        </div>
+      </details>
+
+      <section class="bf-step" aria-labelledby="l-lote">
+        <h2 class="bf-step__label" id="l-lote"><b>01</b> Lote</h2>
+        <div class="sp-campo">
+          <label for="volume">Volume final da cerveja <span>litros</span></label>
+          <input type="number" id="volume" inputmode="decimal" value="20" min="0" step="0.5">
+        </div>
+        <div class="sp-campo">
+          <div class="sp-rotulo">
+            <label for="og">Densidade original (OG)</label>
+            <div class="bf-segmented sp-unidade" role="group" aria-label="Unidade de densidade">
+              <button type="button" class="bf-chip" data-unidade="sg" aria-pressed="true">SG</button>
+              <button type="button" class="bf-chip" data-unidade="plato" aria-pressed="false">°P</button>
+            </div>
+          </div>
+          <input type="number" id="og" inputmode="decimal" value="1.050" min="1.000" step="0.001">
+        </div>
+        <div class="sp-campo">
+          <label for="atenuacao">Atenuação aparente esperada <output id="atenuacaoValor" for="atenuacao">75%</output></label>
+          <input type="range" id="atenuacao" min="40" max="90" step="1" value="75">
+        </div>
+      </section>
+
+      <section class="bf-step" aria-labelledby="l-carb">
+        <h2 class="bf-step__label" id="l-carb"><b>02</b> Carbonatação</h2>
+        <div class="sp-linha">
+          <div class="sp-campo">
+            <label for="alvo">Alvo <span>vol CO₂</span></label>
+            <input type="number" id="alvo" inputmode="decimal" value="2.4" min="0" step="0.1">
+          </div>
+          <div class="sp-campo">
+            <label for="temperatura">Temp. no envase <span>°C</span></label>
+            <input type="number" id="temperatura" inputmode="decimal" value="20" step="1">
+          </div>
+        </div>
+      </section>
+
+      <section class="bf-step" aria-labelledby="l-res">
+        <h2 class="bf-step__label" id="l-res"><b>03</b> Resultado</h2>
+        <p class="sp-aviso" id="aviso" role="status" hidden></p>
+        <div class="sp-resultado" aria-live="polite">
+          <p class="sp-resultado__rotulo">Reservar como speise</p>
+          <p class="sp-resultado__valor"><span id="speise">0</span> <small>L</small></p>
+          <p class="sp-resultado__sub">de mosto original, sem fermentar</p>
+          <dl class="sp-divisao">
+            <div><dt>Fermentar</dt><dd id="principal">0 L</dd><small>mosto principal</small></div>
+            <div><dt>Reservar à parte</dt><dd id="speise2">0 L</dd><small>vira speise</small></div>
+          </dl>
+        </div>
+        <p class="bf-note">Reserve a speise assim que puxar o mosto (antes do fermento), refrigere ou congele, e adicione fervida/pasteurizada ao envasar — ela fará o fermento residual carbonatar a cerveja.</p>
+
+        <details class="bf-how sp-avancado">
+          <summary>Avançado: dosar direto nas garrafas</summary>
+          <div class="bf-how__body">
+            <p>Não é o uso normal: o certo é misturar toda a speise de volta ao lote antes do envase. Isto é só para dosar garrafa por garrafa, na mão.</p>
+            <table class="sp-garrafas">
+              <thead><tr><th scope="col">Garrafa</th><th scope="col">Speise</th></tr></thead>
+              <tbody id="garrafas"></tbody>
+            </table>
+          </div>
+        </details>
+      </section>
+    </div>
+  </main>
+
+  <footer data-bf-footer></footer>
+
+  <script src="calculo.js?v=1.4.0"></script>
+  <script src="app.js?v=1.4.0"></script>
+</body>
+</html>

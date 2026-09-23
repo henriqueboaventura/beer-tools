@@ -22,6 +22,13 @@
       titulo: "Decocção",
       descricao: "Monte o programa de mostura por decocção: puxadas, cronograma, gráfico e cronômetro de brassagem.",
       status: "disponivel"
+    },
+    {
+      numero: "03",
+      slug: "speise",
+      titulo: "Speise",
+      descricao: "Quanto mosto reservar para carbonatar a cerveja naturalmente, sem açúcar de priming.",
+      status: "disponivel"
     }
   ];
 
