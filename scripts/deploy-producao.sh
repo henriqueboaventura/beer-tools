@@ -79,6 +79,11 @@ fi
 passo "Montando o pacote a partir do commit"
 PACOTE=$(mktemp -d)
 trap 'rm -rf "$PACOTE"' EXIT
+# mktemp cria a pasta com 700; com rsync -a essa permissão iria para
+# public_html/ferramentas e o servidor web deixaria de ler o site (403, e o
+# resto caía no WordPress, que redireciona para o pint.network). Aconteceu no
+# primeiro deploy da 1.3.0. Por isso: 755 aqui e --chmod no rsync.
+chmod 755 "$PACOTE"
 git archive HEAD | tar -x -C "$PACOTE"
 ( cd "$PACOTE" && rm -rf .github docs dados scripts tests examples package.json .gitignore .nojekyll .env.deploy.example 404.html \
     ferramentas/*/tests ferramentas/decoccao/scripts && find . -name '*.md' -delete )
@@ -87,14 +92,14 @@ echo "$(find "$PACOTE" -type f | wc -l | tr -d ' ') arquivos, $(du -sh "$PACOTE"
 # ---------------------------------------------------------------- envio
 if [ "$SIMULAR" = 1 ]; then
   passo "SIMULAÇÃO: o que mudaria em produção (nada é enviado)"
-  rsync -az --checksum --delete --dry-run --itemize-changes -e "$SSH_CMD" "$PACOTE/" "$BF_SSH_USER@$BF_SSH_HOST:${BF_DESTINO%/}/" \
+  rsync -az --checksum --delete --chmod=D755,F644 --dry-run --itemize-changes -e "$SSH_CMD" "$PACOTE/" "$BF_SSH_USER@$BF_SSH_HOST:${BF_DESTINO%/}/" \
     | grep -v '^\.' | head -60 || true
   echo "(simulação — rode sem --simular para publicar)"
   exit 0
 fi
 
 passo "Enviando para ${BF_DESTINO%/}/"
-rsync -az --checksum --delete --stats -e "$SSH_CMD" "$PACOTE/" "$BF_SSH_USER@$BF_SSH_HOST:${BF_DESTINO%/}/" \
+rsync -az --checksum --delete --chmod=D755,F644 --stats -e "$SSH_CMD" "$PACOTE/" "$BF_SSH_USER@$BF_SSH_HOST:${BF_DESTINO%/}/" \
   | grep -E 'Number of files transferred|Number of deleted files|Total transferred file size' || true
 
 # ---------------------------------------------------------------- verificação

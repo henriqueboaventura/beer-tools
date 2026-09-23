@@ -29,6 +29,12 @@ disponível" para quem já está com o site aberto.
 - Credenciais do deploy em `.env.deploy` (ignorado pelo git); modelo em
   `.env.deploy.example`.
 
+### Corrigido
+- Deploy: a pasta `public_html/ferramentas/` recebia a permissão 700 da pasta
+  temporária do pacote, e a produção ficou alguns minutos fora do ar (403, e
+  o resto redirecionando para o pint.network). O script agora força 755 nas
+  pastas e 644 nos arquivos. A verificação no fim do deploy pegou o problema.
+
 ## [1.2.2] — 2026-09-23
 
 ### Alterado

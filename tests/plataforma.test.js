@@ -158,6 +158,11 @@ describe("ambientes (teste no GitHub Pages, produção no brassagemforte.com.br)
     assert.match(deploy, /\*\/public_html\/ferramentas\|\*\/public_html\/ferramentas\/\) ;;/);
   });
 
+  test("o deploy força permissões legíveis pelo servidor web (pasta 755, arquivos 644)", () => {
+    assert.match(deploy, /chmod 755 "\$PACOTE"/);
+    assert.equal((deploy.match(/--chmod=D755,F644/g) || []).length, 2);
+  });
+
   test("credenciais (.env.deploy) ficam fora do git", () => {
     assert.match(ler(".gitignore"), /^\.env\.deploy$/m);
     assert.ok(existe(".env.deploy.example"));
