@@ -324,6 +324,13 @@ def sitemap(indexaveis, versao):
     return "\n".join(linhas) + "\n"
 
 
+def versionar(html):
+    """?v=<versão do site> nos scripts/estilos/manifest (ver scripts/versionar.py)."""
+    txt = open(os.path.join(RAIZ, "assets", "js", "versao.js"), encoding="utf-8").read()
+    v = re.search(r'self\.BF_VERSAO = "([0-9.]+)"', txt).group(1)
+    return re.sub(r'((?:href|src)=")((?!https?:)[^"?#]+\.(?:js|css|webmanifest))(")', r"\g<1>\g<2>?v=" + v + r"\g<3>", html)
+
+
 def main():
     db = json.load(open(DADOS, encoding="utf-8"))
     B = Base(db)
@@ -336,11 +343,11 @@ def main():
         destino = os.path.join(PASTA, y["id"])
         os.makedirs(destino)
         with open(os.path.join(destino, "index.html"), "w", encoding="utf-8") as f:
-            f.write(conteudo)
+            f.write(versionar(conteudo))
         if indexar:
             indexaveis.append(f"{FERRAMENTA}levedura/{y['id']}/")
     with open(os.path.join(PASTA, "index.html"), "w", encoding="utf-8") as f:
-        f.write(pagina_indice(B))
+        f.write(versionar(pagina_indice(B)))
     with open(os.path.join(RAIZ, "sitemap.xml"), "w", encoding="utf-8") as f:
         f.write(sitemap(indexaveis, db["versao"]))
     print("%d páginas de levedura (%d indexáveis) + índice + sitemap.xml" % (len(db["leveduras"]), len(indexaveis)))

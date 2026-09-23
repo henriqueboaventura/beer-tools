@@ -81,7 +81,7 @@ describe("páginas", () => {
       });
 
       test("PWA: manifest, ícone e theme-color", () => {
-        assert.match(html, /<link rel="manifest" href="[^"]*manifest\.webmanifest">/);
+        assert.match(html, /<link rel="manifest" href="[^"]*manifest\.webmanifest(\?v=[^"]*)?">/);
         assert.match(html, /<link rel="apple-touch-icon"/);
         assert.match(html, /<meta name="theme-color"/);
       });
@@ -103,9 +103,10 @@ describe("páginas", () => {
 describe("PWA (sw.js e manifest)", () => {
   const sw = ler("sw.js");
 
-  test("sw.js importa a versão e nomeia o cache com ela", () => {
-    assert.match(sw, /importScripts\("assets\/js\/versao\.js"\)/);
-    assert.match(sw, /const CACHE = "bf-" \+ self\.BF_VERSAO/);
+  test("sw.js tira a versão do próprio endereço (sw.js?v=) e nomeia o cache com ela", () => {
+    assert.match(sw, /const VERSAO = new URL\(self\.location\.href\)\.searchParams\.get\("v"\)/);
+    assert.match(sw, /const CACHE = "bf-" \+ VERSAO/);
+    assert.doesNotMatch(sw, /importScripts/, "não importar versao.js: um arquivo velho no CDN derrubaria o service worker");
   });
 
   test("todo arquivo do PRECACHE existe (um 404 derruba a instalação offline)", () => {
@@ -124,7 +125,7 @@ describe("PWA (sw.js e manifest)", () => {
       const refs = [...ler(pagina).matchAll(/<(?:script|link rel="stylesheet")[^>]*(?:src|href)="([^"]+\.(?:js|css))"/g)]
         .map((m) => m[1]).filter((u) => !/^https?:/.test(u));
       for (const ref of refs) {
-        const rel = path.normalize(path.join(dir, ref)).split(path.sep).join("/");
+        const rel = path.normalize(path.join(dir, ref.split("?")[0])).split(path.sep).join("/");
         assert.ok(sw.includes(`"${rel}"`), `${rel} (usado em ${pagina}) não está no PRECACHE do sw.js`);
       }
     }
@@ -166,6 +167,36 @@ describe("ambientes (teste no GitHub Pages, produção no brassagemforte.com.br)
   test("credenciais (.env.deploy) ficam fora do git", () => {
     assert.match(ler(".gitignore"), /^\.env\.deploy$/m);
     assert.ok(existe(".env.deploy.example"));
+  });
+});
+
+describe("cache: versão nos endereços (?v=)", () => {
+  const versao = ler("assets/js/versao.js").match(/self\.BF_VERSAO = "([0-9.]+)"/)[1];
+  const SITE = "https://www.brassagemforte.com.br/ferramentas/";
+
+  function refsLocais(html) {
+    return [...html.matchAll(/(?:href|src)="([^"#]+\.(?:js|css|webmanifest)(?:\?[^"]*)?)"/g)].map((m) => m[1])
+      .filter((u) => !/^https?:/.test(u) || u.startsWith(SITE));
+  }
+
+  test("todo script, estilo e manifest local das páginas usa ?v=<versão atual> (rode scripts/versionar.py)", () => {
+    const todas = [...paginas(), "404.html", "ferramentas/substituicao-leveduras/levedura/index.html",
+      "ferramentas/substituicao-leveduras/levedura/fermentis-us-05/index.html"];
+    for (const p of todas) {
+      for (const ref of refsLocais(ler(p))) {
+        assert.ok(ref.endsWith(`?v=${versao}`), `${p}: ${ref} (esperado ?v=${versao})`);
+      }
+    }
+  });
+
+  test("o shell registra sw.js?v= e carrega o logo com ?v=", () => {
+    const shell = ler("assets/js/shell.js");
+    assert.match(shell, /register\(BASE \+ "sw\.js\?v=" \+ encodeURIComponent\(VERSAO\)/);
+    assert.equal((shell.match(/wordmark\.jpg\?v=' \+ encodeURIComponent\(VERSAO\)/g) || []).length, 2);
+  });
+
+  test("a ferramenta de leveduras busca o JSON com ?v=", () => {
+    assert.match(ler("ferramentas/substituicao-leveduras/app.js"), /fetch\("data\/leveduras\.json\?v=" \+ encodeURIComponent\(BF\.versao\)\)/);
   });
 });
 

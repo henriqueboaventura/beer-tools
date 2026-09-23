@@ -80,7 +80,7 @@
   function header() {
     return '<div class="wrap">' +
       '<a class="bf-brand" href="' + BASE + '" aria-label="Brassagem Forte — Ferramentas, início">' +
-        '<img class="bf-logo" src="' + BASE + 'assets/img/brassagem-forte-wordmark.jpg" alt="" width="74" height="44">' +
+        '<img class="bf-logo" src="' + BASE + 'assets/img/brassagem-forte-wordmark.jpg?v=' + encodeURIComponent(VERSAO) + '" alt="" width="74" height="44">' +
         '<span class="bf-brand__sub">Ferramentas</span>' +
       "</a>" +
       '<button class="bf-icon-btn bf-theme-btn" type="button"><span class="bf-theme-icon" aria-hidden="true"></span></button>' +
@@ -109,7 +109,7 @@
 
   function footer(extra) {
     return '<div class="wrap">' +
-      '<img class="bf-logo bf-footer__logo" src="' + BASE + 'assets/img/brassagem-forte-wordmark.jpg" alt="Brassagem Forte" width="94" height="56">' +
+      '<img class="bf-logo bf-footer__logo" src="' + BASE + 'assets/img/brassagem-forte-wordmark.jpg?v=' + encodeURIComponent(VERSAO) + '" alt="Brassagem Forte" width="94" height="56">' +
       "<span>Ferramentas gratuitas para cervejeiros caseiros.</span>" +
       (extra ? "<span>" + extra + "</span>" : "") +
       '<span>Versão ' + esc(VERSAO) + ' · <a href="' + CHANGELOG + '" rel="noopener">Novidades</a></span>' +
@@ -136,7 +136,9 @@
   var atualizando = false;
   function registrarServiceWorker() {
     if (!("serviceWorker" in navigator) || location.protocol === "file:") return;
-    navigator.serviceWorker.register(BASE + "sw.js", { scope: BASE, updateViaCache: "none" }).then(function (reg) {
+    // A versão vai no endereço do service worker: versão nova = endereço novo,
+    // que nenhum cache (navegador ou CDN) consegue responder com arquivo velho.
+    navigator.serviceWorker.register(BASE + "sw.js?v=" + encodeURIComponent(VERSAO), { scope: BASE, updateViaCache: "none" }).then(function (reg) {
       // versão nova já baixada numa visita anterior, esperando
       if (reg.waiting && navigator.serviceWorker.controller) avisoNovaVersao(reg.waiting);
       reg.addEventListener("updatefound", function () {

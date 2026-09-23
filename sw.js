@@ -1,5 +1,8 @@
 /*
  * Service worker do site inteiro (escopo = raiz do site).
+ * Registrado pelo shell como `sw.js?v=<versão>`: a versão vem do próprio
+ * endereço (sem importar versao.js), então versão nova = endereço novo, e
+ * nenhum cache de CDN/navegador entrega um service worker ou arquivo velho.
  *
  * Estratégia:
  * - Arquivos do próprio site: REDE PRIMEIRO, revalidando com o servidor
@@ -8,14 +11,14 @@
  *   responde quando não há conexão. Assim ninguém fica preso numa versão
  *   velha e o site continua funcionando offline no dia da brassagem.
  * - Fontes do Google: cache primeiro (não mudam).
- * - O cache tem o nome da versão (assets/js/versao.js). Subir a versão
- *   cria um cache novo e o "activate" apaga os antigos.
+ * - O cache tem o nome da versão. Subir a versão cria um cache novo e o
+ *   "activate" apaga os antigos. O pré-cache também baixa cada arquivo com
+ *   ?v=<versão>, pelo mesmo motivo.
  * - Versão nova fica esperando ("waiting") até a página pedir
  *   SKIP_WAITING — é o botão "Atualizar" do aviso no shell.
  */
-importScripts("assets/js/versao.js");
-
-const CACHE = "bf-" + self.BF_VERSAO;
+const VERSAO = new URL(self.location.href).searchParams.get("v") || "dev";
+const CACHE = "bf-" + VERSAO;
 const FONTES = "bf-fontes";
 
 // Tudo o que precisa abrir offline logo na primeira visita.
@@ -51,7 +54,7 @@ const PRECACHE = [
 self.addEventListener("install", (event) => {
   event.waitUntil(
     caches.open(CACHE).then((cache) =>
-      cache.addAll(PRECACHE.map((url) => new Request(url, { cache: "reload" })))
+      cache.addAll(PRECACHE.map((url) => new Request(url + "?v=" + encodeURIComponent(VERSAO), { cache: "reload" })))
     )
   );
   // Primeira instalação: não há versão anterior para "esperar", então

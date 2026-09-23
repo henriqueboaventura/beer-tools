@@ -125,9 +125,10 @@ Tema: segue o sistema por padrão, e o botão do header alterna e guarda a escol
 ### Como publicar uma versão
 
 1. Suba a versão em `assets/js/versao.js` e escreva a entrada no `CHANGELOG.md`, com o mesmo número. Os testes falham se os dois não baterem.
-2. Arquivo novo que a ferramenta precisa offline vai para o `PRECACHE` do `sw.js`. Os testes também conferem isso.
-3. `npm test`, e só então o push em `main`, que publica no **teste** (GitHub Pages).
-4. Testado e ok: `scripts/deploy-producao.sh` publica em **produção**. Ele exige `main` igual a `origin/main`, testes passando e versão nova, e marca a tag `producao-vX.Y.Z`. O `--delete` do rsync fica restrito a `public_html/ferramentas/`.
+2. `python3 scripts/versionar.py`: aplica `?v=<versão>` em todo JS/CSS/manifest das páginas e regenera as páginas de levedura. O JSON das leveduras, o logo e o `sw.js` recebem a versão pelo `shell.js`/`app.js`. Motivo: o CDN da Hostinger (hcdn) e o navegador guardam arquivos por horas ou dias. Com endereço novo a cada versão, nada velho é servido. Aprendido na 1.3.0, quando 301s de uma queda ficaram presos no CDN por 1 hora.
+3. Arquivo novo que a ferramenta precisa offline vai para o `PRECACHE` do `sw.js`. Os testes também conferem isso.
+4. `npm test`, e só então o push em `main`, que publica no **teste** (GitHub Pages).
+5. Testado e ok: `scripts/deploy-producao.sh` publica em **produção**. Ele exige `main` igual a `origin/main`, testes passando e versão nova, e marca a tag `producao-vX.Y.Z`. O `--delete` do rsync fica restrito a `public_html/ferramentas/`.
 
 Quem estiver com o site aberto recebe o aviso de nova versão. Quem abrir depois já pega tudo novo, porque a rede tem prioridade.
 

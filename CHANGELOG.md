@@ -12,6 +12,24 @@ detalhe técnico, em `ferramentas/decoccao/CHANGELOG.md`.
 invalida o cache offline antigo e faz aparecer o aviso "Nova versão
 disponível" para quem já está com o site aberto.
 
+## [1.3.1] — 2026-09-23
+
+### Corrigido
+- **Arquivos velhos presos em cache (CDN da Hostinger e navegador).** Na
+  publicação da 1.3.0, uma falha de permissão deixou a produção fora do ar
+  por alguns minutos, e o CDN guardou por até 1 hora os redirecionamentos
+  desse intervalo: páginas abriam sem estilo, sem cabeçalho ou sem a
+  ferramenta de leveduras. Agora todo script, estilo, manifest, JSON e logo
+  é carregado com `?v=<versão>`. Cada versão usa endereços novos, que nenhum
+  cache consegue responder com um arquivo antigo.
+- O service worker é registrado como `sw.js?v=<versão>` e tira a versão do
+  próprio endereço, sem depender de outro arquivo que poderia estar em cache.
+
+### Adicionado
+- `scripts/versionar.py`: aplica a versão atual em todos os `?v=` e
+  regenera as páginas de levedura. Os testes falham se algum ficar
+  desatualizado.
+
 ## [1.3.0] — 2026-09-23
 
 ### Alterado

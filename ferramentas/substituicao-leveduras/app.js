@@ -41,7 +41,7 @@
   /* ---------- Carregamento ---------- */
   function carregar() {
     status.textContent = "Carregando leveduras…";
-    fetch("data/leveduras.json")
+    fetch("data/leveduras.json?v=" + encodeURIComponent(BF.versao))
       .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
       .then(iniciar)
       .catch(function () {

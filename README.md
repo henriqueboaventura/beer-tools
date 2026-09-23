@@ -94,6 +94,8 @@ ferramentas/<nome>/         uma pasta por ferramenta, com HTML, JS, CSS, dados e
 dados/leveduras/            fontes transcritas e curadas das leveduras (editáveis)
 scripts/gerar_leveduras.py  gera o JSON da ferramenta de leveduras
 scripts/gerar_seo.py        gera as páginas estáticas por levedura e o sitemap
+scripts/versionar.py        aplica ?v=<versão> nos arquivos das páginas (anti-cache)
+scripts/deploy-producao.sh  publica em produção
 tests/                      testes da plataforma
 docs/specs/                 especificações (plataforma e cada ferramenta)
 ```
@@ -147,8 +149,9 @@ O JSON da ferramenta (`ferramentas/substituicao-leveduras/data/leveduras.json`) 
 Todo recurso novo passa primeiro pelo teste:
 
 1. Suba a versão em `assets/js/versao.js` e escreva a entrada no `CHANGELOG.md`, com o mesmo número. Os testes falham se os dois não baterem.
-2. `npm test`, commit e push em `main`. Confira em https://www.hboaventura.com/beer-tools/ (no celular também).
-3. Se estiver ok, publique em produção:
+2. Rode `python3 scripts/versionar.py`. Ele coloca `?v=<versão>` em todo script, estilo e manifest das páginas, para nenhum cache (CDN ou navegador) servir arquivo antigo, e regenera as páginas de levedura.
+3. `npm test`, commit e push em `main`. Confira em https://www.hboaventura.com/beer-tools/ (no celular também).
+4. Se estiver ok, publique em produção:
 
    ```sh
    scripts/deploy-producao.sh --simular   # mostra o que mudaria, sem enviar
