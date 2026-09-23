@@ -12,7 +12,7 @@ O site é feito de HTML, CSS e JavaScript puros, sem framework e sem etapa de bu
 
 `ferramentas/substituicao-leveduras/`
 
-A receita pede uma levedura que você não encontrou? Escolha a original e veja as equivalentes de outros fabricantes, secas ou líquidas.
+De Henrique Boaventura e Fábio Koerich. A receita pede uma levedura que você não encontrou? Escolha a original e veja as equivalentes de outros fabricantes, secas ou líquidas.
 
 - Cerca de 490 leveduras de 20 fabricantes, incluindo as nacionais: Levteck, Smartyeast e Bio4.
 - Busca por nome, código, fabricante ou origem, em qualquer ordem ("imperial l17", "us05", "chico").
@@ -149,6 +149,6 @@ Na decocção, mudanças na calculadora também sobem a versão dela (`ferrament
 
 ## Créditos
 
-- **Substituição de leveduras:** Yeast Master (David M. Taylor), AEB Brewing Yeast Substitution Guide, Imperial Yeast Strain Cross Reference Guide, tabela de substituição Levteck e curadoria da Brassagem Forte.
+- **Substituição de leveduras:** Henrique Boaventura e Fábio Koerich. Fontes dos dados: Yeast Master (David M. Taylor), AEB Brewing Yeast Substitution Guide, Imperial Yeast Strain Cross Reference Guide, tabela de substituição Levteck e curadoria da Brassagem Forte.
 - **Decocção:** Henrique Boaventura e Fábio Koerich. As fontes da literatura estão no README da ferramenta.
 - Um projeto da [Brassagem Forte](https://www.brassagemforte.com.br).

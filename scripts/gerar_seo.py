@@ -38,6 +38,7 @@ NIVEL = {3: "Equivalente", 2: "Provável", 1: "Alternativa"}
 FONTE = {"ym": "Yeast Master", "aeb": "AEB", "imperial": "Imperial", "curadoria": "Curadoria BF",
          "levteck": "Levteck (fabricante)", "inferida": "Inferida (não revisada)"}
 PREFIXOS_MARCA = ("safale", "saflager", "lalbrew", "wildbrew")
+AUTORES = [{"@type": "Person", "name": "Henrique Boaventura"}, {"@type": "Person", "name": "Fábio Koerich"}]
 
 
 def e(s):
@@ -139,7 +140,7 @@ def head(titulo, descricao, caminho, raiz, indexar=True, extra_ld=()):
 def rodape(versao):
     data = "/".join(reversed(versao.split("-")))
     return f'''
-  <footer data-bf-footer="Dados de {data}"></footer>
+  <footer data-bf-footer="Ferramenta de Henrique Boaventura e Fábio Koerich · Dados de {data}"></footer>
 </body>
 </html>
 '''
@@ -189,7 +190,8 @@ def pagina_levedura(B, y):
               ("Leveduras", FERRAMENTA + "levedura/"), (rotulo, caminho)]
     pagina = {"@context": "https://schema.org", "@type": "WebPage", "name": titulo, "description": descricao,
               "url": SITE + caminho, "inLanguage": "pt-BR",
-              "isPartOf": {"@type": "WebSite", "name": "Ferramentas Brassagem Forte", "url": SITE}}
+              "isPartOf": {"@type": "WebSite", "name": "Ferramentas Brassagem Forte", "url": SITE},
+              "author": AUTORES}
     out = [head(titulo, descricao, caminho, raiz, indexar, (breadcrumb(crumbs), pagina))]
 
     specs = [("Atenuação", B.aten(y)),

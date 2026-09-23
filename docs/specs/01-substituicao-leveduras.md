@@ -1,6 +1,7 @@
 # Spec 01 — Substituição de Leveduras
 
 Status: **v1 implementada**
+Autores: Henrique Boaventura e Fábio Koerich
 Diretório: `/ferramentas/substituicao-leveduras/` · Número: `01`
 Atualizado: 2026-09-22
 

@@ -12,6 +12,13 @@ detalhe técnico, em `ferramentas/decoccao/CHANGELOG.md`.
 invalida o cache offline antigo e faz aparecer o aviso "Nova versão
 disponível" para quem já está com o site aberto.
 
+## [1.2.2] — 2026-09-23
+
+### Alterado
+- Crédito da Substituição de leveduras: ferramenta de Henrique Boaventura e
+  Fábio Koerich (rodapé da ferramenta e das páginas de levedura, dados
+  estruturados e README).
+
 ## [1.2.1] — 2026-09-23
 
 ### Alterado

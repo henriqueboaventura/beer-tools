@@ -65,7 +65,8 @@
     input.disabled = false;
     input.placeholder = "US-05, WLP001, 1056, Chico…";
     status.textContent = "";
-    BF.rodape("Dados de " + DB.versao.split("-").reverse().join("/") + " · " + DB.leveduras.length + " leveduras");
+    BF.rodape("Ferramenta de Henrique Boaventura e Fábio Koerich · Dados de " +
+      DB.versao.split("-").reverse().join("/") + " · " + DB.leveduras.length + " leveduras");
     renderChips();
     renderFontes();
     fromUrl();
