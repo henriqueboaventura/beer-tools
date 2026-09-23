@@ -106,10 +106,18 @@ rsync -az --checksum --delete --chmod=D755,F644 --stats -e "$SSH_CMD" "$PACOTE/"
 passo "Conferindo a produção"
 publicada=$(curl -s "${URL_PRODUCAO}assets/js/versao.js?v=$RANDOM" | sed -nE 's/.*BF_VERSAO = "([0-9.]+)".*/\1/p')
 [ "$publicada" = "$VERSAO" ] || erro "produção responde versão '$publicada', esperado '$VERSAO'."
-for caminho in "" ferramentas/substituicao-leveduras/ ferramentas/decoccao/ sitemap.xml sw.js; do
+# Endereços LIMPOS (sem ?v=), como o navegador pede: é assim que se descobre
+# resposta velha presa no CDN da Hostinger (hcdn). Na 1.3.0, 301s gerados
+# durante uma queda ficaram em cache por 1h; se isso aparecer, limpe o cache
+# do CDN no hPanel (Websites -> brassagemforte.com.br -> CDN).
+falhas=""
+for caminho in "" sitemap.xml sw.js manifest.webmanifest \
+    $(cd "$PACOTE" && find assets ferramentas -maxdepth 3 -type f \( -name '*.js' -o -name '*.css' -o -name 'index.html' -o -name '*.json' \) \
+      -not -path '*/levedura/*' | sort); do
   codigo=$(curl -s -o /dev/null -w '%{http_code}' "${URL_PRODUCAO}${caminho}")
-  [ "$codigo" = 200 ] || erro "${URL_PRODUCAO}${caminho} respondeu $codigo."
+  [ "$codigo" = 200 ] || falhas="$falhas\n  $codigo ${URL_PRODUCAO}${caminho}"
 done
+[ -z "$falhas" ] || erro "arquivos sem 200 em produção (servidor ou cache do CDN):$(printf "$falhas")"
 echo "ok: versão $VERSAO no ar"
 
 git tag -a "$TAG" -m "Produção $VERSAO ($URL_PRODUCAO)"
