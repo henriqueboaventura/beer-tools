@@ -81,7 +81,15 @@ Vínculos da curadoria marcados como "Incerta" não se propagam para as equivale
 - `tests/dados.test.js`: invariantes do JSON (ids únicos; relações simétricas, com nível e fontes válidos; "não confunda" sem conflito) e casos conferidos à mão contra as fontes.
 - `tests/busca.test.js`: buscas reais ("imperial l17", "us05", "wyeast 1056"…) e `?levedura=`.
 
-## 8. Geração dos dados
+## 8. Páginas estáticas (SEO)
+
+`scripts/gerar_seo.py` (chamado no fim de `gerar_leveduras.py`) gera:
+- `levedura/<id>/index.html`: uma página por levedura, com cartão, substitutos agrupados por nível (links entre as páginas), "não confunda" e um botão para abrir na ferramenta. Sem substitutos, a página leva `noindex`.
+- `levedura/index.html`: todas as leveduras, por fabricante.
+
+Os títulos seguem o padrão "SafAle US-05: substitutos e equivalentes | Brassagem Forte", encurtados quando o nome é longo.
+
+## 9. Geração dos dados
 
 ```
 python3 scripts/gerar_leveduras.py
@@ -91,7 +99,7 @@ O script lê a planilha (xlsx lido direto, com cores e tachado), os três JSONs 
 
 Formato de referência nos JSONs: `"fabricante:CÓDIGO"` ou `"fabricante:CÓDIGO|Nome"`.
 
-## 9. Critérios de aceite
+## 10. Critérios de aceite
 
 - [x] 360px de largura sem rolagem horizontal.
 - [x] "us05", "1056", "wlp001" e "chico" encontram as leveduras certas.
@@ -101,6 +109,6 @@ Formato de referência nos JSONs: `"fabricante:CÓDIGO"` ou `"fabricante:CÓDIGO
 - [ ] Revisão das inferências da Bio4 pela Brassagem Forte.
 - [ ] Lighthouse mobile ≥ 95 (a medir depois da publicação).
 
-## 10. Fora de escopo (v1)
+## 11. Fora de escopo (v1)
 
 Comparar duas leveduras lado a lado; ajuste automático de receita; contribuição pela interface; preço e disponibilidade em lojas.

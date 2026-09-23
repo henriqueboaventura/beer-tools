@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <!-- Versão "maskable": o conteúdo fica dentro da zona segura (80% central),
+       porque o Android recorta o ícone em círculo/squircle. -->
+  <rect width="512" height="512" fill="#0b0b0b"/>
+  <g fill="#f4f3ef" transform="translate(256 256) scale(0.7) translate(-256 -256)">
+    <rect x="64" y="72" width="384" height="28"/>
+    <rect x="64" y="412" width="384" height="28"/>
+    <path fill-rule="evenodd" d="M72 136H212L240 164V226L224 244L248 268V348L220 376H72Z M128 180H184V212H128Z M128 276H192V332H128Z"/>
+    <path d="M280 136H440V188H336V232H420V282H336V376H280Z"/>
+  </g>
+</svg>

@@ -10,8 +10,10 @@ const ler = (p) => fs.readFileSync(path.join(RAIZ, p), "utf8");
 const existe = (p) => fs.existsSync(path.join(RAIZ, p));
 
 // Todas as páginas HTML publicadas (fora de pastas de ferramentas de dev).
+// As páginas geradas de levedura (ferramentas/substituicao-leveduras/levedura/)
+// têm testes próprios em tests/seo.test.js.
 function paginas(dir = "") {
-  const ignorar = new Set([".git", "node_modules", "examples", "docs", "tests", "dados", "scripts", ".github"]);
+  const ignorar = new Set([".git", "node_modules", "examples", "docs", "tests", "dados", "scripts", ".github", "levedura"]);
   let out = [];
   for (const nome of fs.readdirSync(path.join(RAIZ, dir))) {
     if (ignorar.has(nome)) continue;

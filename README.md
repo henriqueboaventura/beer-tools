@@ -65,7 +65,8 @@ Os testes usam só o runner nativo do Node (`node:test`). Eles cobrem:
   - todo link local aponta para um arquivo que existe;
   - todo arquivo necessário offline está no service worker;
   - o manifest é válido;
-  - a versão bate com o CHANGELOG.
+  - a versão bate com o CHANGELOG;
+  - SEO: título único, descrição, `canonical`, Open Graph e JSON-LD em todas as páginas, sitemap igual às páginas indexáveis, e páginas geradas em dia com os dados.
 - **Substituição de leveduras** (`ferramentas/substituicao-leveduras/tests/`): consistência dos dados, casos conferidos à mão contra as fontes, e a busca.
 - **Decocção** (`ferramentas/decoccao/tests/`): o motor de cálculo, com valores conferidos contra a literatura.
 
@@ -86,9 +87,11 @@ assets/css/bf.css           visual compartilhado (cores, tipografia, componentes
 assets/js/shell.js          header, menu, rodapé, tema, PWA e aviso de nova versão
 assets/js/versao.js         versão do site
 sw.js, manifest.webmanifest PWA
+sitemap.xml, 404.html       SEO (sitemap gerado por scripts/gerar_seo.py)
 ferramentas/<nome>/         uma pasta por ferramenta, com HTML, JS, CSS, dados e testes
 dados/leveduras/            fontes transcritas e curadas das leveduras (editáveis)
 scripts/gerar_leveduras.py  gera o JSON da ferramenta de leveduras
+scripts/gerar_seo.py        gera as páginas estáticas por levedura e o sitemap
 tests/                      testes da plataforma
 docs/specs/                 especificações (plataforma e cada ferramenta)
 ```
@@ -110,6 +113,7 @@ Detalhes em [`docs/specs/00-plataforma.md`](docs/specs/00-plataforma.md).
 4. Adicione os arquivos dela ao `PRECACHE` do `sw.js`, para funcionar offline.
 5. Escreva testes em `ferramentas/<nome>/tests/*.test.js`. O `npm test` já pega essa pasta.
 6. Escreva a spec em `docs/specs/NN-<nome>.md`.
+7. SEO: dê à página `<title>`, `meta description`, `canonical`, Open Graph e JSON-LD (copie de uma ferramenta existente), coloque o link dela em HTML na página inicial e adicione o caminho em `PAGINAS_FIXAS` no `scripts/gerar_seo.py` (sitemap).
 
 Os testes da plataforma avisam se faltar algum desses passos.
 
@@ -125,6 +129,8 @@ O JSON da ferramenta (`ferramentas/substituicao-leveduras/data/leveduras.json`) 
    ```sh
    python3 scripts/gerar_leveduras.py
    ```
+
+   Esse comando também gera, via `scripts/gerar_seo.py`, as páginas estáticas de cada levedura (`levedura/<id>/`) e o `sitemap.xml`. Se você mudou só o layout dessas páginas, rode direto `python3 scripts/gerar_seo.py`.
 
    O script lê também a planilha Yeast Master, que fica em `examples/`. Essa pasta **não vai para o repositório**, porque guarda os arquivos originais de terceiros. Coloque a planilha lá para gerar os dados.
 3. Rode `npm test` e faça commit das fontes junto com o JSON gerado.

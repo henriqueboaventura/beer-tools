@@ -16,5 +16,7 @@ jobs:
           node-version: '20'
       - name: Sintaxe de todo JavaScript do site
         run: for f in sw.js assets/js/*.js ferramentas/*/*.js; do node --check "$f" || exit 1; done
+      - name: Páginas de SEO e sitemap em dia com os dados
+        run: python3 scripts/gerar_seo.py && git diff --exit-code -- sitemap.xml ferramentas/substituicao-leveduras/levedura
       - name: Testes (plataforma + ferramentas)
         run: npm test

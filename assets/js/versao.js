@@ -6,4 +6,4 @@
 //
 // `self` (e não `window`/`const`) porque o arquivo roda tanto na página
 // quanto dentro do service worker (importScripts).
-self.BF_VERSAO = "1.1.0";
+self.BF_VERSAO = "1.2.0";

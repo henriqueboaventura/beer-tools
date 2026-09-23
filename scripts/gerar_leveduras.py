@@ -116,6 +116,8 @@ class Base:
 
     def add(self, fab, codigo, nome=None, **extra):
         k = chave(fab, codigo)
+        if nome and nome.count('"') % 2:  # aspa sem par vinda da planilha: 'Bohemian "Lager'
+            nome = nome.replace('"', "").strip()
         y = self.lev.get(k)
         if y is None:
             y = {"k": k, "fab": fab, "codigo": codigo, "nome": None, "fontes": set()}
@@ -581,3 +583,6 @@ def main():
 
 if __name__ == "__main__":
     main()
+    # páginas estáticas de SEO e sitemap dependem deste JSON
+    import runpy
+    runpy.run_path(os.path.join(RAIZ, "scripts", "gerar_seo.py"), run_name="__main__")

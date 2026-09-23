@@ -106,6 +106,16 @@ Tema: segue o sistema por padrão, e o botão do header alterna e guarda a escol
 └── docs/specs/
 ```
 
+### SEO
+
+- **URL canônica:** `SITE` em `scripts/gerar_seo.py` (`https://www.hboaventura.com/beer-tools/`). Toda página tem `<link rel="canonical">` com o próprio endereço sob esse prefixo. Se o domínio mudar, troque `SITE` e as URLs absolutas nos `<head>` das páginas fixas; os testes apontam o que ficou para trás.
+- **Toda página:** `<title>` único, `meta description` de 50–170 caracteres, Open Graph e Twitter (`summary_large_image`, imagens em `assets/img/og-*.png`, 1200×630), um único `<h1>` e JSON-LD (WebSite na home, WebApplication nas ferramentas, Article em textos, BreadcrumbList).
+- **Conteúdo rastreável sem JavaScript:** a lista da home e os links para os índices são HTML estático. Conteúdo que só existe depois do JS (como os resultados da busca de leveduras) ganha páginas estáticas geradas.
+- **Gerador:** `scripts/gerar_seo.py` cria as páginas por levedura, o índice e o `sitemap.xml`. Páginas sem conteúdo útil ganham `noindex` e ficam fora do sitemap. Os arquivos são gerados, então não edite à mão; o CI confere que estão em dia.
+- **Página nova no site:** inclua o caminho em `PAGINAS_FIXAS` no `gerar_seo.py`, para ela entrar no sitemap.
+- `404.html`: `noindex`, com os recursos por URL absoluta (o GitHub Pages a serve em qualquer caminho inexistente).
+- **Ícones:** `assets/img/icon.svg` (fonte do PWA), `icon-maskable.svg` e `favicon.svg`, este só com as letras para ler a 16px, além de `favicon.ico` na raiz. PNGs gerados com `rsvg-convert`.
+
 ### Como publicar uma versão
 
 1. Suba a versão em `assets/js/versao.js` e escreva a entrada no `CHANGELOG.md`, com o mesmo número. Os testes falham se os dois não baterem.

@@ -12,6 +12,33 @@ detalhe técnico, em `ferramentas/decoccao/CHANGELOG.md`.
 invalida o cache offline antigo e faz aparecer o aviso "Nova versão
 disponível" para quem já está com o site aberto.
 
+## [1.2.0] — 2026-09-23
+
+### Adicionado
+- **Uma página por levedura** (`/ferramentas/substituicao-leveduras/levedura/<id>/`),
+  com os substitutos no próprio HTML, para buscas como "substituto da
+  US-05" ou "equivalente da WLP001" chegarem ao site. Leveduras sem
+  substituto ganham página com `noindex`. Também há um índice com todas as
+  leveduras, agrupado por fabricante.
+- **SEO em todas as páginas**:
+  - título e descrição próprios;
+  - `canonical` (o site responde com e sem `www`);
+  - Open Graph e Twitter com imagem de compartilhamento para cada ferramenta;
+  - dados estruturados (WebSite, WebApplication, Article, BreadcrumbList).
+- `sitemap.xml` e página 404.
+- **Ícone "BF"** novo para favicon e PWA, com versão "maskable" para o
+  Android e versão só com as letras para tamanhos pequenos.
+- Testes de SEO: metadados de todas as páginas, sitemap, páginas geradas em
+  dia com os dados, e ícones. O CI confere que as páginas geradas estão
+  atualizadas.
+
+### Alterado
+- A lista de ferramentas da página inicial é HTML estático (antes era
+  montada por JavaScript), para ser rastreável.
+
+### Corrigido
+- Nomes com aspa sem par vindos da planilha (ex.: M84 Bohemian "Lager).
+
 ## [1.1.0] — 2026-09-22
 
 ### Adicionado
