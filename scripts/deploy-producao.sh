@@ -12,7 +12,8 @@
 #   - exige versão nova (tag producao-vX.Y.Z ainda não existe): é a troca de
 #     versão que invalida o cache offline e mostra "Nova versão disponível";
 #   - monta o pacote a partir do commit (git archive), só com os arquivos do site;
-#   - envia por rsync para public_html/ferramentas/ na Hostinger. O --delete
+#   - envia por rsync (comparando conteúdo, não data) para public_html/ferramentas/
+#     na Hostinger. O --delete
 #     vale SÓ dentro dessa pasta, que é exclusiva deste projeto — nada fora
 #     dela é tocado (WordPress, .htaccess, outros apps);
 #   - confere a produção no ar e cria a tag producao-vX.Y.Z.
@@ -79,21 +80,21 @@ passo "Montando o pacote a partir do commit"
 PACOTE=$(mktemp -d)
 trap 'rm -rf "$PACOTE"' EXIT
 git archive HEAD | tar -x -C "$PACOTE"
-( cd "$PACOTE" && rm -rf .github docs dados scripts tests examples package.json .gitignore .nojekyll 404.html \
+( cd "$PACOTE" && rm -rf .github docs dados scripts tests examples package.json .gitignore .nojekyll .env.deploy.example 404.html \
     ferramentas/*/tests ferramentas/decoccao/scripts && find . -name '*.md' -delete )
 echo "$(find "$PACOTE" -type f | wc -l | tr -d ' ') arquivos, $(du -sh "$PACOTE" | cut -f1)"
 
 # ---------------------------------------------------------------- envio
 if [ "$SIMULAR" = 1 ]; then
   passo "SIMULAÇÃO: o que mudaria em produção (nada é enviado)"
-  rsync -az --delete --dry-run --itemize-changes -e "$SSH_CMD" "$PACOTE/" "$BF_SSH_USER@$BF_SSH_HOST:${BF_DESTINO%/}/" \
+  rsync -az --checksum --delete --dry-run --itemize-changes -e "$SSH_CMD" "$PACOTE/" "$BF_SSH_USER@$BF_SSH_HOST:${BF_DESTINO%/}/" \
     | grep -v '^\.' | head -60 || true
   echo "(simulação — rode sem --simular para publicar)"
   exit 0
 fi
 
 passo "Enviando para ${BF_DESTINO%/}/"
-rsync -az --delete --stats -e "$SSH_CMD" "$PACOTE/" "$BF_SSH_USER@$BF_SSH_HOST:${BF_DESTINO%/}/" \
+rsync -az --checksum --delete --stats -e "$SSH_CMD" "$PACOTE/" "$BF_SSH_USER@$BF_SSH_HOST:${BF_DESTINO%/}/" \
   | grep -E 'Number of files transferred|Number of deleted files|Total transferred file size' || true
 
 # ---------------------------------------------------------------- verificação
