@@ -12,6 +12,23 @@ detalhe técnico, em `ferramentas/decoccao/CHANGELOG.md`.
 invalida o cache offline antigo e faz aparecer o aviso "Nova versão
 disponível" para quem já está com o site aberto.
 
+## [1.3.0] — 2026-09-23
+
+### Alterado
+- **Produção em https://www.brassagemforte.com.br/ferramentas/.** O GitHub
+  Pages passa a ser o ambiente de teste. O endereço oficial (`canonical`,
+  sitemap, dados estruturados, imagens de compartilhamento) é o de
+  produção, então as páginas de teste não concorrem com ela no Google.
+
+### Adicionado
+- `scripts/deploy-producao.sh`: publica em produção num comando. Só sai de
+  `main` já enviada ao GitHub, roda os testes, exige versão nova, envia só
+  os arquivos do site para `public_html/ferramentas/` (e nada fora dela),
+  confere a produção no ar e marca a tag `producao-vX.Y.Z`. Tem o modo
+  `--simular`.
+- Credenciais do deploy em `.env.deploy` (ignorado pelo git); modelo em
+  `.env.deploy.example`.
+
 ## [1.2.2] — 2026-09-23
 
 ### Alterado

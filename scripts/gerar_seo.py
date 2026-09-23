@@ -20,7 +20,8 @@ import shutil
 import unicodedata
 
 RAIZ = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-SITE = "https://www.hboaventura.com/beer-tools/"  # URL canônica do site (com barra no fim)
+SITE = "https://www.brassagemforte.com.br/ferramentas/"  # URL canônica = PRODUÇÃO (com barra no fim).
+# O GitHub Pages é só ambiente de teste: as páginas dele apontam o canonical para cá.
 FERRAMENTA = "ferramentas/substituicao-leveduras/"
 PASTA = os.path.join(RAIZ, FERRAMENTA, "levedura")
 DADOS = os.path.join(RAIZ, FERRAMENTA, "data", "leveduras.json")

@@ -2,7 +2,9 @@
 
 Ferramentas gratuitas para cervejeiros caseiros, pensadas para usar no celular: na loja de insumos, no planejamento da receita ou no meio da brassagem.
 
-**Site:** https://www.hboaventura.com/beer-tools/
+**Site:** https://www.brassagemforte.com.br/ferramentas/
+
+Versão de teste (novidades antes de irem para produção): https://www.hboaventura.com/beer-tools/
 
 O site é feito de HTML, CSS e JavaScript puros, sem framework e sem etapa de build, e é publicado pelo GitHub Pages. Pode ser instalado como app (PWA) e funciona offline.
 
@@ -135,15 +137,31 @@ O JSON da ferramenta (`ferramentas/substituicao-leveduras/data/leveduras.json`) 
    O script lê também a planilha Yeast Master, que fica em `examples/`. Essa pasta **não vai para o repositório**, porque guarda os arquivos originais de terceiros. Coloque a planilha lá para gerar os dados.
 3. Rode `npm test` e faça commit das fontes junto com o JSON gerado.
 
-### Publicar uma versão
+### Publicar: teste e produção
 
-Toda mudança no site que vai para `main` precisa de uma versão nova:
+| Ambiente | Endereço | Como publica |
+|---|---|---|
+| **Teste** | https://www.hboaventura.com/beer-tools/ | push em `main` (GitHub Pages, cerca de 1 minuto) |
+| **Produção** | https://www.brassagemforte.com.br/ferramentas/ | `scripts/deploy-producao.sh` |
+
+Todo recurso novo passa primeiro pelo teste:
 
 1. Suba a versão em `assets/js/versao.js` e escreva a entrada no `CHANGELOG.md`, com o mesmo número. Os testes falham se os dois não baterem.
-2. `npm test`.
-3. Commit em `main`. O GitHub Pages publica em cerca de 1 minuto.
+2. `npm test`, commit e push em `main`. Confira em https://www.hboaventura.com/beer-tools/ (no celular também).
+3. Se estiver ok, publique em produção:
+
+   ```sh
+   scripts/deploy-producao.sh --simular   # mostra o que mudaria, sem enviar
+   scripts/deploy-producao.sh             # publica
+   ```
+
+   O script só publica a partir de `main` já enviada ao GitHub, roda os testes, exige uma versão que ainda não foi para produção, envia só os arquivos do site para `public_html/ferramentas/` (não toca em mais nada do servidor), confere a produção no ar e cria a tag `producao-vX.Y.Z`.
+
+   As credenciais ficam em `.env.deploy` (ignorado pelo git). Copie o `.env.deploy.example` e preencha.
 
 É a troca de versão que invalida o cache offline antigo. Quem estiver com o site aberto vê "Nova versão disponível · Atualizar".
+
+O endereço oficial das páginas (`canonical`, sitemap) é sempre o de produção, inclusive na versão de teste, para as duas não concorrerem no Google.
 
 Na decocção, mudanças na calculadora também sobem a versão dela (`ferramentas/decoccao/version.js` e `ferramentas/decoccao/CHANGELOG.md`).
 

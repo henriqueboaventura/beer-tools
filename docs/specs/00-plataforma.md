@@ -81,7 +81,7 @@ Tema: segue o sistema por padrão, e o botão do header alterna e guarda a escol
 | Fontes | Google Fonts com `display=swap` |
 | Analytics | Nenhum na v1 |
 | Idioma | pt-BR |
-| Publicação | GitHub Pages direto da branch, na raiz. Arquivo `.nojekyll` desliga o Jekyll |
+| Publicação | **Teste:** GitHub Pages, a partir de `main` (`.nojekyll` desliga o Jekyll). **Produção:** `https://www.brassagemforte.com.br/ferramentas/`, pasta estática `public_html/ferramentas/` na Hostinger, ao lado do WordPress do domínio e sem relação com ele, publicada por `scripts/deploy-producao.sh` |
 
 ### Estrutura
 
@@ -108,7 +108,7 @@ Tema: segue o sistema por padrão, e o botão do header alterna e guarda a escol
 
 ### SEO
 
-- **URL canônica:** `SITE` em `scripts/gerar_seo.py` (`https://www.hboaventura.com/beer-tools/`). Toda página tem `<link rel="canonical">` com o próprio endereço sob esse prefixo. Se o domínio mudar, troque `SITE` e as URLs absolutas nos `<head>` das páginas fixas; os testes apontam o que ficou para trás.
+- **URL canônica:** `SITE` em `scripts/gerar_seo.py` (`https://www.brassagemforte.com.br/ferramentas/`, a produção). O GitHub Pages (teste) serve as mesmas páginas, com o canonical apontando para a produção. Toda página tem `<link rel="canonical">` com o próprio endereço sob esse prefixo. Se o domínio mudar, troque `SITE` e as URLs absolutas nos `<head>` das páginas fixas; os testes apontam o que ficou para trás.
 - **Toda página:** `<title>` único, `meta description` de 50–170 caracteres, Open Graph e Twitter (`summary_large_image`, imagens em `assets/img/og-*.png`, 1200×630), um único `<h1>` e JSON-LD (WebSite na home, WebApplication nas ferramentas, Article em textos, BreadcrumbList).
 - **Conteúdo rastreável sem JavaScript:** a lista da home e os links para os índices são HTML estático. Conteúdo que só existe depois do JS (como os resultados da busca de leveduras) ganha páginas estáticas geradas.
 - **Gerador:** `scripts/gerar_seo.py` cria as páginas por levedura, o índice e o `sitemap.xml`. Páginas sem conteúdo útil ganham `noindex` e ficam fora do sitemap. Os arquivos são gerados, então não edite à mão; o CI confere que estão em dia.
@@ -126,7 +126,8 @@ Tema: segue o sistema por padrão, e o botão do header alterna e guarda a escol
 
 1. Suba a versão em `assets/js/versao.js` e escreva a entrada no `CHANGELOG.md`, com o mesmo número. Os testes falham se os dois não baterem.
 2. Arquivo novo que a ferramenta precisa offline vai para o `PRECACHE` do `sw.js`. Os testes também conferem isso.
-3. `npm test`, e só então o merge em `main`.
+3. `npm test`, e só então o push em `main`, que publica no **teste** (GitHub Pages).
+4. Testado e ok: `scripts/deploy-producao.sh` publica em **produção**. Ele exige `main` igual a `origin/main`, testes passando e versão nova, e marca a tag `producao-vX.Y.Z`. O `--delete` do rsync fica restrito a `public_html/ferramentas/`.
 
 Quem estiver com o site aberto recebe o aviso de nova versão. Quem abrir depois já pega tudo novo, porque a rede tem prioridade.
 

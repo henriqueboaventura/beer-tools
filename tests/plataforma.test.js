@@ -142,6 +142,28 @@ describe("PWA (sw.js e manifest)", () => {
   });
 });
 
+describe("ambientes (teste no GitHub Pages, produção no brassagemforte.com.br)", () => {
+  const deploy = ler("scripts/deploy-producao.sh");
+  const site = ler("scripts/gerar_seo.py").match(/^SITE = "([^"]+)"/m)[1];
+
+  test("o endereço oficial (canonical/sitemap) é a produção", () => {
+    assert.equal(site, "https://www.brassagemforte.com.br/ferramentas/");
+  });
+
+  test("o script de deploy publica no mesmo endereço do SEO", () => {
+    assert.equal(deploy.match(/^URL_PRODUCAO="([^"]+)"/m)[1], site);
+  });
+
+  test("o deploy só pode tocar a pasta public_html/ferramentas", () => {
+    assert.match(deploy, /\*\/public_html\/ferramentas\|\*\/public_html\/ferramentas\/\) ;;/);
+  });
+
+  test("credenciais (.env.deploy) ficam fora do git", () => {
+    assert.match(ler(".gitignore"), /^\.env\.deploy$/m);
+    assert.ok(existe(".env.deploy.example"));
+  });
+});
+
 describe("versionamento", () => {
   test("versão do site (versao.js) é SemVer e igual à última entrada do CHANGELOG.md", () => {
     const m = ler("assets/js/versao.js").match(/self\.BF_VERSAO = "(\d+\.\d+\.\d+)"/);

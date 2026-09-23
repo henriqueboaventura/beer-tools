@@ -1,3 +1,4 @@
 # fontes originais (planilha e PDFs de terceiros) — não publicar
 examples/
 .DS_Store
+.env.deploy
