@@ -42,6 +42,16 @@ disponível" para quem já está com o site aberto.
 - Testes da ferramenta reescritos para o modelo novo: os exemplos das
   fontes, os cenários de uso e mais de 2.000 casos aleatórios.
 
+### Testes
+- **Testes de interface automáticos** (`tests/ui/`), rodando no `npm test`
+  e no GitHub Actions. Abrem o site num Chrome sem janela, em tela de
+  celular, e usam as ferramentas como uma pessoa usaria: busca e filtros de
+  leveduras, troca de método e cronômetro da decocção, speise com SG e °P,
+  e o fluxo inteiro da parti-gyle. Também conferem, em todas as páginas,
+  que não há erro de JavaScript nem rolagem lateral no celular. Sem
+  nenhuma dependência: falam direto com o Chrome pelo protocolo de
+  depuração dele.
+
 ## [1.5.0] — 2026-09-24
 
 ### Adicionado

@@ -98,7 +98,12 @@ Os testes usam só o runner nativo do Node (`node:test`). Eles cobrem:
 - **Speise** (`ferramentas/speise/tests/`): o cálculo, com valores conferidos à mão.
 - **Parti-gyle** (`ferramentas/parti-gyle/tests/`): os exemplos numéricos publicados nas fontes.
 
-O GitHub Actions roda a suíte em todo push.
+- **Interface** (`tests/ui/`): abre o site num Chrome sem janela (headless), em tela de celular, e usa cada ferramenta como uma pessoa usaria: clica, digita e confere o que aparece. Também confere, em todas as páginas, que não há erro de JavaScript nem rolagem lateral, e que menu, tema e service worker funcionam.
+  - Não precisa instalar nada além do Chrome (ou Chromium): os testes falam com ele direto pelo protocolo de depuração.
+  - O Chrome é procurado em `CHROME_BIN`, no caminho padrão do macOS e no `PATH` (`google-chrome`, `chromium`). Sem Chrome, esses testes são pulados; com `BF_UI_OBRIGATORIO=1` (como no CI), eles falham.
+  - Para rodar só eles: `node --test tests/ui/*.test.js`.
+
+O GitHub Actions roda a suíte em todo push, incluindo os testes de interface.
 
 ## Como contribuir
 

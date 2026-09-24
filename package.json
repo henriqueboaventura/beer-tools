@@ -3,7 +3,7 @@
   "private": true,
   "description": "Ferramentas Brassagem Forte — site estático, zero dependências. Testes da plataforma (tests/) e de cada ferramenta (ferramentas/*/tests/) com o runner nativo do Node (node:test).",
   "scripts": {
-    "test": "node --test tests/*.test.js ferramentas/*/tests/*.test.js"
+    "test": "node --test tests/*.test.js tests/ui/*.test.js ferramentas/*/tests/*.test.js"
   },
   "engines": {
     "node": ">=18"

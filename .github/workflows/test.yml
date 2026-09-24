@@ -15,8 +15,10 @@ jobs:
         with:
           node-version: '20'
       - name: Sintaxe de todo JavaScript do site
-        run: for f in sw.js assets/js/*.js ferramentas/*/*.js; do node --check "$f" || exit 1; done
+        run: for f in sw.js assets/js/*.js ferramentas/*/*.js tests/ui/*.js; do node --check "$f" || exit 1; done
       - name: Páginas de SEO e sitemap em dia com os dados
         run: python3 scripts/gerar_seo.py && git diff --exit-code -- sitemap.xml ferramentas/substituicao-leveduras/levedura
-      - name: Testes (plataforma + ferramentas)
+      - name: Testes (plataforma + interface + ferramentas)
+        env:
+          BF_UI_OBRIGATORIO: '1' # o runner tem Chrome: teste de interface não pode ser pulado
         run: npm test
