@@ -232,6 +232,11 @@ main { flex: 1; }
   letter-spacing: -.005em;
 }
 
+/* Títulos grandes cabem na tela com a Archivo condensada. Se a fonte não
+   carregar (primeira visita offline, fontes bloqueadas), a fonte reserva é
+   mais larga: aí a palavra quebra em vez de empurrar a página para o lado. */
+h1, h2, h3 { overflow-wrap: break-word; }
+
 .bf-lead {
   font-size: 17px;
   color: var(--bf-soft);

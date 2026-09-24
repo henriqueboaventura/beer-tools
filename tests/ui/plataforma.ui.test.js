@@ -35,6 +35,25 @@ suiteUI("Plataforma (interface)", (ctx) => {
     });
   }
 
+  test("sem rolagem lateral no celular mesmo se a fonte do site não carregar", async () => {
+    // a Archivo é condensada; a fonte reserva (Verdana/DejaVu) é bem mais larga
+    const pag = await ctx.nav.pagina({ largura: 360 });
+    for (const url of PAGINAS) {
+      await pag.ir(url);
+      await pag.esperar("document.querySelector('.bf-footer')");
+      await new Promise((ok) => setTimeout(ok, 300));
+      const ok = await pag.avaliar(`(async () => {
+        const st = document.createElement('style');
+        st.textContent = '* { font-family: Verdana, "DejaVu Sans", sans-serif !important; }';
+        document.head.append(st);
+        await new Promise(requestAnimationFrame);
+        return ui.semRolagemLateral();
+      })()`);
+      assert.ok(ok, `rolagem lateral em /${url} com a fonte reserva`);
+    }
+    await pag.fechar();
+  });
+
   test("início lista as 4 ferramentas com links que abrem", async () => {
     const { pag } = ctx;
     await pag.ir("");

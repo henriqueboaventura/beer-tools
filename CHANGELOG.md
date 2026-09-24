@@ -12,6 +12,16 @@ detalhe técnico, em `ferramentas/decoccao/CHANGELOG.md`.
 invalida o cache offline antigo e faz aparecer o aviso "Nova versão
 disponível" para quem já está com o site aberto.
 
+## [1.6.1] — 2026-09-24
+
+### Corrigido
+- **Página inicial no celular sem rolagem lateral mesmo sem a fonte do
+  site.** Quando a fonte condensada (Archivo) não carrega (primeira
+  visita offline, fontes bloqueadas), a fonte reserva é mais larga e o
+  título "Ferramentas" empurrava a página para o lado em telas de 360 px.
+  Agora a palavra quebra. Achado pelos novos testes de interface no CI
+  (Linux), que têm um teste só para esse caso.
+
 ## [1.6.0] — 2026-09-24
 
 ### Alterado
