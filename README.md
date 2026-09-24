@@ -54,11 +54,11 @@ O cálculo está em [`ferramentas/speise/calculo.js`](ferramentas/speise/calculo
 
 `ferramentas/parti-gyle/`
 
-Várias cervejas de uma mostura só, de Henrique Boaventura.
+Várias cervejas de uma mostura só, de Henrique Boaventura. É um fluxo guiado:
 
-- **Planejar:** esquemas de divisão publicados (1/3 + 2/3, metade/metade, três terços), densidade e volume de cada cerveja e quanto malte usar.
-- **No dia:** com os mostos forte e fraco medidos, quanto de cada vai para cada cerveja (até 4), com água quando necessário.
-- **Primeiro mosto diferente do previsto:** volume no alvo, água para diluir e correção do lúpulo.
+1. **Suas cervejas:** 2 ou 3, com o volume e a OG final de cada uma.
+2. **O plano:** quanto malte usar, a ordem da coleta ("colete os primeiros X L para a cerveja mais forte"), a OG prevista de cada cerveja e o que fazer para acertar cada uma (acrescentar água ou ferver mais). Com 2 cervejas, também a divisão de volumes que acerta as duas sem ajuste, ou como trocar mosto entre as panelas quando elas são parecidas demais.
+3. **No dia:** vem preenchido com a previsão. Troque pelo medido em cada panela para ver o ajuste e a correção do lúpulo.
 
 As regras e fórmulas vêm da BYO e da Craft Beer & Brewing: [`docs/specs/04-parti-gyle.md`](docs/specs/04-parti-gyle.md).
 

@@ -2,48 +2,37 @@
  * Cálculo da ferramenta 04 — Parti-gyle. Funções puras, sem DOM.
  * Exportadas em window.BFPartiGyle (navegador) e module.exports (Node, testes).
  *
- * Tudo em "pontos de densidade": SG 1.064 = 64 pontos. Pontos se conservam
- * na mistura: volume × pontos de cada parte somam (Beer & Brewing; BYO).
+ * Tudo em "pontos de densidade": SG 1.064 = 64 pontos. Volume × pontos se
+ * conserva na fervura e na mistura (a água não tem pontos).
  *
- * Fontes:
- * - BYO, "Introduction to Parti-Gyle Brewing": esquemas de divisão
- *   (1/3 + 2/3; metade/metade 58%/42%; três terços 1,5× / 1× / 0,5×).
- * - BYO, "Parti-Gyle Brewing Techniques": pontos totais = Σ volume × pontos;
- *   1 lb de malte claro por galão = 24 pontos a 65% de eficiência;
- *   ajuste quando o primeiro mosto sai diferente (volume = pontos ÷ alvo).
- * - Craft Beer & Brewing, "Practical Parti-Gyle Brewing": misturar o mosto
- *   forte e o fraco para chegar à densidade de cada cerveja.
+ * MODELO DA COLETA (parti-gyle "clássico": só coletar, sem misturar)
+ * Os mostos saem cada vez mais fracos. Aqui a densidade cai em linha reta do
+ * primeiro ao último litro: g(s) = G · (1 − B · s/R), com s = litros já
+ * coletados, R = total coletado e B = 6/7. Esse B é o único que reproduz
+ * EXATAMENTE duas regras publicadas na BYO ("Introduction to Parti-Gyle
+ * Brewing"):
+ *   - 1/3 + 2/3: o primeiro terço sai com o dobro da densidade do resto;
+ *   - três terços: 1,5× / 1× / 0,5× a densidade média.
+ * A terceira regra do mesmo artigo (metade/metade = 58% e 42% dos pontos) é
+ * incompatível com essas duas — nenhuma curva que só desce satisfaz as três —
+ * e fica de fora. É uma previsão: no dia, mede-se e corrige-se (passo 03).
+ *
+ * Consequência: só coletando, a 1ª de duas cervejas sai entre 1,75× e 4× mais
+ * densa (em pontos) que a 2ª. Mais próximas que isso, só misturando mostos
+ * (Craft Beer & Brewing, "Practical Parti-Gyle Brewing").
+ *
+ * Outras fontes: BYO, "Parti-Gyle Brewing Techniques" (malte: 1 lb/gal de
+ * malte claro = 24 pontos a 65%; ajuste por diluição, volume = pontos ÷ alvo).
  */
 (function (raiz) {
   "use strict";
 
+  var B = 6 / 7;
+  var RAZAO_MIN = 1 / (1 - B / 2);   // 1,75: 1ª cerveja com volume ~0
+  var RAZAO_MAX = (1 - B / 2) / (1 - B); // 4: 2ª cerveja com volume ~0
   var LITROS_POR_GALAO = 3.785411784;
   var KG_POR_LIBRA = 0.45359237;
-  // 1 PPG (pontos por libra por galão) em pontos por kg por litro
-  var PPG_PARA_PKL = LITROS_POR_GALAO / KG_POR_LIBRA; // ≈ 8,3454
-
-  // Esquemas publicados (BYO). fracVolume: parte do volume total, na ordem dos
-  // mostos; multiplicador: densidade da cerveja ÷ densidade média do lote.
-  var ESQUEMAS = {
-    "terco-dois-tercos": {
-      nome: "1/3 + 2/3",
-      descricao: "Uma cerveja forte com o primeiro terço do mosto e uma mais leve com o resto. O primeiro mosto sai com o dobro da densidade do segundo.",
-      fracVolume: [1 / 3, 2 / 3],
-      multiplicador: [1.5, 0.75]
-    },
-    "metade": {
-      nome: "Metade / metade",
-      descricao: "Dois volumes iguais. O primeiro mosto leva 58% dos pontos e o segundo, 42%.",
-      fracVolume: [0.5, 0.5],
-      multiplicador: [1.16, 0.84]
-    },
-    "tres-tercos": {
-      nome: "Três terços",
-      descricao: "Três volumes iguais: 1,5×, 1× e 0,5× a densidade média do lote.",
-      fracVolume: [1 / 3, 1 / 3, 1 / 3],
-      multiplicador: [1.5, 1, 0.5]
-    }
-  };
+  var PPG_PARA_PKL = LITROS_POR_GALAO / KG_POR_LIBRA; // PPG -> pontos por kg por litro (≈ 8,3454)
 
   function pontos(sg) { return (Number(sg) - 1) * 1000; }
   function sg(p) { return 1 + p / 1000; }
@@ -51,44 +40,120 @@
     return -616.868 + 1111.14 * s - 630.272 * s * s + 135.997 * s * s * s;
   }
 
-  /*
-   * Planejar a divisão.
-   * p = { esquema, volume (L), og (SG), definirPor: "media" | "primeira" }
-   * "primeira": og é a densidade desejada da 1ª cerveja (a mais forte).
-   */
-  function planejar(p) {
-    var e = ESQUEMAS[p.esquema];
-    if (!e) throw new Error("esquema desconhecido: " + p.esquema);
-    var volume = Math.max(Number(p.volume) || 0, 0);
-    var pts = Math.max(pontos(p.og), 0);
-    var mediaPts = p.definirPor === "primeira" ? pts / e.multiplicador[0] : pts;
-    var cervejas = e.fracVolume.map(function (f, i) {
-      var cp = mediaPts * e.multiplicador[i];
-      return { volume: volume * f, og: sg(cp), pontos: cp, fracPontos: f * e.multiplicador[i] };
-    });
-    return {
-      esquema: e,
-      ogMedia: sg(mediaPts),
-      pontosTotais: volume * mediaPts, // pontos·litro
-      cervejas: cervejas
-    };
+  // densidade média (em pontos) do trecho [a, c] da coleta, com G = 1
+  function mediaTrecho(a, c, total) {
+    return 1 - B * (a + c) / (2 * total);
   }
 
-  /*
-   * Malte necessário para um total de pontos·litro.
-   * eficiencia em %, ppg = potencial do malte em pontos por libra por galão
-   * (malte claro ≈ 37). Ex. BYO: 320 pontos·galão a 65% -> ~13 lb.
-   */
   function malteNecessario(pontosLitro, eficiencia, ppg) {
     var rendimento = (ppg || 37) * PPG_PARA_PKL * (Number(eficiencia) || 0) / 100; // pontos·L por kg
     return rendimento > 0 ? pontosLitro / rendimento : 0;
   }
 
   /*
-   * Quanto de cada mosto vai para cada cerveja.
+   * Acertar a densidade mantendo os pontos (BYO): diluir com água ou ferver mais.
+   * Devolve o volume final em que a cerveja chega ao alvo.
+   */
+  function acao(volume, pontosAtuais, pontosAlvo) {
+    if (!(pontosAlvo > 0) || !(volume > 0)) return { tipo: "incompleta" };
+    var final = volume * pontosAtuais / pontosAlvo;
+    // diferença menor que 0,5% do volume: não precisa mexer (volumeFinal continua exato)
+    if (Math.abs(final - volume) < 0.005 * volume) return { tipo: "ok", volumeFinal: final };
+    if (final > volume) return { tipo: "agua", agua: final - volume, volumeFinal: final };
+    return { tipo: "ferver", evaporar: volume - final, volumeFinal: final };
+  }
+
+  /*
+   * Plano.
+   * p = { cervejas: [{nome, volume (L final), og (SG final desejada)}],
+   *       evaporacao (% do volume perdido na fervura), eficiencia (%), ppg }
+   * A cerveja de maior OG recebe os primeiros mostos (ordem de coleta).
+   * O malte é o que dá o total de pontos pedido (Σ volume × OG); cada cerveja
+   * então sai um pouco acima ou abaixo do alvo, e `acao` diz como acertar.
+   */
+  function planejar(p) {
+    var e = Math.min(Math.max(Number(p.evaporacao) || 0, 0), 60) / 100;
+    var lista = (p.cervejas || []).map(function (c, i) {
+      return { indice: i, nome: c.nome || "", volume: Math.max(Number(c.volume) || 0, 0), og: Number(c.og) };
+    });
+    var validas = lista.length >= 2 && lista.every(function (c) { return c.volume > 0 && c.og > 1; });
+    if (!validas) return { valido: false, cervejas: lista };
+
+    var ordem = lista.slice().sort(function (a, b) { return b.og - a.og || a.indice - b.indice; });
+    var totalColeta = 0;
+    ordem.forEach(function (c) { c.volumeColeta = c.volume / (1 - e); totalColeta += c.volumeColeta; });
+
+    // pontos·litro pedidos (iguais antes e depois da fervura)
+    var pontosTotais = lista.reduce(function (a, c) { return a + c.volume * pontos(c.og); }, 0);
+    var G = pontosTotais / (totalColeta * (1 - B / 2)); // densidade do primeiro litro, em pontos
+
+    var s = 0;
+    ordem.forEach(function (c, k) {
+      c.ordem = k + 1;
+      c.coletaInicio = s;
+      c.coletaFim = s + c.volumeColeta;
+      c.pontosColeta = G * mediaTrecho(c.coletaInicio, c.coletaFim, totalColeta);
+      c.ogColeta = sg(c.pontosColeta);
+      c.pontosPrevistos = c.pontosColeta / (1 - e); // depois da fervura
+      c.ogPrevista = sg(c.pontosPrevistos);
+      c.acao = acao(c.volume, c.pontosPrevistos, pontos(c.og));
+      s = c.coletaFim;
+    });
+
+    return {
+      valido: true,
+      evaporacao: e,
+      cervejas: lista,               // na ordem digitada, com os campos acima
+      ordemColeta: ordem,            // na ordem de coleta
+      totalColeta: totalColeta,
+      pontosTotais: pontosTotais,
+      ogPrimeiroMosto: sg(G),
+      ogUltimoMosto: sg(G * (1 - B)),
+      malteKg: malteNecessario(pontosTotais, p.eficiencia, p.ppg),
+      sugestao: ordem.length === 2 ? sugestaoDuas(ordem, totalColeta, e) : null
+    };
+  }
+
+  /*
+   * Duas cervejas: como acertar as duas SEM diluir nem ferver mais.
+   * - razão de pontos entre 1,75 e 4: basta mudar a divisão dos volumes
+   *   (mantendo o total);
+   * - abaixo de 1,75 (cervejas parecidas): coletar nas duas panelas e trocar
+   *   mosto entre elas;
+   * - acima de 4: não dá só coletando.
+   */
+  function sugestaoDuas(ordem, totalColeta, e) {
+    var forte = ordem[0], fraca = ordem[1];
+    var r = pontos(forte.og) / pontos(fraca.og);
+    if (r >= RAZAO_MIN && r <= RAZAO_MAX) {
+      // f = fração da coleta para a 1ª: (1 − B f/2) / (1 − B(1+f)/2) = r
+      var f = 2 * (r * (1 - B / 2) - 1) / (B * (r - 1));
+      return {
+        tipo: "dividir",
+        razao: r,
+        volumeForte: f * totalColeta * (1 - e),
+        volumeFraca: (1 - f) * totalColeta * (1 - e),
+        coletaForte: f * totalColeta,
+        coletaFraca: (1 - f) * totalColeta
+      };
+    }
+    if (r < RAZAO_MIN) {
+      // coleta pelos volumes pedidos; depois cada cerveja leva parte de cada panela
+      var alvoF = pontos(forte.og) * (1 - e), alvoW = pontos(fraca.og) * (1 - e); // na coleta
+      var m = misturar({
+        forte: { volume: forte.volumeColeta, og: forte.ogColeta },
+        fraco: { volume: fraca.volumeColeta, og: fraca.ogColeta },
+        cervejas: [{ volume: forte.volumeColeta, og: sg(alvoF) }, { volume: fraca.volumeColeta, og: sg(alvoW) }]
+      });
+      return { tipo: "misturar", razao: r, mistura: m };
+    }
+    return { tipo: "impossivel", razao: r };
+  }
+
+  /*
+   * Misturar dois mostos (Craft Beer & Brewing): litros de cada para cada cerveja.
    * m = { forte: {volume, og}, fraco: {volume, og}, cervejas: [{volume, og}] }
-   * Por cerveja: litros de forte, de fraco e de água. Se o alvo fica abaixo do
-   * mosto fraco, completa com água; acima do forte, é impossível só misturando.
+   * Alvo abaixo do fraco: completa com água. Acima do forte: impossível.
    */
   function misturar(m) {
     var fP = pontos(m.forte.og), wP = pontos(m.fraco.og);
@@ -112,30 +177,40 @@
     });
     var sobraForte = (Number(m.forte.volume) || 0) - usadoForte;
     var sobraFraco = (Number(m.fraco.volume) || 0) - usadoFraco;
-    return {
-      cervejas: cervejas,
-      usadoForte: usadoForte, usadoFraco: usadoFraco,
-      sobraForte: sobraForte, sobraFraco: sobraFraco,
-      suficiente: sobraForte > -1e-9 && sobraFraco > -1e-9
-    };
+    return { cervejas: cervejas, usadoForte: usadoForte, usadoFraco: usadoFraco,
+      sobraForte: sobraForte, sobraFraco: sobraFraco, suficiente: sobraForte > -1e-9 && sobraFraco > -1e-9 };
   }
 
   /*
-   * Primeiro mosto saiu diferente do previsto (BYO): mesmos pontos, novo volume.
-   * Ex.: 2 gal a 1.100 com alvo 1.080 -> 200 ÷ 80 = 2,5 gal (diluir com 0,5 gal).
-   * Se o mosto ficou mais fraco que o alvo, o volume no alvo é menor
-   * (seria preciso ferver mais ou acrescentar extrato).
+   * No dia: o que foi medido em cada panela ANTES da fervura.
+   * d = { cervejas: [{volume (L final planejado), og (alvo)}], medidas: [{volume, og}], evaporacao (%) }
+   * Para cada uma: OG prevista depois da fervura, ação para acertar e quanto
+   * multiplicar o lúpulo (proporcional ao volume final — BYO).
    */
-  function ajustar(volume, og, alvo) {
-    var v = Number(volume) || 0, p = pontos(og), t = pontos(alvo);
-    var novo = t > 0 ? v * p / t : 0;
-    return { volumeNoAlvo: novo, aguaParaDiluir: Math.max(novo - v, 0), fatorLupulo: v > 0 ? novo / v : 0, maisFraco: p < t };
+  function noDia(d) {
+    var e = Math.min(Math.max(Number(d.evaporacao) || 0, 0), 60) / 100;
+    return (d.cervejas || []).map(function (c, i) {
+      var med = (d.medidas || [])[i] || {};
+      var vMed = Number(med.volume), pMed = pontos(med.og), alvo = pontos(c.og), vPlan = Number(c.volume);
+      if (!(vMed > 0) || !(pMed > 0) || !(alvo > 0)) return { problema: "incompleta" };
+      var volumeFervido = vMed * (1 - e);
+      var pontosDepois = pMed / (1 - e);
+      var a = acao(volumeFervido, pontosDepois, alvo);
+      return {
+        problema: null,
+        volumeDepois: volumeFervido,
+        ogDepois: sg(pontosDepois),
+        acao: a,
+        fatorLupulo: vPlan > 0 ? a.volumeFinal / vPlan : 1
+      };
+    });
   }
 
   var api = {
-    ESQUEMAS: ESQUEMAS, LITROS_POR_GALAO: LITROS_POR_GALAO, KG_POR_LIBRA: KG_POR_LIBRA, PPG_PARA_PKL: PPG_PARA_PKL,
-    pontos: pontos, sg: sg, sgParaPlato: sgParaPlato,
-    planejar: planejar, malteNecessario: malteNecessario, misturar: misturar, ajustar: ajustar
+    B: B, RAZAO_MIN: RAZAO_MIN, RAZAO_MAX: RAZAO_MAX,
+    LITROS_POR_GALAO: LITROS_POR_GALAO, KG_POR_LIBRA: KG_POR_LIBRA, PPG_PARA_PKL: PPG_PARA_PKL,
+    pontos: pontos, sg: sg, sgParaPlato: sgParaPlato, mediaTrecho: mediaTrecho,
+    malteNecessario: malteNecessario, acao: acao, planejar: planejar, misturar: misturar, noDia: noDia
   };
   if (typeof module !== "undefined" && module.exports) module.exports = api;
   else raiz.BFPartiGyle = api;

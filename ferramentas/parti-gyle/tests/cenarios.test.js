@@ -1,186 +1,187 @@
-// Parti-gyle: cenários de uso (os mesmos do roteiro de teste manual) e
-// invariantes que precisam valer para QUALQUER entrada.
+// Parti-gyle: cenários de uso da ferramenta e invariantes que valem para
+// QUALQUER entrada (casos aleatórios com semente fixa, sempre os mesmos).
 const { test, describe } = require("node:test");
 const assert = require("node:assert/strict");
 const P = require("../calculo.js");
 
 const perto = (a, b, tol, msg) => assert.ok(Math.abs(a - b) <= tol, `${msg}: ${a} ≠ ${b} (±${tol})`);
 const og3 = (sg) => sg.toFixed(3);
-
-// gerador pseudoaleatório com semente fixa: os casos são sempre os mesmos
 function aleatorio(semente) {
   let s = semente >>> 0;
   return () => ((s = (s * 1664525 + 1013904223) >>> 0) / 2 ** 32);
 }
 const entre = (r, a, b) => a + r() * (b - a);
 
-describe("roteiro — 01 Planejar (57 L a 1.064)", () => {
-  const base = { volume: 57, og: 1.064 };
+describe("cenários — plano", () => {
+  const padrao = { evaporacao: 10, eficiencia: 70, ppg: 37 };
 
-  test("1/3 + 2/3: 1.096 com 19 L e 1.048 com 38 L", () => {
-    const r = P.planejar({ ...base, esquema: "terco-dois-tercos" });
-    assert.deepEqual(r.cervejas.map((c) => og3(c.og)), ["1.096", "1.048"]);
-    perto(r.cervejas[0].volume, 19, 1e-9, "vol 1");
-    perto(r.cervejas[1].volume, 38, 1e-9, "vol 2");
+  test("valores iniciais da ferramenta (19 L a 1.096 + 38 L a 1.048, 10% de fervura): acerta sem ajuste, 16,9 kg", () => {
+    const r = P.planejar({ ...padrao, cervejas: [{ volume: 19, og: 1.096 }, { volume: 38, og: 1.048 }] });
+    assert.deepEqual(r.cervejas.map((c) => c.acao.tipo), ["ok", "ok"]);
+    assert.equal(r.malteKg.toFixed(1), "16.9");
+    // coleta antes da fervura: 19/0,9 e 38/0,9
+    assert.deepEqual(r.ordemColeta.map((c) => c.volumeColeta.toFixed(2)), ["21.11", "42.22"]);
   });
 
-  test("16,9 kg de malte a 70% e 37 PPG; 18,2 kg a 65%", () => {
-    const r = P.planejar({ ...base, esquema: "terco-dois-tercos" });
-    assert.equal(P.malteNecessario(r.pontosTotais, 70, 37).toFixed(1), "16.9");
-    assert.equal(P.malteNecessario(r.pontosTotais, 65, 37).toFixed(1), "18.2");
+  test("a cerveja de maior OG recebe os primeiros mostos, mesmo digitada por último", () => {
+    const r = P.planejar({ ...padrao, cervejas: [{ nome: "Leve", volume: 38, og: 1.048 }, { nome: "Forte", volume: 19, og: 1.096 }] });
+    assert.deepEqual(r.ordemColeta.map((c) => c.nome), ["Forte", "Leve"]);
+    assert.deepEqual(r.cervejas.map((c) => c.ordem), [2, 1]);
+    assert.deepEqual(r.cervejas.map((c) => c.acao.tipo), ["ok", "ok"]);
   });
 
-  test("metade/metade: 1.074 e 1.054, 28,5 L cada", () => {
-    const r = P.planejar({ ...base, esquema: "metade" });
-    assert.deepEqual(r.cervejas.map((c) => og3(c.og)), ["1.074", "1.054"]);
-    for (const c of r.cervejas) perto(c.volume, 28.5, 1e-9, "vol");
+  test("pedido fora da curva (20 L a 1.090 + 40 L a 1.050): diz como acertar cada uma e a divisão que acertaria sem ajuste", () => {
+    const r = P.planejar({ ...padrao, cervejas: [{ volume: 20, og: 1.09 }, { volume: 40, og: 1.05 }] });
+    assert.equal(og3(r.cervejas[0].ogPrevista), "1.095");
+    assert.equal(r.cervejas[0].acao.tipo, "agua");
+    assert.equal(r.cervejas[1].acao.tipo, "ferver");
+    assert.equal(r.sugestao.tipo, "dividir");
+    perto(r.sugestao.volumeForte + r.sugestao.volumeFraca, 60, 1e-9, "mesmo total");
+    // com a divisão sugerida, as duas acertam sem ajuste
+    const r2 = P.planejar({ ...padrao, cervejas: [{ volume: r.sugestao.volumeForte, og: 1.09 }, { volume: r.sugestao.volumeFraca, og: 1.05 }] });
+    assert.deepEqual(r2.cervejas.map((c) => c.acao.tipo), ["ok", "ok"]);
   });
 
-  test("três terços: 1.096 / 1.064 / 1.032, 19 L cada", () => {
-    const r = P.planejar({ ...base, esquema: "tres-tercos" });
-    assert.deepEqual(r.cervejas.map((c) => og3(c.og)), ["1.096", "1.064", "1.032"]);
-    for (const c of r.cervejas) perto(c.volume, 19, 1e-9, "vol");
+  test("cervejas parecidas (1.060 e 1.045, razão < 1,75): sugere trocar mosto entre as panelas, e a troca fecha", () => {
+    const r = P.planejar({ ...padrao, cervejas: [{ volume: 20, og: 1.06 }, { volume: 20, og: 1.045 }] });
+    assert.equal(r.sugestao.tipo, "misturar");
+    const m = r.sugestao.mistura;
+    assert.equal(m.suficiente, true);
+    perto(m.sobraForte, 0, 1e-6, "sem sobra no forte");
+    perto(m.sobraFraco, 0, 1e-6, "sem sobra no fraco");
+    assert.ok(m.cervejas.every((c) => c.agua === 0 && c.problema === null));
   });
 
-  test("definir pela 1ª cerveja (1.096) dá exatamente o mesmo plano que a média 1.064", () => {
-    const porMedia = P.planejar({ ...base, esquema: "terco-dois-tercos" });
-    const porPrimeira = P.planejar({ volume: 57, og: 1.096, definirPor: "primeira", esquema: "terco-dois-tercos" });
-    porMedia.cervejas.forEach((c, i) => perto(porPrimeira.cervejas[i].pontos, c.pontos, 1e-9, `cerveja ${i + 1}`));
-  });
-});
-
-describe("roteiro — 02 No dia (19 L a 1.080 + 19 L a 1.020)", () => {
-  const mostos = { forte: { volume: 19, og: 1.08 }, fraco: { volume: 19, og: 1.02 } };
-  const alvos = [{ volume: 7.5, og: 1.07 }, { volume: 15, og: 1.05 }, { volume: 15, og: 1.04 }];
-
-  test("valores iniciais: 6,25 + 1,25 / 7,50 + 7,50 / 5,00 + 10,00; sobram 0,25 L de cada", () => {
-    const r = P.misturar({ ...mostos, cervejas: alvos });
-    const partes = r.cervejas.map((c) => [c.forte.toFixed(2), c.fraco.toFixed(2), c.agua.toFixed(2)]);
-    assert.deepEqual(partes, [["6.25", "1.25", "0.00"], ["7.50", "7.50", "0.00"], ["5.00", "10.00", "0.00"]]);
-    perto(r.sobraForte, 0.25, 1e-9, "sobra forte");
-    perto(r.sobraFraco, 0.25, 1e-9, "sobra fraco");
-    assert.equal(r.suficiente, true);
+  test("razão acima de 4 (1.100 e 1.020): não dá só coletando", () => {
+    const r = P.planejar({ ...padrao, cervejas: [{ volume: 10, og: 1.1 }, { volume: 10, og: 1.02 }] });
+    assert.equal(r.sugestao.tipo, "impossivel");
   });
 
-  test("cerveja 3 a 1.012: fraco 9,00 L + água 6,00 L", () => {
-    const r = P.misturar({ ...mostos, cervejas: [alvos[0], alvos[1], { volume: 15, og: 1.012 }] });
-    const c = r.cervejas[2];
-    assert.deepEqual([c.forte, c.fraco.toFixed(2), c.agua.toFixed(2)], [0, "9.00", "6.00"]);
+  test("três cervejas não têm sugestão de divisão (só as ações por cerveja)", () => {
+    const r = P.planejar({ ...padrao, cervejas: [{ volume: 19, og: 1.096 }, { volume: 19, og: 1.064 }, { volume: 19, og: 1.032 }] });
+    assert.equal(r.sugestao, null);
+    assert.ok(r.cervejas.every((c) => c.acao.tipo === "ok"));
   });
 
-  test("cerveja 1 a 1.090: impossível, mais densa que o mosto forte", () => {
-    const r = P.misturar({ ...mostos, cervejas: [{ volume: 7.5, og: 1.09 }, alvos[1], alvos[2]] });
-    assert.equal(r.cervejas[0].problema, "acima-do-forte");
-    assert.equal(r.cervejas[1].problema, null, "as outras continuam calculadas");
-  });
-
-  test("cerveja 2 com 30 L: falta mosto", () => {
-    const r = P.misturar({ ...mostos, cervejas: [alvos[0], { volume: 30, og: 1.05 }, alvos[2]] });
-    assert.equal(r.suficiente, false);
-    assert.ok(r.sobraForte < 0 && r.sobraFraco < 0);
+  test("entradas incompletas: plano inválido, sem erro", () => {
+    for (const cervejas of [[], [{ volume: 10, og: 1.05 }], [{ volume: 10, og: 1.05 }, { volume: "", og: 1.04 }], [{ volume: 10, og: 1.05 }, { volume: 10, og: 1.0 }]]) {
+      assert.equal(P.planejar({ ...padrao, cervejas }).valido, false);
+    }
   });
 });
 
-describe("roteiro — 03 Primeiro mosto diferente (7,5 L)", () => {
-  test("a 1.100 com alvo 1.080: rende 9,38 L, +1,88 L de água, lúpulo × 1,25", () => {
-    const r = P.ajustar(7.5, 1.1, 1.08);
-    assert.deepEqual([r.volumeNoAlvo.toFixed(2), r.aguaParaDiluir.toFixed(2), r.fatorLupulo.toFixed(2)], ["9.38", "1.88", "1.25"]);
+describe("cenários — no dia", () => {
+  test("coletou exatamente o previsto: tudo ok, lúpulo × 1", () => {
+    const cervejas = [{ volume: 19, og: 1.096 }, { volume: 38, og: 1.048 }];
+    const r = P.planejar({ cervejas, evaporacao: 10, eficiencia: 70 });
+    const dia = P.noDia({ cervejas, evaporacao: 10, medidas: r.cervejas.map((c) => ({ volume: c.volumeColeta, og: c.ogColeta })) });
+    assert.deepEqual(dia.map((d) => d.acao.tipo), ["ok", "ok"]);
+    for (const d of dia) perto(d.fatorLupulo, 1, 0.006, "lúpulo");
   });
 
-  test("a 1.075 com alvo 1.080: mais fraco que o alvo", () => {
-    assert.equal(P.ajustar(7.5, 1.075, 1.08).maisFraco, true);
+  test("primeiro mosto saiu mais denso: diluir e aumentar o lúpulo na mesma proporção (BYO)", () => {
+    // sem fervura: 2 gal a 1.100 para alvo 1.080 -> 2,5 gal, lúpulo × 1,25
+    const [d] = P.noDia({ cervejas: [{ volume: 2, og: 1.08 }], evaporacao: 0, medidas: [{ volume: 2, og: 1.1 }] });
+    assert.equal(d.acao.tipo, "agua");
+    perto(d.acao.volumeFinal, 2.5, 1e-9, "volume");
+    perto(d.fatorLupulo, 1.25, 1e-9, "lúpulo");
+  });
+
+  test("a fervura concentra: 20 L a 1.045 com 10% de perda -> 18 L a 1.050", () => {
+    const [d] = P.noDia({ cervejas: [{ volume: 18, og: 1.05 }], evaporacao: 10, medidas: [{ volume: 20, og: 1.045 }] });
+    perto(d.volumeDepois, 18, 1e-9, "volume");
+    assert.equal(og3(d.ogDepois), "1.050");
+    assert.equal(d.acao.tipo, "ok");
+  });
+
+  test("medida incompleta não quebra", () => {
+    const [d] = P.noDia({ cervejas: [{ volume: 18, og: 1.05 }], evaporacao: 10, medidas: [{ volume: "", og: "" }] });
+    assert.equal(d.problema, "incompleta");
   });
 });
 
-describe("invariantes — planejar (500 casos aleatórios)", () => {
+describe("invariantes — plano (500 casos aleatórios)", () => {
   const r = aleatorio(20260924);
-  const casos = Array.from({ length: 500 }, () => ({
-    esquema: Object.keys(P.ESQUEMAS)[Math.floor(r() * 3)],
-    volume: entre(r, 5, 200),
-    og: 1 + entre(r, 20, 120) / 1000,
-    definirPor: r() < 0.5 ? "media" : "primeira",
-  }));
 
-  test("volumes somam o total, pontos se conservam, 1ª cerveja é a mais forte e a densidade cai em ordem", () => {
-    for (const p of casos) {
-      const res = P.planejar(p);
-      const vol = res.cervejas.reduce((a, c) => a + c.volume, 0);
-      const pts = res.cervejas.reduce((a, c) => a + c.volume * c.pontos, 0);
-      perto(vol, p.volume, 1e-6, `volume ${JSON.stringify(p)}`);
-      perto(pts, res.pontosTotais, 1e-6, `pontos ${JSON.stringify(p)}`);
-      for (let i = 1; i < res.cervejas.length; i++) {
-        assert.ok(res.cervejas[i].og < res.cervejas[i - 1].og, `ordem ${JSON.stringify(p)}`);
+  test("pontos se conservam, a ordem de coleta desce, e cada ação leva exatamente ao alvo", () => {
+    for (let k = 0; k < 500; k++) {
+      const n = r() < 0.5 ? 2 : 3;
+      const cervejas = Array.from({ length: n }, () => ({ volume: entre(r, 5, 60), og: 1 + entre(r, 25, 110) / 1000 }));
+      const evaporacao = entre(r, 0, 20);
+      const res = P.planejar({ cervejas, evaporacao, eficiencia: 70 });
+      assert.equal(res.valido, true);
+      // Σ volume × pontos previstos = Σ volume × pontos pedidos
+      const previstos = res.cervejas.reduce((a, c) => a + c.volume * c.pontosPrevistos, 0);
+      perto(previstos, res.pontosTotais, 1e-6, `pontos caso ${k}`);
+      for (let i = 1; i < res.ordemColeta.length; i++) {
+        assert.ok(res.ordemColeta[i].ogPrevista < res.ordemColeta[i - 1].ogPrevista, `ordem caso ${k}`);
       }
-      if (p.definirPor === "primeira") perto(res.cervejas[0].og, p.og, 1e-9, "1ª = informada");
-      else perto(res.ogMedia, p.og, 1e-9, "média = informada");
+      for (const c of res.cervejas) {
+        // depois da ação, a densidade é o alvo (pontos conservados)
+        perto(c.acao.volumeFinal * P.pontos(c.og), c.volume * c.pontosPrevistos, 1e-6, `ação caso ${k}`);
+        assert.ok(c.volumeColeta >= c.volume - 1e-9, "coleta antes da fervura ≥ volume final");
+      }
+      perto(res.ordemColeta.reduce((a, c) => a + c.volumeColeta, 0), res.totalColeta, 1e-9, "total coletado");
     }
   });
 
-  test("malte é proporcional aos pontos e inversamente à eficiência", () => {
-    for (const p of casos.slice(0, 100)) {
-      const pts = P.planejar(p).pontosTotais;
-      perto(P.malteNecessario(2 * pts, 70), 2 * P.malteNecessario(pts, 70), 1e-9, "dobro");
-      perto(P.malteNecessario(pts, 50), P.malteNecessario(pts, 100) * 2, 1e-9, "metade da eficiência");
+  test("sugestão de divisão (2 cervejas): quando existe, acerta as duas sem ajuste e mantém o total", () => {
+    let testadas = 0;
+    for (let k = 0; k < 300; k++) {
+      const cervejas = [{ volume: entre(r, 5, 40), og: 1 + entre(r, 60, 110) / 1000 }, { volume: entre(r, 5, 60), og: 1 + entre(r, 15, 60) / 1000 }];
+      const res = P.planejar({ cervejas, evaporacao: 10, eficiencia: 70 });
+      if (!res.sugestao || res.sugestao.tipo !== "dividir") continue;
+      testadas++;
+      perto(res.sugestao.volumeForte + res.sugestao.volumeFraca, cervejas[0].volume + cervejas[1].volume, 1e-6, "total");
+      const r2 = P.planejar({ cervejas: [{ volume: res.sugestao.volumeForte, og: cervejas[0].og }, { volume: res.sugestao.volumeFraca, og: cervejas[1].og }], evaporacao: 10, eficiencia: 70 });
+      assert.deepEqual(r2.cervejas.map((c) => c.acao.tipo), ["ok", "ok"], `caso ${k}`);
     }
+    assert.ok(testadas > 30, `poucos casos testados (${testadas})`);
+  });
+
+  test("troca de mosto (cervejas parecidas): sempre fecha exatamente, sem água", () => {
+    let testadas = 0;
+    for (let k = 0; k < 300; k++) {
+      const og2 = 1 + entre(r, 30, 60) / 1000;
+      const og1 = P.sg(P.pontos(og2) * entre(r, 1.01, 1.74));
+      const res = P.planejar({ cervejas: [{ volume: entre(r, 5, 40), og: og1 }, { volume: entre(r, 5, 40), og: og2 }], evaporacao: entre(r, 0, 15) });
+      assert.equal(res.sugestao.tipo, "misturar", `caso ${k}`);
+      const m = res.sugestao.mistura;
+      perto(m.sobraForte, 0, 1e-6, "sobra forte");
+      perto(m.sobraFraco, 0, 1e-6, "sobra fraco");
+      assert.ok(m.cervejas.every((c) => c.problema === null && c.agua < 1e-9), `caso ${k}`);
+      testadas++;
+    }
+    assert.equal(testadas, 300);
   });
 });
 
-describe("invariantes — misturar (500 casos aleatórios)", () => {
+describe("invariantes — misturar e no dia (aleatórios)", () => {
   const r = aleatorio(4242);
 
-  test("cada cerveja possível sai exatamente na densidade e no volume pedidos, sem litros negativos", () => {
+  test("toda mistura possível sai na densidade e no volume pedidos, sem litros negativos", () => {
     for (let k = 0; k < 500; k++) {
       const fraco = { volume: entre(r, 5, 60), og: 1 + entre(r, 5, 40) / 1000 };
       const forte = { volume: entre(r, 5, 60), og: fraco.og + entre(r, 5, 80) / 1000 };
-      const cervejas = Array.from({ length: 1 + Math.floor(r() * 4) }, () => ({
-        volume: entre(r, 1, 30),
-        og: 1 + entre(r, 1, P.pontos(forte.og)) / 1000,
-      }));
+      const cervejas = Array.from({ length: 1 + Math.floor(r() * 3) }, () => ({ volume: entre(r, 1, 30), og: 1 + entre(r, 1, P.pontos(forte.og)) / 1000 }));
       const res = P.misturar({ forte, fraco, cervejas });
-      let usadoF = 0, usadoW = 0;
       for (const c of res.cervejas) {
-        assert.equal(c.problema, null, `caso ${k}`);
-        assert.ok(c.forte >= -1e-9 && c.fraco >= -1e-9 && c.agua >= -1e-9, `negativo no caso ${k}`);
-        perto(c.forte + c.fraco + c.agua, c.volume, 1e-9, `volume caso ${k}`);
-        const pts = (c.forte * P.pontos(forte.og) + c.fraco * P.pontos(fraco.og)) / c.volume;
-        perto(pts, P.pontos(c.og), 1e-6, `densidade caso ${k}`);
-        if (c.agua > 1e-9) assert.equal(c.forte, 0, `água só entra sem mosto forte (caso ${k})`);
-        usadoF += c.forte; usadoW += c.fraco;
+        assert.equal(c.problema, null);
+        assert.ok(c.forte >= -1e-9 && c.fraco >= -1e-9 && c.agua >= -1e-9, `negativo caso ${k}`);
+        perto(c.forte + c.fraco + c.agua, c.volume, 1e-9, "volume");
+        perto((c.forte * P.pontos(forte.og) + c.fraco * P.pontos(fraco.og)) / c.volume, P.pontos(c.og), 1e-6, "densidade");
       }
-      perto(res.usadoForte, usadoF, 1e-9, "total forte");
-      perto(res.usadoFraco, usadoW, 1e-9, "total fraco");
-      perto(res.sobraForte, forte.volume - usadoF, 1e-9, "sobra forte");
-      assert.equal(res.suficiente, res.sobraForte > -1e-9 && res.sobraFraco > -1e-9);
     }
   });
 
-  test("alvo acima do mosto forte é sempre recusado, e não consome mosto", () => {
-    for (let k = 0; k < 100; k++) {
-      const forte = { volume: 20, og: 1 + entre(r, 40, 90) / 1000 };
-      const res = P.misturar({ forte, fraco: { volume: 20, og: 1.02 }, cervejas: [{ volume: 10, og: forte.og + 0.001 }] });
-      assert.equal(res.cervejas[0].problema, "acima-do-forte");
-      assert.equal(res.usadoForte + res.usadoFraco, 0);
-    }
-  });
-
-  test("entradas vazias ou inválidas não geram NaN", () => {
-    const res = P.misturar({ forte: { volume: "", og: "" }, fraco: { volume: "", og: "" }, cervejas: [{ volume: "", og: "" }] });
-    assert.equal(res.cervejas[0].problema, "incompleta");
-    for (const v of [res.usadoForte, res.usadoFraco, res.sobraForte, res.sobraFraco]) assert.ok(!Number.isNaN(v));
-  });
-});
-
-describe("invariantes — ajustar (300 casos aleatórios)", () => {
-  const r = aleatorio(7);
-
-  test("os pontos se conservam: volume × pontos = volume no alvo × pontos do alvo", () => {
+  test("no dia: a ação sempre leva ao alvo e o lúpulo acompanha o volume final", () => {
     for (let k = 0; k < 300; k++) {
-      const v = entre(r, 1, 40), og = 1 + entre(r, 20, 120) / 1000, alvo = 1 + entre(r, 20, 120) / 1000;
-      const res = P.ajustar(v, og, alvo);
-      perto(res.volumeNoAlvo * P.pontos(alvo), v * P.pontos(og), 1e-6, `caso ${k}`);
-      assert.equal(res.maisFraco, og < alvo);
-      assert.ok(res.aguaParaDiluir >= 0);
-      perto(res.fatorLupulo, res.volumeNoAlvo / v, 1e-9, "fator do lúpulo");
+      const alvo = { volume: entre(r, 5, 40), og: 1 + entre(r, 30, 100) / 1000 };
+      const medida = { volume: entre(r, 5, 50), og: 1 + entre(r, 20, 110) / 1000 };
+      const e = entre(r, 0, 20);
+      const [d] = P.noDia({ cervejas: [alvo], medidas: [medida], evaporacao: e });
+      perto(d.acao.volumeFinal * P.pontos(alvo.og), medida.volume * P.pontos(medida.og), 1e-6, `pontos caso ${k}`);
+      perto(d.fatorLupulo, d.acao.volumeFinal / alvo.volume, 1e-9, "lúpulo");
     }
   });
 });

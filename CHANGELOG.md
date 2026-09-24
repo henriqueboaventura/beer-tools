@@ -12,6 +12,36 @@ detalhe técnico, em `ferramentas/decoccao/CHANGELOG.md`.
 invalida o cache offline antigo e faz aparecer o aviso "Nova versão
 disponível" para quem já está com o site aberto.
 
+## [1.6.0] — 2026-09-24
+
+### Alterado
+- **Parti-gyle refeita em fluxo único e guiado.** A primeira versão
+  confundia: tinha dois métodos misturados (dividir por esquema e misturar
+  mosto forte e fraco), e um plano e um "no dia" que não se conversavam.
+  Agora:
+  1. **Suas cervejas:** 2 ou 3, com volume e OG final de cada uma.
+  2. **O plano:**
+     - quanto malte usar e a ordem da coleta ("colete os primeiros 21,1 L
+       para a Wee Heavy"), com a OG prevista de cada cerveja;
+     - para cada uma, o que fazer para chegar exatamente no alvo:
+       acrescentar água ou ferver mais;
+     - com 2 cervejas, a divisão de volumes que acerta as duas sem ajuste
+       (botão "Usar essa divisão") ou, se forem parecidas demais, como
+       trocar mosto entre as panelas.
+  3. **No dia:** já preenchido com a previsão. Troque pelo volume e pela OG
+     medidos em cada panela para ver a OG depois da fervura, o ajuste e
+     quanto mudar o lúpulo.
+- **Modelo da coleta:** a densidade dos mostos cai em linha reta do
+  primeiro ao último litro, calibrada para reproduzir exatamente as regras
+  da BYO de 1/3 + 2/3 e de três terços. A regra de metade/metade (58%) do
+  mesmo artigo é incompatível com as outras duas e ficou de fora. Com esse
+  modelo, só coletando, a 1ª de duas cervejas sai entre 1,75× e 4× mais
+  densa que a 2ª (em pontos).
+- A perda na fervura agora entra na conta: os volumes de coleta são antes
+  da fervura, e as OGs pedidas, depois.
+- Testes da ferramenta reescritos para o modelo novo: os exemplos das
+  fontes, os cenários de uso e mais de 2.000 casos aleatórios.
+
 ## [1.5.0] — 2026-09-24
 
 ### Adicionado
