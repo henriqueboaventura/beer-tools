@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Calculadora de parti-gyle: várias cervejas de uma mostura | Brassagem Forte</title>
+  <meta name="description" content="Planeje um parti-gyle: densidade de cada cerveja, quanto malte usar e como misturar o mosto forte e o fraco no dia para acertar cada receita.">
+  <link rel="canonical" href="https://www.brassagemforte.com.br/ferramentas/ferramentas/parti-gyle/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Ferramentas Brassagem Forte">
+  <meta property="og:locale" content="pt_BR">
+  <meta property="og:title" content="Calculadora de parti-gyle: várias cervejas de uma mostura | Brassagem Forte">
+  <meta property="og:description" content="Planeje um parti-gyle: densidade de cada cerveja, quanto malte usar e como misturar o mosto forte e o fraco no dia para acertar cada receita.">
+  <meta property="og:url" content="https://www.brassagemforte.com.br/ferramentas/ferramentas/parti-gyle/">
+  <meta property="og:image" content="https://www.brassagemforte.com.br/ferramentas/assets/img/og-parti-gyle.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="theme-color" content="#0b0b0b">
+  <link rel="manifest" href="../../manifest.webmanifest?v=1.5.0">
+  <link rel="icon" href="../../favicon.ico" sizes="32x32">
+  <link rel="icon" href="../../assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="../../assets/img/icon-180.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-title" content="Brassagem Forte">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../assets/css/bf.css?v=1.5.0">
+  <link rel="stylesheet" href="app.css?v=1.5.0">
+  <script src="../../assets/js/versao.js?v=1.5.0"></script>
+  <script src="../../assets/js/shell.js?v=1.5.0"></script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Calculadora de parti-gyle","url":"https://www.brassagemforte.com.br/ferramentas/ferramentas/parti-gyle/","applicationCategory":"UtilitiesApplication","operatingSystem":"Web","inLanguage":"pt-BR","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"BRL"},"author":[{"@type":"Person","name":"Henrique Boaventura"}],"publisher":{"@type":"Organization","name":"Brassagem Forte","url":"https://www.brassagemforte.com.br","logo":"https://www.brassagemforte.com.br/ferramentas/assets/img/icon-512.png"}}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Ferramentas","item":"https://www.brassagemforte.com.br/ferramentas/"},{"@type":"ListItem","position":2,"name":"Parti-gyle","item":"https://www.brassagemforte.com.br/ferramentas/ferramentas/parti-gyle/"}]}</script>
+</head>
+<body>
+  <header data-bf-header></header>
+
+  <main>
+    <div class="wrap">
+      <p class="bf-crumb"><a href="../../">Ferramentas</a> / 04</p>
+      <h1 class="bf-title">Parti-gyle</h1>
+      <p class="bf-lead">Várias cervejas de uma mostura só: os primeiros mostos, mais concentrados, viram uma cerveja forte; os seguintes, mais fracos, viram uma mais leve.</p>
+      <details class="bf-how">
+        <summary>Como funciona</summary>
+        <div class="bf-how__body">
+          <ol>
+            <li>A conta é feita em <b>pontos de densidade</b>: 1.064 = 64 pontos. Na mistura os pontos se conservam — 10 L a 1.064 têm 640 pontos·litro, não importa como sejam divididos.</li>
+            <li><b>Planejar:</b> escolha como dividir o mosto. Os três esquemas são as regras práticas publicadas na BYO — por exemplo, no 1/3 + 2/3 o primeiro terço sai com o dobro da densidade do resto. A ferramenta dá a densidade de cada cerveja e quanto malte usar.</li>
+            <li><b>No dia:</b> os mostos nunca saem exatamente como previsto. Meça o mosto forte e o fraco, diga o que quer de cada cerveja e a ferramenta diz quantos litros de cada um vão para cada panela.</li>
+          </ol>
+          <p>Use sempre a mesma referência: densidades e volumes antes da fervura, ou todos depois. A fervura concentra — OG depois = OG antes × volume antes ÷ volume depois.</p>
+        </div>
+      </details>
+
+      <!-- 01 Planejar -->
+      <section class="bf-step" aria-labelledby="l-plano">
+        <h2 class="bf-step__label" id="l-plano"><b>01</b> Planejar a divisão</h2>
+        <div class="bf-chips pg-esquemas" role="group" aria-label="Esquema de divisão" id="esquemas"></div>
+        <p class="pg-descricao" id="esquemaDescricao"></p>
+
+        <div class="pg-linha">
+          <div class="pg-campo">
+            <label for="volumeTotal">Volume total <span>L</span></label>
+            <input type="number" id="volumeTotal" inputmode="decimal" value="57" min="0" step="1">
+          </div>
+          <div class="pg-campo">
+            <label for="ogPlano" id="ogPlanoRotulo">OG média <span>SG</span></label>
+            <input type="number" id="ogPlano" inputmode="decimal" value="1.064" min="1.000" step="0.001">
+          </div>
+        </div>
+        <div class="bf-segmented pg-definir" role="group" aria-label="Definir a densidade por">
+          <button type="button" class="bf-chip" data-definir="media" aria-pressed="true">OG média do lote</button>
+          <button type="button" class="bf-chip" data-definir="primeira" aria-pressed="false">OG da 1ª cerveja</button>
+        </div>
+
+        <div class="pg-cervejas" id="planoCervejas" aria-live="polite"></div>
+
+        <div class="pg-malte">
+          <div class="pg-linha">
+            <div class="pg-campo">
+              <label for="eficiencia">Eficiência <span>%</span></label>
+              <input type="number" id="eficiencia" inputmode="decimal" value="70" min="1" max="100" step="1">
+            </div>
+            <div class="pg-campo">
+              <label for="ppg">Potencial do malte <span>PPG</span></label>
+              <input type="number" id="ppg" inputmode="decimal" value="37" min="1" step="1">
+            </div>
+          </div>
+          <p class="pg-malte__resultado"><span id="malteKg">0</span> <small>kg de malte</small></p>
+          <p class="pg-malte__nota">Equivalente em malte claro (37 PPG ≈ 1.037 por libra por galão) para <span id="malteTotal"></span>. Com maltes especiais, some os pontos de cada um.</p>
+        </div>
+      </section>
+
+      <!-- 02 No dia -->
+      <section class="bf-step" aria-labelledby="l-dia">
+        <h2 class="bf-step__label" id="l-dia"><b>02</b> No dia: misturar os mostos</h2>
+        <p class="pg-descricao">Meça o volume e a densidade do mosto forte (primeiros mostos) e do fraco (os seguintes). A ferramenta diz quanto de cada vai para cada cerveja.</p>
+        <div class="pg-mostos">
+          <fieldset class="pg-mosto">
+            <legend>Mosto forte</legend>
+            <div class="pg-linha">
+              <div class="pg-campo"><label for="forteVol">Volume <span>L</span></label><input type="number" id="forteVol" inputmode="decimal" value="19" min="0" step="0.5"></div>
+              <div class="pg-campo"><label for="forteOg">OG <span>SG</span></label><input type="number" id="forteOg" inputmode="decimal" value="1.080" min="1.000" step="0.001"></div>
+            </div>
+          </fieldset>
+          <fieldset class="pg-mosto">
+            <legend>Mosto fraco</legend>
+            <div class="pg-linha">
+              <div class="pg-campo"><label for="fracoVol">Volume <span>L</span></label><input type="number" id="fracoVol" inputmode="decimal" value="19" min="0" step="0.5"></div>
+              <div class="pg-campo"><label for="fracoOg">OG <span>SG</span></label><input type="number" id="fracoOg" inputmode="decimal" value="1.020" min="1.000" step="0.001"></div>
+            </div>
+          </fieldset>
+        </div>
+
+        <h3 class="pg-subtitulo">Cervejas que você quer</h3>
+        <div id="alvos"></div>
+        <button type="button" class="bf-btn pg-adicionar" id="adicionar">+ Adicionar cerveja</button>
+
+        <div class="pg-mistura" id="mistura" aria-live="polite"></div>
+      </section>
+
+      <!-- 03 Ajuste -->
+      <section class="bf-step" aria-labelledby="l-ajuste">
+        <h2 class="bf-step__label" id="l-ajuste"><b>03</b> Primeiro mosto saiu diferente?</h2>
+        <p class="pg-descricao">Coletou mais denso que o previsto? Os pontos são os mesmos: diluindo até a densidade planejada, o volume cresce — e o lúpulo acompanha.</p>
+        <div class="pg-linha pg-linha--3">
+          <div class="pg-campo"><label for="ajVol">Coletado <span>L</span></label><input type="number" id="ajVol" inputmode="decimal" value="7.5" min="0" step="0.5"></div>
+          <div class="pg-campo"><label for="ajOg">OG medida</label><input type="number" id="ajOg" inputmode="decimal" value="1.100" min="1.000" step="0.001"></div>
+          <div class="pg-campo"><label for="ajAlvo">OG alvo</label><input type="number" id="ajAlvo" inputmode="decimal" value="1.080" min="1.000" step="0.001"></div>
+        </div>
+        <p class="pg-ajuste" id="ajuste" aria-live="polite"></p>
+      </section>
+
+      <details class="bf-how pg-fontes">
+        <summary>Fontes</summary>
+        <div class="bf-how__body">
+          <ul>
+            <li><a href="https://byo.com/articles/introduction-to-parti-gyle-brewing/" rel="noopener">BYO — Introduction to Parti-Gyle Brewing</a>: esquemas de divisão (1/3 + 2/3, metade/metade, três terços).</li>
+            <li><a href="https://byo.com/articles/parti-gyle-brewing-techniques/" rel="noopener">BYO — Parti-Gyle Brewing Techniques</a>: pontos totais, quanto malte, ajuste do primeiro mosto.</li>
+            <li><a href="https://www.beerandbrewing.com/practical-parti-gyle-brewing" rel="noopener">Craft Beer &amp; Brewing — Practical Parti-Gyle Brewing</a>: misturar mosto forte e fraco para cada cerveja.</li>
+          </ul>
+        </div>
+      </details>
+    </div>
+  </main>
+
+  <footer data-bf-footer></footer>
+
+  <script src="calculo.js?v=1.5.0"></script>
+  <script src="app.js?v=1.5.0"></script>
+</body>
+</html>

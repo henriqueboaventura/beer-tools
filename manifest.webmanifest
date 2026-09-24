@@ -1,7 +1,7 @@
 {
   "name": "Ferramentas Brassagem Forte",
   "short_name": "Brassagem Forte",
-  "description": "Ferramentas para cervejeiros caseiros: substituição de leveduras, decocção, speise e mais.",
+  "description": "Ferramentas para cervejeiros caseiros: substituição de leveduras, decocção, speise, parti-gyle e mais.",
   "id": "./",
   "start_url": "./",
   "scope": "./",
@@ -42,6 +42,10 @@
     {
       "name": "Speise",
       "url": "ferramentas/speise/"
+    },
+    {
+      "name": "Parti-gyle",
+      "url": "ferramentas/parti-gyle/"
     }
   ]
 }

@@ -54,6 +54,11 @@ const PRECACHE = [
   "ferramentas/speise/app.css",
   "ferramentas/speise/app.js",
   "ferramentas/speise/calculo.js",
+  "ferramentas/parti-gyle/",
+  "ferramentas/parti-gyle/index.html",
+  "ferramentas/parti-gyle/app.css",
+  "ferramentas/parti-gyle/app.js",
+  "ferramentas/parti-gyle/calculo.js",
 ];
 
 self.addEventListener("install", (event) => {

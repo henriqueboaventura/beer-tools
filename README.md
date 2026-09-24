@@ -50,6 +50,18 @@ Calculadora de carbonatação natural com o próprio mosto, de Henrique Boaventu
 
 O cálculo está em [`ferramentas/speise/calculo.js`](ferramentas/speise/calculo.js) e é explicado em [`docs/specs/03-speise.md`](docs/specs/03-speise.md).
 
+### 04 — Parti-gyle
+
+`ferramentas/parti-gyle/`
+
+Várias cervejas de uma mostura só, de Henrique Boaventura.
+
+- **Planejar:** esquemas de divisão publicados (1/3 + 2/3, metade/metade, três terços), densidade e volume de cada cerveja e quanto malte usar.
+- **No dia:** com os mostos forte e fraco medidos, quanto de cada vai para cada cerveja (até 4), com água quando necessário.
+- **Primeiro mosto diferente do previsto:** volume no alvo, água para diluir e correção do lúpulo.
+
+As regras e fórmulas vêm da BYO e da Craft Beer & Brewing: [`docs/specs/04-parti-gyle.md`](docs/specs/04-parti-gyle.md).
+
 ## Rodar localmente
 
 Só precisa de Python 3 (para servir os arquivos) e Node 18 ou mais novo (para os testes). Não há dependências para instalar.
@@ -84,6 +96,7 @@ Os testes usam só o runner nativo do Node (`node:test`). Eles cobrem:
 - **Substituição de leveduras** (`ferramentas/substituicao-leveduras/tests/`): consistência dos dados, casos conferidos à mão contra as fontes, e a busca.
 - **Decocção** (`ferramentas/decoccao/tests/`): o motor de cálculo, com valores conferidos contra a literatura.
 - **Speise** (`ferramentas/speise/tests/`): o cálculo, com valores conferidos à mão.
+- **Parti-gyle** (`ferramentas/parti-gyle/tests/`): os exemplos numéricos publicados nas fontes.
 
 O GitHub Actions roda a suíte em todo push.
 
@@ -186,4 +199,5 @@ Na decocção, mudanças na calculadora também sobem a versão dela (`ferrament
 - **Substituição de leveduras:** Henrique Boaventura e Fábio Koerich. Fontes dos dados: Yeast Master (David M. Taylor), AEB Brewing Yeast Substitution Guide, Imperial Yeast Strain Cross Reference Guide, tabela de substituição Levteck e curadoria da Brassagem Forte.
 - **Decocção:** Henrique Boaventura e Fábio Koerich. As fontes da literatura estão no README da ferramenta.
 - **Speise:** Henrique Boaventura.
+- **Parti-gyle:** Henrique Boaventura. Baseada em BYO ("Introduction to Parti-Gyle Brewing", "Parti-Gyle Brewing Techniques") e Craft Beer & Brewing ("Practical Parti-Gyle Brewing").
 - Um projeto da [Brassagem Forte](https://www.brassagemforte.com.br).

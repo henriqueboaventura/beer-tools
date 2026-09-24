@@ -12,6 +12,22 @@ detalhe técnico, em `ferramentas/decoccao/CHANGELOG.md`.
 invalida o cache offline antigo e faz aparecer o aviso "Nova versão
 disponível" para quem já está com o site aberto.
 
+## [1.5.0] — 2026-09-24
+
+### Adicionado
+- **Ferramenta 04 — Parti-gyle**: várias cervejas de uma mostura.
+  - **Planejar:** os três esquemas de divisão publicados na BYO
+    (1/3 + 2/3, metade/metade e três terços), definidos pela OG média ou
+    pela OG da 1ª cerveja, com a densidade e o volume de cada cerveja e
+    quanto malte usar (eficiência e potencial do malte ajustáveis).
+  - **No dia:** com o mosto forte e o fraco medidos, quantos litros de cada
+    vão para até 4 cervejas, completando com água quando o alvo fica abaixo
+    do mosto fraco, e avisando quando falta mosto ou o alvo passa do forte.
+  - **Primeiro mosto diferente do previsto:** volume no alvo, água para
+    diluir e fator de correção do lúpulo.
+  - Os testes usam os exemplos numéricos das fontes (BYO e Craft Beer &
+    Brewing), citadas na própria ferramenta.
+
 ## [1.4.0] — 2026-09-23
 
 ### Adicionado

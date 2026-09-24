@@ -34,6 +34,7 @@ PAGINAS_FIXAS = [
     "ferramentas/decoccao/",
     "ferramentas/decoccao/sobre.html",
     "ferramentas/speise/",
+    "ferramentas/parti-gyle/",
 ]
 
 NIVEL = {3: "Equivalente", 2: "Provável", 1: "Alternativa"}

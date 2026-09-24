@@ -19,7 +19,7 @@ SITE = "https://www.brassagemforte.com.br/ferramentas/"
 # páginas escritas à mão (as de levedura são geradas pelo gerar_seo.py)
 PAGINAS = ["index.html", "404.html", "ferramentas/substituicao-leveduras/index.html",
            "ferramentas/decoccao/index.html", "ferramentas/decoccao/sobre.html",
-           "ferramentas/speise/index.html"]
+           "ferramentas/speise/index.html", "ferramentas/parti-gyle/index.html"]
 REF = re.compile(r'((?:href|src)=")([^"?#]+\.(?:js|css|webmanifest))(?:\?v=[^"]*)?(")')
 
 

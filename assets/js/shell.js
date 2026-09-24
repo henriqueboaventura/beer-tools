@@ -29,6 +29,13 @@
       titulo: "Speise",
       descricao: "Quanto mosto reservar para carbonatar a cerveja naturalmente, sem açúcar de priming.",
       status: "disponivel"
+    },
+    {
+      numero: "04",
+      slug: "parti-gyle",
+      titulo: "Parti-gyle",
+      descricao: "Várias cervejas de uma mostura: divisão dos mostos, quanto malte e como misturar no dia.",
+      status: "disponivel"
     }
   ];
 

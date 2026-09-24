@@ -1,0 +1,123 @@
+/* Estilos específicos da ferramenta 04 — Parti-gyle */
+
+/* só três esquemas: quebram linha e ficam todos visíveis (sem rolagem lateral) */
+.pg-esquemas { flex-wrap: wrap; overflow: visible; margin: 0; padding: 0; }
+
+.pg-descricao { font-size: 15px; color: var(--bf-soft); margin: 12px 0 16px; max-width: 38em; }
+
+.pg-campo { margin-bottom: 14px; min-width: 0; }
+.pg-campo label {
+  display: flex; justify-content: space-between; align-items: baseline; gap: 8px;
+  font-size: 15px; color: var(--bf-soft); margin-bottom: 8px;
+}
+.pg-campo label span { font: 500 12px/1 var(--bf-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--bf-mute); }
+.pg-campo input {
+  width: 100%;
+  appearance: none;
+  background: var(--bf-raised);
+  border: 0;
+  border-bottom: 2px solid var(--bf-fg);
+  border-radius: 0;
+  color: var(--bf-fg);
+  /* 16px+ evita o zoom automático do Safari iOS */
+  font: 500 20px/1 var(--bf-mono);
+  padding: 12px;
+  min-height: 50px;
+  -moz-appearance: textfield;
+}
+.pg-campo input:focus-visible { outline: none; background: var(--bf-raised-2); }
+
+.pg-linha { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.pg-linha--3 { grid-template-columns: 1fr 1fr 1fr; }
+@media (max-width: 380px) {
+  .pg-linha--3 { grid-template-columns: 1fr 1fr; }
+  .pg-linha--3 .pg-campo:first-child { grid-column: 1 / 3; }
+}
+
+.pg-definir { margin: 0 0 20px; }
+.pg-definir .bf-chip { padding: 0 8px; }
+
+/* Plano: um card por cerveja */
+.pg-cervejas { display: grid; gap: 10px; }
+@media (min-width: 560px) { .pg-cervejas { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); } }
+.pg-cerveja { background: var(--bf-fg); color: var(--bf-bg); padding: 14px 16px; }
+.pg-cerveja p { margin: 0; }
+.pg-cerveja__nome { font: 500 12px/1.3 var(--bf-mono); letter-spacing: .1em; text-transform: uppercase; }
+.pg-cerveja__nome small { display: block; opacity: .7; letter-spacing: .06em; }
+.pg-cerveja__og { font-weight: 900; font-stretch: 62%; font-size: 60px; line-height: 1; margin: 8px 0 10px !important; }
+.pg-cerveja__dados { display: grid; grid-template-columns: repeat(3, 1fr); margin: 0; border-top: 1.5px solid currentColor; }
+.pg-cerveja__dados div { padding: 8px 0 0; min-width: 0; }
+.pg-cerveja__dados div + div { padding-left: 8px; border-left: 1px solid color-mix(in srgb, currentColor 25%, transparent); }
+.pg-cerveja__dados dt { font: 500 10px/1 var(--bf-mono); letter-spacing: .1em; text-transform: uppercase; opacity: .7; }
+.pg-cerveja__dados dd { margin: 4px 0 0; font: 500 15px/1.2 var(--bf-mono); white-space: nowrap; }
+.pg-media { grid-column: 1 / -1; margin: 4px 0 0; font: 400 13px/1.5 var(--bf-mono); color: var(--bf-mute); }
+.pg-media b { color: var(--bf-fg); font-weight: 500; }
+
+.pg-malte { margin-top: 24px; padding-top: 16px; border-top: 1px solid var(--bf-line); }
+.pg-malte__resultado { margin: 0; font-weight: 900; font-stretch: 62%; font-size: 48px; line-height: 1; color: var(--bf-fg); }
+.pg-malte__resultado small { font: 500 14px/1 var(--bf-mono); color: var(--bf-mute); margin-left: 4px; }
+.pg-malte__nota { font-size: 13px; color: var(--bf-mute); margin: 8px 0 0; }
+
+/* No dia */
+.pg-mostos { display: grid; gap: 12px; }
+@media (min-width: 560px) { .pg-mostos { grid-template-columns: 1fr 1fr; } }
+.pg-mosto { border: 1px solid var(--bf-line-strong); padding: 12px 12px 0; margin: 0; min-width: 0; }
+.pg-mosto legend { font: 500 12px/1 var(--bf-mono); letter-spacing: .12em; text-transform: uppercase; color: var(--bf-fg); padding: 0 6px; }
+
+.pg-subtitulo { font: 500 12px/1 var(--bf-mono); letter-spacing: .12em; text-transform: uppercase; color: var(--bf-fg); margin: 24px 0 10px; }
+.pg-alvo {
+  display: grid;
+  grid-template-columns: 1fr 1fr 44px;
+  gap: 0 12px;
+  align-items: end;
+  border-top: 1px solid var(--bf-line);
+  padding-top: 10px;
+}
+.pg-alvo__nome { grid-column: 1 / -1; margin: 0 0 8px; font: 500 12px/1 var(--bf-mono); letter-spacing: .1em; text-transform: uppercase; color: var(--bf-mute); }
+.pg-remover {
+  appearance: none; background: none; border: 1px solid var(--bf-line-strong); color: var(--bf-soft);
+  width: 44px; min-height: 50px; margin-bottom: 14px; cursor: pointer; font-size: 14px;
+}
+.pg-remover:hover { border-color: var(--bf-fg); color: var(--bf-fg); }
+.pg-adicionar { margin-top: 4px; color: var(--bf-fg); }
+
+.pg-mistura { margin-top: 20px; display: grid; gap: 10px; }
+.pg-receita { background: var(--bf-fg); color: var(--bf-bg); padding: 14px 16px; }
+.pg-receita p { margin: 0; }
+.pg-receita__nome { font: 500 12px/1.4 var(--bf-mono); letter-spacing: .1em; text-transform: uppercase; }
+.pg-receita__nome small { display: block; letter-spacing: .04em; text-transform: none; opacity: .75; font-size: 13px; }
+.pg-receita__partes { display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; margin: 10px 0 0; border-top: 1.5px solid currentColor; }
+.pg-receita__partes div { padding: 8px 0 0; min-width: 0; }
+.pg-receita__partes div + div { padding-left: 10px; border-left: 1px solid color-mix(in srgb, currentColor 25%, transparent); }
+.pg-receita__partes dt { font: 500 10px/1 var(--bf-mono); letter-spacing: .1em; text-transform: uppercase; opacity: .7; }
+.pg-receita__partes dd { margin: 4px 0 0; font-weight: 900; font-stretch: 62%; font-size: 34px; line-height: 1; }
+
+/* Cores de informação: vermelho = impossível/falta, âmbar = atenção */
+:root { --pg-erro: #f87171; --pg-atencao: #fbbf24; }
+:root[data-theme="light"] { --pg-erro: #b91c1c; --pg-atencao: #b45309; }
+@media (prefers-color-scheme: light) { :root:not([data-theme="dark"]) { --pg-erro: #b91c1c; --pg-atencao: #b45309; } }
+
+.pg-receita--erro { background: none; color: var(--bf-soft); border: 1px solid var(--pg-erro); }
+.pg-receita__erro { margin-top: 8px !important; color: var(--bf-fg); font-size: 14px; }
+.pg-receita--erro .pg-receita__nome { color: var(--pg-erro); }
+
+.pg-totais { margin-top: 6px; }
+.pg-total { margin: 0; padding: 8px 0; border-bottom: 1px solid var(--bf-line); font: 400 14px/1.4 var(--bf-mono); color: var(--bf-soft); }
+.pg-total b { color: var(--bf-fg); font-weight: 500; }
+.pg-total--falta { color: var(--pg-erro); }
+.pg-total--falta b { color: var(--pg-erro); }
+
+.pg-aviso {
+  margin: 10px 0 0;
+  padding: 10px 12px;
+  border-left: 4px solid var(--pg-atencao);
+  background: color-mix(in srgb, var(--pg-atencao) 12%, transparent);
+  color: var(--bf-fg);
+  font-size: 14px;
+}
+
+.pg-ajuste { margin: 4px 0 0; padding: 12px 14px; border-left: 4px solid var(--bf-fg); background: var(--bf-raised); font-size: 15px; line-height: 1.5; color: var(--bf-soft); }
+.pg-ajuste b { color: var(--bf-fg); }
+
+.pg-fontes { margin-top: 32px; }
+.pg-fontes li { font-size: 14px; }
