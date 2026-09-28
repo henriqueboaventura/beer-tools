@@ -69,21 +69,27 @@
       (v < 50 ? " Com viabilidade tão baixa, faça um starter pequeno primeiro para acordar o fermento." : "");
   }
 
+  // bloco de destaque: quanto você tem, a barra até o necessário e o que fazer
   function textoTem(f, tem, necessario) {
     var falta = necessario - tem;
+    var ok = falta <= 0;
     var pct = tem / necessario * 100;
-    var html = '<p class="ti-tem">Você tem <b>' + bi(tem) + "</b> <small>(" + num(pct, 0) + "% do necessário)</small></p>";
-    if (falta <= 0) {
-      html += status(true, "Dá para inocular direto, sem starter.");
-      return html;
+    var acao;
+    if (ok) acao = "<b>Dá para inocular direto</b>, sem starter.";
+    else {
+      acao = "<b>Faltam " + bi(falta) + ".</b> Faça um starter (abaixo)" + (f.tipo === "seca" ? " ou use mais levedura." : ".");
+      var s = C.semStarter(f, necessario);
+      if (s && f.tipo === "liquida") acao += " Sem starter, seriam <b>" + s.pacotes + " pacotes</b> com essa viabilidade.";
+      if (s && f.tipo === "seca") acao = "<b>Faltam " + bi(falta) + ".</b> Use <b>" + num(s.gramas, 1) + " g</b> (" + s.saches + (s.saches === 1 ? " sachê" : " sachês") + " de 11 g).";
+      if (s && f.tipo === "reaproveitada") acao += " Sem starter, seriam <b>" + num(s.ml, 0) + " mL</b> desse fermento.";
     }
-    html += status(false, "<b>Faltam " + bi(falta) + ".</b>");
-    var s = C.semStarter(f, necessario);
-    if (!s) return html;
-    if (f.tipo === "liquida") html += '<p class="ti-nota">Sem starter, seriam ' + s.pacotes + " pacotes com essa viabilidade.</p>";
-    if (f.tipo === "seca") html += '<p class="ti-nota">Use <b>' + num(s.gramas, 1) + " g</b> (" + s.saches + (s.saches === 1 ? " sachê" : " sachês") + " de 11 g).</p>";
-    if (f.tipo === "reaproveitada") html += '<p class="ti-nota">Sem starter, seriam <b>' + num(s.ml, 0) + " mL</b> desse fermento.</p>";
-    return html;
+    return '<div class="ti-tem' + (ok ? " ti-tem--ok" : "") + '">\n' +
+      '<p class="ti-tem__rotulo">Você tem</p>\n' +
+      '<p class="ti-tem__valor">' + num(tem, 0) + " <small>bi</small></p>\n" +
+      '<div class="ti-tem__barra" role="img" aria-label="' + num(pct, 0) + '% do necessário"><span style="width:' + Math.min(100, pct).toFixed(1) + '%"></span></div>\n' +
+      '<p class="ti-tem__pct">' + num(pct, 0) + "% do necessário (" + bi(necessario) + ")</p>\n" +
+      '<p class="ti-tem__acao">' + acao + "</p>\n" +
+      "</div>";
   }
 
   /* ---------- 03 Starter ---------- */

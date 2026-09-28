@@ -12,6 +12,16 @@ detalhe técnico, em `ferramentas/decoccao/CHANGELOG.md`.
 invalida o cache offline antigo e faz aparecer o aviso "Nova versão
 disponível" para quem já está com o site aberto.
 
+## [1.8.1] — 2026-09-28
+
+### Alterado
+- **Taxa de inóculo: "Você tem" em destaque.** Virou um bloco próprio,
+  no mesmo peso do "Você precisa de":
+  - o número grande;
+  - uma barra até o necessário;
+  - âmbar quando falta, verde quando basta;
+  - o que fazer (starter, pacotes, gramas ou mL).
+
 ## [1.8.0] — 2026-09-28
 
 ### Adicionado

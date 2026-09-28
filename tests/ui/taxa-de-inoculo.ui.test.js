@@ -31,6 +31,10 @@ suiteUI("Taxa de inóculo (interface)", (ctx) => {
     assert.equal(await pag.avaliar("ui.texto('#necessario')"), br(NECESSARIO, 0));
     assert.match(await pag.avaliar("ui.texto('#tem')"), /Você tem 100 bi/);
     assert.match(await pag.avaliar("ui.texto('#tem')"), /Faltam 86 bi/);
+    // bloco em destaque: barra proporcional e cor de atenção
+    assert.equal(await pag.avaliar("ui.$('.ti-tem').classList.contains('ti-tem--ok')"), false);
+    assert.equal(await pag.avaliar("ui.$('.ti-tem__barra span').style.width"), (100 / NECESSARIO * 100).toFixed(1) + "%");
+    assert.match(await pag.avaliar("ui.texto('.ti-tem__pct')"), /54% do necessário \(186 bi\)/);
     const [p] = C.propagar(100, [{ litros: 1, sg: 1.036, modelo: "braukaiser" }]);
     const ps = await passos();
     assert.equal(ps.length, 1);
@@ -95,6 +99,8 @@ suiteUI("Taxa de inóculo (interface)", (ctx) => {
     await pag.avaliar("ui.clicar('[data-fonte=\"reaproveitada\"]')");
     assert.match(await pag.avaliar("ui.texto('#tem')"), /Você tem 203 bi/); // 200 mL × 4,5 × 25% × 90%
     assert.match(await pag.avaliar("ui.texto('#tem')"), /Dá para inocular direto/);
+    assert.equal(await pag.avaliar("ui.$('.ti-tem').classList.contains('ti-tem--ok')"), true, "verde quando basta");
+    assert.equal(await pag.avaliar("ui.$('.ti-tem__barra span').style.width"), "100%", "barra não passa do fim");
     await pag.avaliar("ui.clicar('[data-fonte=\"contagem\"]')");
     await pag.avaliar("ui.digitar('#celulas', '50')");
     assert.match(await pag.avaliar("ui.texto('#tem')"), /Você tem 50 bi/);

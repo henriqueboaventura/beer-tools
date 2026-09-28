@@ -52,9 +52,6 @@
 .ti-resultado__valor small { display: block; font: 500 14px/1.2 var(--bf-mono); letter-spacing: .06em; text-transform: uppercase; margin-top: 6px; }
 .ti-resultado__sub { font: 400 13px/1.4 var(--bf-mono); opacity: .8; }
 
-.ti-tem { font-size: 17px; color: var(--bf-soft); margin: 4px 0 0; }
-.ti-tem b { color: var(--bf-fg); font: 500 20px/1 var(--bf-mono); }
-.ti-tem small { color: var(--bf-mute); font: 400 13px/1 var(--bf-mono); }
 
 /* Cores de informação: verde = ok, âmbar = falta/atenção */
 :root { --ti-ok: #4ade80; --ti-atencao: #fbbf24; }
@@ -65,6 +62,28 @@
 .ti-status b { color: var(--bf-fg); }
 .ti-status--ok { border-left-color: var(--ti-ok); background: color-mix(in srgb, var(--ti-ok) 10%, transparent); }
 .ti-status--ok::before { content: "✓ "; color: var(--ti-ok); font-weight: 700; }
+
+/* Você tem: destaque no mesmo peso do "Você precisa de", com a cor dizendo a situação */
+.ti-tem {
+  --ti-cor: var(--ti-atencao);
+  margin-top: 8px;
+  padding: 16px;
+  border: 2px solid var(--ti-cor);
+  border-top-width: 6px;
+  background: color-mix(in srgb, var(--ti-cor) 8%, transparent);
+  text-align: center;
+}
+.ti-tem--ok { --ti-cor: var(--ti-ok); }
+.ti-tem p { margin: 0; }
+.ti-tem__rotulo { font: 500 12px/1 var(--bf-mono); letter-spacing: .12em; text-transform: uppercase; color: var(--bf-soft); }
+.ti-tem__valor { font-weight: 900; font-stretch: 62%; font-size: 72px; line-height: 1; color: var(--bf-fg); margin: 8px 0 12px !important; }
+.ti-tem__valor small { font: 500 16px/1 var(--bf-mono); text-transform: uppercase; margin-left: 2px; }
+.ti-tem__barra { height: 10px; background: var(--bf-raised-2); border: 1px solid var(--bf-line-strong); }
+.ti-tem__barra span { display: block; height: 100%; background: var(--ti-cor); }
+.ti-tem__pct { font: 500 13px/1.4 var(--bf-mono); color: var(--bf-soft); margin-top: 6px !important; }
+.ti-tem__acao { margin-top: 12px !important; padding-top: 12px; border-top: 1px solid color-mix(in srgb, var(--ti-cor) 40%, transparent); font-size: 15px; line-height: 1.45; color: var(--bf-soft); }
+.ti-tem__acao b { color: var(--bf-fg); }
+.ti-tem__acao b:first-child { color: var(--ti-cor); }
 
 /* Sugestão */
 .ti-sugerir { border-top: 1px solid var(--bf-line); border-bottom: 1px solid var(--bf-line); margin-bottom: 16px; }
