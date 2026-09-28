@@ -63,8 +63,10 @@
 .ti-status--ok { border-left-color: var(--ti-ok); background: color-mix(in srgb, var(--ti-ok) 10%, transparent); }
 .ti-status--ok::before { content: "✓ "; color: var(--ti-ok); font-weight: 700; }
 
-/* Você tem: destaque no mesmo peso do "Você precisa de", com a cor dizendo a situação */
-.ti-tem {
+/* Placar ("Você tem" e o resultado dos passos): destaque no mesmo peso do
+   "Você precisa de", com a cor dizendo a situação */
+#final .ti-placar { margin-top: 20px; }
+.ti-placar {
   --ti-cor: var(--ti-atencao);
   margin-top: 8px;
   padding: 16px;
@@ -73,17 +75,19 @@
   background: color-mix(in srgb, var(--ti-cor) 8%, transparent);
   text-align: center;
 }
-.ti-tem--ok { --ti-cor: var(--ti-ok); }
-.ti-tem p { margin: 0; }
-.ti-tem__rotulo { font: 500 12px/1 var(--bf-mono); letter-spacing: .12em; text-transform: uppercase; color: var(--bf-soft); }
-.ti-tem__valor { font-weight: 900; font-stretch: 62%; font-size: 72px; line-height: 1; color: var(--bf-fg); margin: 8px 0 12px !important; }
-.ti-tem__valor small { font: 500 16px/1 var(--bf-mono); text-transform: uppercase; margin-left: 2px; }
-.ti-tem__barra { height: 10px; background: var(--bf-raised-2); border: 1px solid var(--bf-line-strong); }
-.ti-tem__barra span { display: block; height: 100%; background: var(--ti-cor); }
-.ti-tem__pct { font: 500 13px/1.4 var(--bf-mono); color: var(--bf-soft); margin-top: 6px !important; }
-.ti-tem__acao { margin-top: 12px !important; padding-top: 12px; border-top: 1px solid color-mix(in srgb, var(--ti-cor) 40%, transparent); font-size: 15px; line-height: 1.45; color: var(--bf-soft); }
-.ti-tem__acao b { color: var(--bf-fg); }
-.ti-tem__acao b:first-child { color: var(--ti-cor); }
+.ti-placar--ok { --ti-cor: var(--ti-ok); }
+.ti-placar p { margin: 0; }
+.ti-placar__rotulo { font: 500 12px/1 var(--bf-mono); letter-spacing: .12em; text-transform: uppercase; color: var(--bf-soft); }
+.ti-placar__valor { font-weight: 900; font-stretch: 62%; font-size: 72px; line-height: 1; color: var(--bf-fg); margin: 8px 0 12px !important; }
+.ti-placar__valor small { font: 500 16px/1 var(--bf-mono); text-transform: uppercase; margin-left: 2px; }
+.ti-placar__barra { height: 10px; background: var(--bf-raised-2); border: 1px solid var(--bf-line-strong); }
+.ti-placar__barra span { display: block; height: 100%; background: var(--ti-cor); }
+.ti-placar__pct { font: 500 13px/1.4 var(--bf-mono); color: var(--bf-soft); margin-top: 6px !important; }
+.ti-placar__pct + .ti-placar__pct { margin-top: 2px !important; color: var(--bf-mute); }
+.ti-placar__acao { margin-top: 12px !important; padding-top: 12px; border-top: 1px solid color-mix(in srgb, var(--ti-cor) 40%, transparent); font-size: 15px; line-height: 1.45; color: var(--bf-soft); }
+.ti-placar__acao b { color: var(--bf-fg); }
+.ti-placar__acao b:first-child { color: var(--ti-cor); }
+.ti-placar--ok .ti-placar__acao b:first-child::before { content: "✓ "; }
 
 /* Sugestão */
 .ti-sugerir { border-top: 1px solid var(--bf-line); border-bottom: 1px solid var(--bf-line); margin-bottom: 16px; }
@@ -111,14 +115,6 @@
 .ti-passo__dados div + div { padding-left: 8px; border-left: 1px solid var(--bf-line); }
 .ti-passo__dados dt { font: 500 10px/1.2 var(--bf-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--bf-mute); }
 .ti-passo__dados dd { margin: 4px 0 0; font: 500 16px/1.2 var(--bf-mono); color: var(--bf-fg); white-space: nowrap; }
-
-/* Resultado final dos passos */
-.ti-final { margin-top: 20px; background: var(--bf-fg); color: var(--bf-bg); padding: 16px; text-align: center; }
-.ti-final p { margin: 0; }
-.ti-final__rotulo { font: 500 12px/1 var(--bf-mono); letter-spacing: .12em; text-transform: uppercase; opacity: .8; }
-.ti-final__valor { font-weight: 900; font-stretch: 62%; font-size: 64px; line-height: 1; margin: 8px 0 4px !important; }
-.ti-final__valor small { font: 500 14px/1 var(--bf-mono); text-transform: uppercase; }
-.ti-final__sub { font: 400 13px/1.4 var(--bf-mono); opacity: .8; }
 
 .ti-fontes-lista { margin-top: 32px; }
 .ti-fontes-lista li { font-size: 14px; }

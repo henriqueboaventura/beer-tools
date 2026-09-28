@@ -69,13 +69,23 @@
       (v < 50 ? " Com viabilidade tão baixa, faça um starter pequeno primeiro para acordar o fermento." : "");
   }
 
-  // bloco de destaque: quanto você tem, a barra até o necessário e o que fazer
+  // placar: número em destaque, barra até o alvo, cor (âmbar falta, verde basta) e o que fazer
+  function placar(rotulo, celulas, necessario, detalhe, acao) {
+    var pct = celulas / necessario * 100;
+    return '<div class="ti-placar' + (celulas >= necessario ? " ti-placar--ok" : "") + '">\n' +
+      '<p class="ti-placar__rotulo">' + rotulo + "</p>\n" +
+      '<p class="ti-placar__valor">' + num(celulas, 0) + " <small>bi</small></p>\n" +
+      '<div class="ti-placar__barra" role="img" aria-label="' + num(pct, 0) + '% do necessário"><span style="width:' + Math.min(100, pct).toFixed(1) + '%"></span></div>\n' +
+      '<p class="ti-placar__pct">' + num(pct, 0) + "% do necessário (" + bi(necessario) + ")</p>\n" +
+      (detalhe ? '<p class="ti-placar__pct">' + detalhe + "</p>\n" : "") +
+      '<p class="ti-placar__acao">' + acao + "</p>\n" +
+      "</div>";
+  }
+
   function textoTem(f, tem, necessario) {
     var falta = necessario - tem;
-    var ok = falta <= 0;
-    var pct = tem / necessario * 100;
     var acao;
-    if (ok) acao = "<b>Dá para inocular direto</b>, sem starter.";
+    if (falta <= 0) acao = "<b>Dá para inocular direto</b>, sem starter.";
     else {
       acao = "<b>Faltam " + bi(falta) + ".</b> Faça um starter (abaixo)" + (f.tipo === "seca" ? " ou use mais levedura." : ".");
       var s = C.semStarter(f, necessario);
@@ -83,13 +93,7 @@
       if (s && f.tipo === "seca") acao = "<b>Faltam " + bi(falta) + ".</b> Use <b>" + num(s.gramas, 1) + " g</b> (" + s.saches + (s.saches === 1 ? " sachê" : " sachês") + " de 11 g).";
       if (s && f.tipo === "reaproveitada") acao += " Sem starter, seriam <b>" + num(s.ml, 0) + " mL</b> desse fermento.";
     }
-    return '<div class="ti-tem' + (ok ? " ti-tem--ok" : "") + '">\n' +
-      '<p class="ti-tem__rotulo">Você tem</p>\n' +
-      '<p class="ti-tem__valor">' + num(tem, 0) + " <small>bi</small></p>\n" +
-      '<div class="ti-tem__barra" role="img" aria-label="' + num(pct, 0) + '% do necessário"><span style="width:' + Math.min(100, pct).toFixed(1) + '%"></span></div>\n' +
-      '<p class="ti-tem__pct">' + num(pct, 0) + "% do necessário (" + bi(necessario) + ")</p>\n" +
-      '<p class="ti-tem__acao">' + acao + "</p>\n" +
-      "</div>";
+    return placar("Você tem", tem, necessario, "", acao);
   }
 
   /* ---------- 03 Starter ---------- */
@@ -172,14 +176,12 @@
     var final = resultados.length ? resultados[resultados.length - 1].fim : tem;
     if (!resultados.length || !(tem > 0)) { $("final").innerHTML = ""; return; }
     var taxaFinal = C.taxaObtida(final, litros, P);
-    $("final").innerHTML = '<div class="ti-final">' +
-      '<p class="ti-final__rotulo">Depois de ' + resultados.length + (resultados.length === 1 ? " passo" : " passos") + ", inocule</p>" +
-      '<p class="ti-final__valor">' + num(final, 0) + " <small>bilhões</small></p>" +
-      '<p class="ti-final__sub">Taxa de ' + num(taxaFinal, 2) + " milhões/mL/°P · " + num(final / necessario * 100, 0) + "% do alvo</p>" +
-      "</div>" +
-      (final >= necessario
-        ? status(true, "Chega no alvo.")
-        : status(false, "<b>Faltam " + bi(necessario - final) + ".</b> Aumente um passo, acrescente outro ou use mais fermento."));
+    $("final").innerHTML = placar(
+      "Depois de " + resultados.length + (resultados.length === 1 ? " passo" : " passos") + ", inocule",
+      final, necessario, "Taxa de " + num(taxaFinal, 2) + " milhões/mL/°P",
+      final >= necessario
+        ? "<b>Chega no alvo</b>" + (final - necessario >= 1 ? ", com " + bi(final - necessario) + " de folga." : ".")
+        : "<b>Faltam " + bi(necessario - final) + ".</b> Aumente um passo, acrescente outro ou use mais fermento.");
   }
 
   /* ---------- eventos ---------- */

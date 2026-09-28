@@ -12,6 +12,16 @@ detalhe técnico, em `ferramentas/decoccao/CHANGELOG.md`.
 invalida o cache offline antigo e faz aparecer o aviso "Nova versão
 disponível" para quem já está com o site aberto.
 
+## [1.8.2] — 2026-09-28
+
+### Alterado
+- **Taxa de inóculo: resultado dos passos no mesmo formato do "Você
+  tem".**
+  - O número grande, a barra até o necessário e a taxa obtida.
+  - A cor diz se chega: verde com ✓ e a folga ("Chega no alvo, com 45 bi
+    de folga"), ou âmbar com quanto falta.
+  - Antes era um bloco invertido com o "Chega no alvo" solto embaixo.
+
 ## [1.8.1] — 2026-09-28
 
 ### Alterado
