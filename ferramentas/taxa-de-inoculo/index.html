@@ -17,7 +17,7 @@
   <meta property="og:image:height" content="630">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="theme-color" content="#0b0b0b">
-  <link rel="manifest" href="../../manifest.webmanifest?v=1.8.2">
+  <link rel="manifest" href="../../manifest.webmanifest?v=1.9.0">
   <link rel="icon" href="../../favicon.ico" sizes="32x32">
   <link rel="icon" href="../../assets/img/favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="../../assets/img/icon-180.png">
@@ -27,10 +27,10 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../../assets/css/bf.css?v=1.8.2">
-  <link rel="stylesheet" href="app.css?v=1.8.2">
-  <script src="../../assets/js/versao.js?v=1.8.2"></script>
-  <script src="../../assets/js/shell.js?v=1.8.2"></script>
+  <link rel="stylesheet" href="../../assets/css/bf.css?v=1.9.0">
+  <link rel="stylesheet" href="app.css?v=1.9.0">
+  <script src="../../assets/js/versao.js?v=1.9.0"></script>
+  <script src="../../assets/js/shell.js?v=1.9.0"></script>
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Calculadora de taxa de inóculo","url":"https://www.brassagemforte.com.br/ferramentas/ferramentas/taxa-de-inoculo/","applicationCategory":"UtilitiesApplication","operatingSystem":"Web","inLanguage":"pt-BR","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"BRL"},"author":[{"@type":"Person","name":"Henrique Boaventura"}],"publisher":{"@type":"Organization","name":"Brassagem Forte","url":"https://www.brassagemforte.com.br","logo":"https://www.brassagemforte.com.br/ferramentas/assets/img/icon-512.png"}}</script>
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Ferramentas","item":"https://www.brassagemforte.com.br/ferramentas/"},{"@type":"ListItem","position":2,"name":"Taxa de inóculo","item":"https://www.brassagemforte.com.br/ferramentas/ferramentas/taxa-de-inoculo/"}]}</script>
 </head>
@@ -48,13 +48,13 @@
           <ol>
             <li><b>Sua cerveja:</b> as células necessárias são <b>taxa × litros × °P</b>. A taxa é em milhões de células por mL por °P: 0,75 para ale, 1,5 para lager (os mesmos números do Mr Malty, Brewers Friend e Craft Beer &amp; Brewing).</li>
             <li><b>Sua levedura:</b> um pacote líquido tem 100 bilhões de células quando sai da fábrica e perde cerca de 0,7% por dia. A seca é contada por grama. O fermento reaproveitado, pelos mL e pela proporção de sólidos.</li>
-            <li><b>Starter:</b> cada passo cresce a levedura do passo anterior. Entre um passo e outro, deixe fermentar, decante e jogue o starter novo por cima. Há três modelos de crescimento:
+            <li><b>Starter:</b> cada passo cresce a levedura do passo anterior. Entre um passo e outro, deixe fermentar, decante e jogue o starter novo por cima. Escolha o modelo pela técnica que você usa:
               <ul>
-                <li><b>Sem agitação:</b> a curva de Chris White, em que o crescimento depende de quantas células há por mL de starter.</li>
-                <li><b>Placa agitadora (Braukaiser):</b> o modelo medido por Kai Troester, cerca de 1,4 bilhão de células por grama de extrato. Com muita levedura para o volume, a levedura para de crescer.</li>
-                <li><b>Placa agitadora (Mr Malty):</b> a curva de White com o starter rendendo como se tivesse 2,67 vezes o volume, o fator que o Mr Malty usa.</li>
+                <li><b>Braukaiser (placa agitadora):</b> o modelo medido por Kai Troester, cerca de 1,4 bilhão de células por grama de extrato. Com muita levedura para o volume, a levedura para de crescer.</li>
+                <li><b>Mr Malty (placa agitadora, aeração contínua, agitação manual, O₂ no início ou sem agitação):</b> uma curva só, em que o crescimento depende de quantas células há por mL de starter. Quanto mais oxigênio a técnica dá, mais o starter rende: a placa agitadora rende como um starter sem agitação com 2,67 vezes o volume. Conferido contra a calculadora do Mr Malty.</li>
+                <li><b>Chris White (sem agitação):</b> a curva publicada por White, a mesma do Brewers Friend.</li>
               </ul>
-              Os dois modelos de placa concordam no meio do caminho. Com pouca levedura por litro, o da Braukaiser prevê mais crescimento; com muita, prevê menos. Na dúvida, siga o mais conservador.</li>
+              Os dois modelos de placa agitadora concordam no meio do caminho. Com pouca levedura por litro, o da Braukaiser prevê mais crescimento; com muita, prevê menos. Na dúvida, siga o mais conservador.</li>
           </ol>
           <p>São estimativas: a contagem real depende da cepa, da temperatura, dos nutrientes e da saúde do fermento.</p>
         </div>
@@ -191,11 +191,7 @@
             </div>
             <div class="ti-campo">
               <label for="sugModelo">Agitação</label>
-              <select id="sugModelo">
-                <option value="braukaiser" selected>Placa agitadora (Braukaiser)</option>
-                <option value="mrmalty">Placa agitadora (Mr Malty)</option>
-                <option value="white">Sem agitação</option>
-              </select>
+              <select id="sugModelo"></select>
             </div>
             <button type="button" class="bf-btn" id="sugerir">Sugerir passos</button>
             <p class="ti-nota" id="sugMsg" role="status"></p>
@@ -211,7 +207,7 @@
         <summary>Fontes</summary>
         <div class="bf-how__body">
           <ul>
-            <li><a href="https://mrmalty.com/pitching-rate-preview.html" rel="noopener">Mr Malty — Yeast Pitching Rate Calculator</a> (Jamil Zainasheff): taxas de inóculo, células por mL de fermento reaproveitado e os fatores por tipo de starter. O modelo "Placa agitadora (Mr Malty)" foi conferido contra a <a href="https://mrmalty.com/pitching-stepped-starter-preview.html" rel="noopener">calculadora de passos</a> dele.</li>
+            <li><a href="https://mrmalty.com/pitching-rate-preview.html" rel="noopener">Mr Malty — Yeast Pitching Rate Calculator</a> (Jamil Zainasheff): taxas de inóculo, células por mL de fermento reaproveitado e os fatores por tipo de starter. Os modelos "Mr Malty" foram ajustados e conferidos contra a <a href="https://mrmalty.com/pitching-stepped-starter-preview.html" rel="noopener">calculadora de passos</a> dele.</li>
             <li><a href="https://www.brewersfriend.com/yeast-pitch-rate-and-starter-calculator/" rel="noopener">Brewers Friend — Yeast Pitch Rate and Starter Calculator</a>: viabilidade de 0,7% por dia, os dois modelos de crescimento e o DME do starter.</li>
             <li>Kai Troester (Braukaiser), <a href="https://braukaiser.com/documents/BFD_yeast_handling.pdf" rel="noopener">Advanced Yeast Handling</a>: a placa agitadora cresce cerca de 1,4 bilhão de células por grama de extrato.</li>
             <li>Chris White e Jamil Zainasheff, <i>Yeast: The Practical Guide to Beer Fermentation</i>: curva de crescimento pela inoculação em starters sem agitação.</li>
@@ -224,7 +220,7 @@
 
   <footer data-bf-footer></footer>
 
-  <script src="calculo.js?v=1.8.2"></script>
-  <script src="app.js?v=1.8.2"></script>
+  <script src="calculo.js?v=1.9.0"></script>
+  <script src="app.js?v=1.9.0"></script>
 </body>
 </html>

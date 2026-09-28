@@ -1,6 +1,6 @@
 # Spec 05 — Taxa de inóculo
 
-Status: **implementada** (versão 1.8.0: dois modelos de placa agitadora)
+Status: **implementada** (versão 1.9.0: as cinco técnicas do Mr Malty, ajustadas na API dele)
 Diretório: `/ferramentas/taxa-de-inoculo/` · Número: `05`
 Autor: Henrique Boaventura
 Atualizado: 2026-09-28
@@ -57,18 +57,42 @@ Rodamos 24 cenários na [calculadora de starter em passos](https://mrmalty.com/p
   | acima de ~350 M/mL | 0% (o Braukaiser para; o Mr Malty continua) |
 
   Exemplo: lager de 884 bi com 1 pacote e starter de até 2 L. O Mr Malty chega em 4 passos; o Braukaiser para em ~620 bi. O próprio Kai Troester diz que os dados dele não concordam com o Mr Malty.
-- **Placa agitadora do Mr Malty reproduzida:** é a curva de White com o volume multiplicado por 2 ÷ 0,75 ≈ 2,67. Esses são os fatores do próprio Mr Malty (placa agitadora 2,0; starter simples 0,75; estão no código da página dele). Fica dentro de ±10% em quase todos os 21 passos coletados. As exceções são passos de fim de cadeia com pouco crescimento: um de 103 bi sai com 83%, e um de 22 bi (658 M/mL) não cresce no modelo.
+- **Primeira aproximação (v1.8.0):** a placa agitadora do Mr Malty como a curva de White com o volume × 2 ÷ 0,75. Ficava dentro de ±10% na maioria dos passos.
 
 Decisão (Henrique): **oferecer os dois modelos de placa agitadora**, lado a lado.
 
-## 4. Decisões (Henrique, 2026-09-28)
+## 4. Modelo do Mr Malty ajustado na API (2026-09-28)
 
-- Crescimento: **Chris White** (sem agitação) + **Braukaiser** (placa agitadora) + **Mr Malty** (placa agitadora), depois da validação.
+Depois pedimos as cinco técnicas do Mr Malty. Para estabelecer o modelo, fizemos 166 simulações na API da calculadora de passos dele (`/v1/stepped-starter`):
+
+- as 5 técnicas: simples, O₂ no início, agitação manual (intermitente), aeração contínua e placa agitadora;
+- 100 e 400 bi iniciais;
+- metas de 1,05× a 6×;
+- frasco de 50 L, para que tudo caiba num passo só e a API devolva o menor volume que chega na meta.
+
+Os dados estão em `ferramentas/taxa-de-inoculo/tests/mrmalty-simulacoes.json`.
+
+O que as simulações mostram:
+
+1. **A proporção entre as técnicas é exatamente a dos fatores do Mr Malty** (simples 0,75 · O₂ 1,0 · agitação 1,3 · aeração 1,5 · placa 2,0; estão no código da página dele). Em qualquer nível de crescimento, o volume de uma técnica ÷ o de outra é a razão entre os fatores.
+2. **A curva-base não é a de White.** No starter simples, o "volume equivalente" na curva de White desliza de 1,05× para 0,84× conforme o crescimento aumenta. A curva de White só coincide com a do Mr Malty no meio da faixa (daí os ±10% da v1.8.0).
+3. **Curva-base ajustada**, no referencial "O₂ no início" (fator 1,0), que o próprio Mr Malty diz ser a calibração da API:
+
+   r = 12,6809 · I^−0,437 − 0,98, com I = células ÷ (litros × fator)
+
+   - Nas 166 simulações: células no fim com desvio máximo de 0,89% (volume: médio 0,34%, máximo 2%, praticamente o arredondamento da API).
+   - Nos 46 passos das cadeias coletadas na página (fora do ajuste): desvio máximo de 0,4%, inclusive o passo de 862 bi em 1,31 L que ainda cresce 22 bi.
+
+A curva de White continua na ferramenta como "Sem agitação (Chris White)": é a publicada, a mesma do Brewers Friend.
+
+## 5. Decisões (Henrique, 2026-09-28)
+
+- Crescimento: **Chris White** (sem agitação) + **Braukaiser** (placa agitadora) + as **cinco técnicas do Mr Malty**, com o modelo ajustado na API.
 - Levedura seca: **15 bi/g** como padrão, editável.
 - Passos: **manuais**, sem limite, com um botão que **sugere** a sequência.
 - Fontes de levedura: líquida, seca, reaproveitada e contagem própria.
 
-## 5. Cálculo (`calculo.js`)
+## 6. Cálculo (`calculo.js`)
 
 Unidades: litros, bilhões de células, taxa em milhões/mL/°P (bilhões por litro = milhões por mL).
 
@@ -82,31 +106,32 @@ Unidades: litros, bilhões de células, taxa em milhões/mL/°P (bilhões por li
 - **`semStarter(fonte, necessário)`**: pacotes, gramas e sachês de 11 g, ou mL.
 - **`crescimento(modelo, células, litros, SG)`**, novas células num passo:
   - `white`: I = células ÷ litros (milhões/mL); r = 12,54793776 · I^−0,4594858324 − 0,9994994906 (mínimo 0); novas = r × células.
-  - `mrmalty`: a mesma curva de `white`, com I = células ÷ (litros × 2,67).
+  - `mm-placa`, `mm-aeracao`, `mm-agitacao`, `mm-o2`, `mm-simples`: r = 12,6809 · I^−0,437 − 0,98 (mínimo 0), com I = células ÷ (litros × fator: 2,0 · 1,5 · 1,3 · 1,0 · 0,75).
   - `braukaiser`: extrato E = litros × °P × SG × 10 g; x = células ÷ E; x < 1,4 → 1,4·E; 1,4 ≤ x < 3,5 → (2,33 − 0,67·x)·E; x ≥ 3,5 → 0.
 - **`propagar(inicial, passos)`**: cada passo começa com o fim do anterior. Devolve começo, fim, inoculação, fator, DME (45 PPG) e avisos:
   - densidade fora de 1.030–1.040;
-  - inoculação fora de 25–100 milhões/mL na curva de White (fora dessa faixa a curva extrapola). No modelo do Mr Malty vale a inoculação efetiva, o que dá ~67 a ~267 milhões/mL reais;
-  - starter que não cresce.
+  - inoculação abaixo de 25 milhões/mL na curva de White (ela extrapola);
+  - crescimento menor que 25% (muita levedura para o volume), ou nenhum.
 - **`sugerirPassos(inicial, necessário, frasco, modelo, SG)`**: cada passo usa o menor volume (múltiplo de 0,1 L) que basta; se nem o frasco cheio basta, enche o frasco e segue. Para com `frasco-pequeno` quando um frasco cheio cresce menos de 10%, ou com `passos-demais` depois de 10 passos.
 
-## 6. Interface
+## 7. Interface
 
 1. **01 Sua cerveja:** volume, OG (SG ou °P), taxa (chips + campo livre). Bloco com as células necessárias e a conta.
 2. **02 Sua levedura:** Líquida · Seca · Reaproveitada · Contagem. A data de fabricação preenche a viabilidade (que continua editável). Mostra quanto tem, a % do necessário e, se faltar, a alternativa sem starter.
-3. **03 Starter:** escondido para levedura seca (não se faz starter com seca). Tem a caixa "Sugerir passos" (maior starter, densidade e os três modelos de agitação), os cartões de passo (volume, densidade, agitação, com começo, fim e DME) e o resultado final (células, taxa obtida, % do alvo).
+3. **03 Starter:** escondido para levedura seca (não se faz starter com seca). Tem a caixa "Sugerir passos" (maior starter, densidade e o modelo de agitação: Braukaiser, as cinco técnicas do Mr Malty ou Chris White), os cartões de passo (volume, densidade, agitação, com começo, fim e DME) e o resultado final (células, taxa obtida, % do alvo).
 4. **Fontes:** bloco recolhível.
 
-## 7. Testes
+## 8. Testes
 
 - **`tests/calculo.test.js`:**
   - o exemplo publicado do Brewers Friend: 44 dias → 69%; 69 bi num starter de 2,5 L a 1.036, sem agitação → inoculação 27,6 milhões/mL, crescimento 1,7×, 189 bi, 239,7 g de DME;
   - o modelo da Braukaiser (faixas e continuidade);
-  - os passos coletados do Mr Malty: sem agitação com o White, placa agitadora com o modelo `mrmalty` (±12%, porque o Mr Malty arredonda as células) e a divergência documentada do Braukaiser;
+  - as 166 simulações da API do Mr Malty e os 46 passos das cadeias coletadas na página, com as células no fim dentro de ±1%;
+  - a divergência documentada entre o Braukaiser e o Mr Malty na placa agitadora;
   - a sugestão de passos, com invariantes em 300 casos aleatórios de semente fixa.
 - **`tests/ui/taxa-de-inoculo.ui.test.js`:** o fluxo na tela: taxas, SG/°P, data → viabilidade, as quatro fontes, passos (adicionar, remover, foco, encadeamento), avisos e sugestão.
 
-## 8. Fora de escopo
+## 9. Fora de escopo
 
 - Viabilidade do fermento reaproveitado pela data da coleta (o Mr Malty tem um modelo, mas não é publicado; aqui ela é informada).
 - Modelos de viabilidade por fabricante.

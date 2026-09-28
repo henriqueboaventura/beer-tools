@@ -3,7 +3,20 @@
 
   var C = window.BFInoculo;
   var $ = function (id) { return document.getElementById(id); };
-  var MODELOS = { braukaiser: "Placa agitadora (Braukaiser)", mrmalty: "Placa agitadora (Mr Malty)", white: "Sem agitação" };
+  var MODELOS = {
+    "braukaiser": "Placa agitadora (Braukaiser)",
+    "mm-placa": "Placa agitadora (Mr Malty)",
+    "mm-aeracao": "Aeração contínua (Mr Malty)",
+    "mm-agitacao": "Agitação manual (Mr Malty)",
+    "mm-o2": "O₂ no início (Mr Malty)",
+    "mm-simples": "Sem agitação (Mr Malty)",
+    "white": "Sem agitação (Chris White)"
+  };
+  function opcoesModelo(atual) {
+    return C.MODELOS.map(function (m) {
+      return '<option value="' + m + '"' + (atual === m ? " selected" : "") + ">" + MODELOS[m] + "</option>";
+    }).join("");
+  }
 
   var state = {
     unidade: "sg",
@@ -99,9 +112,7 @@
   /* ---------- 03 Starter ---------- */
   function renderPassos() {
     $("passos").innerHTML = state.passos.map(function (p, i) {
-      var opcoes = C.MODELOS.map(function (m) {
-        return '<option value="' + m + '"' + (p.modelo === m ? " selected" : "") + ">" + MODELOS[m] + "</option>";
-      }).join("");
+      var opcoes = opcoesModelo(p.modelo);
       return '<article class="ti-passo" data-i="' + i + '">' +
         '<div class="ti-passo__topo"><p class="ti-passo__titulo">Passo ' + (i + 1) + "</p>" +
           '<button type="button" class="ti-remover" data-remover aria-label="Remover passo ' + (i + 1) + '">Remover</button></div>' +
@@ -127,11 +138,10 @@
       "</dl>" +
       '<p class="ti-nota">Inoculação de ' + num(r.inoculacao, 0) + " milhões/mL" +
         (r.inicio > 0 ? " · a levedura cresce " + num(r.fator, 1) + "×" : "") + ".</p>";
-    if (r.avisos.indexOf("sem-crescimento") > -1) html += status(false, "Starter pequeno demais para tanta levedura: não cresce. Aumente o volume.");
-    if (r.avisos.indexOf("inoculacao") > -1) {
-      html += status(false, r.inoculacaoWhite < C.INOCULACAO_IDEAL[0]
-        ? "Pouca levedura para esse volume: fora da faixa em que a curva foi medida, ela tende a exagerar o crescimento. Faça um passo menor antes."
-        : "Muita levedura para esse volume: cresce pouco. Aumente o volume.");
+    if (r.avisos.indexOf("sem-crescimento") > -1) html += status(false, "Muita levedura para esse volume: não cresce. Aumente o volume.");
+    if (r.avisos.indexOf("pouco-crescimento") > -1) html += status(false, "Muita levedura para esse volume: cresce menos de 25%. Aumente o volume.");
+    if (r.avisos.indexOf("inoculacao-baixa") > -1) {
+      html += status(false, "Pouca levedura para esse volume: abaixo de 25 milhões/mL, a curva de Chris White tende a exagerar o crescimento. Faça um passo menor antes.");
     }
     if (r.avisos.indexOf("densidade") > -1) html += status(false, "Use starter entre 1.030 e 1.040: mais denso estressa a levedura, mais fraco rende menos.");
     return html;
@@ -241,6 +251,7 @@
       : "Com starters de até " + num(val("frasco"), 1) + " L não chega: um frasco maior ou mais fermento resolve. Estes são os passos que ainda valem a pena.";
   });
 
+  $("sugModelo").innerHTML = opcoesModelo("braukaiser");
   BF.rodape("Ferramenta de Henrique Boaventura");
   renderPassos();
   calcular();

@@ -12,6 +12,26 @@ detalhe técnico, em `ferramentas/decoccao/CHANGELOG.md`.
 invalida o cache offline antigo e faz aparecer o aviso "Nova versão
 disponível" para quem já está com o site aberto.
 
+## [1.9.0] — 2026-09-28
+
+### Adicionado
+- **Taxa de inóculo: as cinco técnicas de starter do Mr Malty.** Placa
+  agitadora, aeração contínua, agitação manual (intermitente), O₂ no
+  início e sem agitação. Ficam nos passos e na sugestão de passos, ao lado
+  da placa agitadora (Braukaiser) e do sem agitação (Chris White).
+
+### Alterado
+- **Modelo do Mr Malty ajustado na API dele, em vez de aproximado pela
+  curva de White.**
+  - 166 simulações: as 5 técnicas, de 5% a 500% de crescimento.
+  - Mostraram que ele usa uma curva-base própria, com o volume
+    multiplicado pelo fator de cada técnica.
+  - Reproduz as células no fim com desvio máximo de 0,9%, e 0,4% nos
+    passos coletados antes, que ficaram fora do ajuste.
+  - Antes, a placa agitadora ficava dentro de ±10%.
+- Avisos dos passos: "cresce menos de 25%" substitui o aviso de
+  inoculação alta, que dependia do modelo.
+
 ## [1.8.2] — 2026-09-28
 
 ### Alterado

@@ -26,13 +26,17 @@
  *       1,4 ≤ x < 3,5  → cresce (2,33 − 0,67·x) bi por grama
  *       x ≥ 3,5        → não cresce
  *     extrato (g) = litros × °P × SG × 10.
- *   - Mr Malty, placa agitadora: a mesma curva de White, com o starter
- *     "valendo" 2 ÷ 0,75 ≈ 2,67 vezes o volume. É o fator do próprio Mr Malty
- *     (placa agitadora 2,0; starter simples 0,75). Validado contra a
- *     calculadora de passos dele: ±10% na maioria dos passos.
- *   Os dois modelos de placa discordam: com pouca levedura por litro, o da
- *   Braukaiser cresce mais; com muita, cresce menos e para acima de 3,5 bi/g,
- *   enquanto o do Mr Malty continua crescendo.
+ *   - Mr Malty, cinco técnicas: uma curva-base no mesmo formato da de White,
+ *       r = 12,6809 · I^−0,437 − 0,98
+ *     com I = células ÷ (litros × fator da técnica): simples 0,75 · O₂ no
+ *     início 1,0 · agitação manual 1,3 · aeração contínua 1,5 · placa
+ *     agitadora 2,0. Os fatores estão no código da página do Mr Malty; as
+ *     constantes da curva foram ajustadas em 166 simulações na API dele
+ *     (5 técnicas, 100 e 400 bi, crescimento de 5% a 500%) e reproduzem as
+ *     células no fim com desvio máximo de 0,9%.
+ *   Os dois modelos de placa agitadora discordam: com pouca levedura por
+ *   litro, o da Braukaiser cresce mais; com muita, cresce menos e para acima
+ *   de 3,5 bi/g, enquanto o do Mr Malty continua crescendo.
  *   Cada passo começa com as células do anterior (decantado).
  *
  * DME do starter: 45 PPG (Brewers Friend).
@@ -48,10 +52,11 @@
   var DME_PPG = 45;
   var PPG_PARA_PKL = 3.785411784 / 0.45359237; // PPG → pontos por kg por litro (≈ 8,3454)
   var WHITE = { a: 12.54793776, k: 0.4594858324, d: 0.9994994906 };
-  var INOCULACAO_IDEAL = [25, 100];  // milhões/mL — fora disso a curva de White extrapola
-  var FATOR_PLACA_MRMALTY = 2 / 0.75; // volume "efetivo" da placa agitadora no Mr Malty
-  // modelos de crescimento, na ordem em que aparecem na tela
-  var MODELOS = ["braukaiser", "mrmalty", "white"];
+  var INOCULACAO_MIN_WHITE = 25;     // milhões/mL — abaixo disso a curva de White extrapola
+  var MR_MALTY = { a: 12.6809, k: 0.437, d: 0.98 };
+  var FATORES_MR_MALTY = { "mm-placa": 2, "mm-aeracao": 1.5, "mm-agitacao": 1.3, "mm-o2": 1, "mm-simples": 0.75 };
+  // modelos de crescimento, na ordem em que aparecem na tela (do mais ao menos vigoroso)
+  var MODELOS = ["braukaiser", "mm-placa", "mm-aeracao", "mm-agitacao", "mm-o2", "mm-simples", "white"];
   var TAXAS = [
     { id: "ale", valor: 0.75, rotulo: "Ale" },
     { id: "ale-forte", valor: 1, rotulo: "Ale forte" },
@@ -137,17 +142,17 @@
     return litros * (sg - 1) * 1000 / (DME_PPG * PPG_PARA_PKL) * 1000;
   }
 
-  // inoculação que entra na curva de White: a real, ou a "efetiva" no modelo de placa do Mr Malty
-  function inoculacaoWhite(modelo, celulas, litros) {
-    return celulas / (modelo === "mrmalty" ? litros * FATOR_PLACA_MRMALTY : litros);
-  }
-
   // novas células (bi) num passo
   function crescimento(modelo, celulas, litros, sg) {
     if (!(celulas > 0) || !(litros > 0)) return 0;
-    if (modelo === "white" || modelo === "mrmalty") {
-      var I = inoculacaoWhite(modelo, celulas, litros); // milhões/mL
-      var r = WHITE.a * Math.pow(I, -WHITE.k) - WHITE.d;
+    var r;
+    if (modelo === "white") {
+      r = WHITE.a * Math.pow(celulas / litros, -WHITE.k) - WHITE.d;
+      return Math.max(0, r) * celulas;
+    }
+    if (FATORES_MR_MALTY[modelo]) {
+      var I = celulas / (litros * FATORES_MR_MALTY[modelo]); // milhões/mL "efetivos"
+      r = MR_MALTY.a * Math.pow(I, -MR_MALTY.k) - MR_MALTY.d;
       return Math.max(0, r) * celulas;
     }
     // braukaiser (placa agitadora)
@@ -160,7 +165,7 @@
   }
 
   /*
-   * Propaga por passos. passos = [{ litros, sg, modelo: "braukaiser" | "mrmalty" | "white" }]
+   * Propaga por passos. passos = [{ litros, sg, modelo }], modelo em MODELOS.
    * Devolve um resultado por passo: inicio, fim, novas, inoculacao (milhões/mL),
    * fator (fim ÷ início), dme (g) e avisos.
    */
@@ -173,11 +178,11 @@
       var I = c / litros;
       var avisos = [];
       if (sg < 1.030 || sg > 1.040) avisos.push("densidade");
-      var Iw = inoculacaoWhite(modelo, c, litros);
-      if (modelo !== "braukaiser" && c > 0 && (Iw < INOCULACAO_IDEAL[0] || Iw > INOCULACAO_IDEAL[1])) avisos.push("inoculacao");
+      if (modelo === "white" && c > 0 && I < INOCULACAO_MIN_WHITE) avisos.push("inoculacao-baixa");
       if (novas <= 0 && c > 0) avisos.push("sem-crescimento");
+      else if (c > 0 && novas < 0.25 * c) avisos.push("pouco-crescimento");
       var r = { valido: true, modelo: modelo, litros: litros, sg: sg, inicio: c, novas: novas, fim: c + novas,
-        inoculacao: I, inoculacaoWhite: Iw, fator: c > 0 ? (c + novas) / c : NaN, dme: dmeGramas(litros, sg), avisos: avisos };
+        inoculacao: I, fator: c > 0 ? (c + novas) / c : NaN, dme: dmeGramas(litros, sg), avisos: avisos };
       c = r.fim;
       return r;
     });
@@ -219,7 +224,8 @@
   var api = {
     CELULAS_PACOTE: CELULAS_PACOTE, PERDA_DIA: PERDA_DIA, CELULAS_GRAMA_SECA: CELULAS_GRAMA_SECA,
     CELULAS_ML_SOLIDOS: CELULAS_ML_SOLIDOS, SACHE_G: SACHE_G, DME_PPG: DME_PPG, WHITE: WHITE,
-    INOCULACAO_IDEAL: INOCULACAO_IDEAL, FATOR_PLACA_MRMALTY: FATOR_PLACA_MRMALTY, MODELOS: MODELOS, TAXAS: TAXAS,
+    INOCULACAO_MIN_WHITE: INOCULACAO_MIN_WHITE, MR_MALTY: MR_MALTY, FATORES_MR_MALTY: FATORES_MR_MALTY,
+    MODELOS: MODELOS, TAXAS: TAXAS,
     sgParaPlato: sgParaPlato, platoParaSg: platoParaSg,
     celulasNecessarias: celulasNecessarias, taxaObtida: taxaObtida,
     viabilidadeLiquida: viabilidadeLiquida, diasEntre: diasEntre,
