@@ -188,6 +188,21 @@ suiteUI("Taxa de inóculo (interface)", (ctx) => {
     assert.deepEqual(pag.erros, []);
   });
 
+  test("\"Qual técnica escolher?\": abre pelo link do passo e a tabela sai dos modelos", async () => {
+    const { pag } = ctx;
+    await abrir();
+    assert.equal(await pag.avaliar("ui.$('#tecnicas').open"), false, "fechada até pedir");
+    await pag.avaliar("ui.clicar('.ti-passo [data-abrir-tecnicas]')");
+    assert.equal(await pag.avaliar("ui.$('#tecnicas').open"), true);
+    const tabela = await pag.avaliar("ui.$$('#tecnicasTabela td').map(td => [td.dataset.modelo, +td.dataset.celulas, td.textContent])");
+    assert.equal(tabela.length, C.MODELOS.length * 2);
+    for (const [m, c, texto] of tabela) assert.equal(texto, br(c + C.crescimento(m, c, 1, 1.036), 0), `${m} ${c}`);
+    // o caso que mostra a divergência entre as duas placas agitadoras
+    const placa = (m) => tabela.find((t) => t[0] === m && t[1] === 300)[2];
+    assert.ok(+placa("mm-placa") > +placa("braukaiser"), "starter concentrado: Mr Malty prevê mais");
+    assert.deepEqual(pag.erros, []);
+  });
+
   test("campo vazio pede para preencher, sem erro", async () => {
     const { pag } = ctx;
     await abrir();

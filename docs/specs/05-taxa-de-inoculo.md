@@ -118,7 +118,15 @@ Unidades: litros, bilhões de células, taxa em milhões/mL/°P (bilhões por li
 
 1. **01 Sua cerveja:** volume, OG (SG ou °P), taxa (chips + campo livre). Bloco com as células necessárias e a conta.
 2. **02 Sua levedura:** Líquida · Seca · Reaproveitada · Contagem. A data de fabricação preenche a viabilidade (que continua editável). Mostra quanto tem, a % do necessário e, se faltar, a alternativa sem starter.
-3. **03 Starter:** escondido para levedura seca (não se faz starter com seca). Tem a caixa "Sugerir passos" (maior starter, densidade e o modelo de agitação: Braukaiser, as cinco técnicas do Mr Malty ou Chris White), os cartões de passo (volume, densidade, agitação, com começo, fim e DME) e o resultado final (células, taxa obtida, % do alvo).
+3. **03 Starter:**
+   - Seção recolhível **"Qual técnica escolher?"**:
+     - como é cada técnica (placa agitadora, aeração contínua, agitação manual, O₂ no início, sem agitação);
+     - uma tabela com o que cada modelo prevê para 100 e 300 bi num starter de 1 L a 1.036, calculada pelos próprios modelos;
+     - a diferença entre os dois modelos de placa agitadora e entre as duas curvas sem agitação;
+     - o que fazer na dúvida: planejar pelo que prevê menos.
+
+     O link "qual escolher?", ao lado de "Agitação" em cada passo, abre a seção.
+   - Escondido para levedura seca (não se faz starter com seca). Tem a caixa "Sugerir passos" (maior starter, densidade e o modelo de agitação: Braukaiser, as cinco técnicas do Mr Malty ou Chris White), os cartões de passo (volume, densidade, agitação, com começo, fim e DME) e o resultado final (células, taxa obtida, % do alvo).
 4. **Fontes:** bloco recolhível.
 
 ## 8. Testes

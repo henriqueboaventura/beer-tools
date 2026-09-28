@@ -122,7 +122,7 @@
           '<div class="ti-campo"><label for="sg' + i + '">Densidade <span>SG</span></label>' +
             '<input type="number" id="sg' + i + '" data-campo="sg" inputmode="decimal" min="1.001" step="0.001" value="' + esc(p.sg) + '"></div>' +
         "</div>" +
-        '<div class="ti-campo"><label for="modelo' + i + '">Agitação</label>' +
+        '<div class="ti-campo"><label for="modelo' + i + '">Agitação <a href="#tecnicas" data-abrir-tecnicas>qual escolher?</a></label>' +
           '<select id="modelo' + i + '" data-campo="modelo">' + opcoes + "</select></div>" +
         '<div class="ti-passo__saida"></div>' +
       "</article>";
@@ -252,6 +252,22 @@
   });
 
   $("sugModelo").innerHTML = opcoesModelo("braukaiser");
+
+  // "Qual técnica escolher?": a tabela sai dos próprios modelos, para nunca ficar desatualizada
+  $("tecnicasTabela").innerHTML = C.MODELOS.map(function (m) {
+    return "<tr><th scope=\"row\">" + MODELOS[m] + "</th>" + [100, 300].map(function (c) {
+      return '<td data-modelo="' + m + '" data-celulas="' + c + '">' + num(c + C.crescimento(m, c, 1, 1.036), 0) + "</td>";
+    }).join("") + "</tr>";
+  }).join("");
+  // links "qual escolher?" (nos passos e no "Como funciona") abrem a seção e rolam até ela
+  document.addEventListener("click", function (e) {
+    var link = e.target.closest("[data-abrir-tecnicas]");
+    if (!link) return;
+    e.preventDefault();
+    var sec = $("tecnicas");
+    sec.open = true;
+    sec.scrollIntoView({ behavior: "smooth", block: "start" });
+  });
   BF.rodape("Ferramenta de Henrique Boaventura");
   renderPassos();
   calcular();

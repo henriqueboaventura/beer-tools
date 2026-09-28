@@ -116,6 +116,24 @@
 .ti-passo__dados dt { font: 500 10px/1.2 var(--bf-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--bf-mute); }
 .ti-passo__dados dd { margin: 4px 0 0; font: 500 16px/1.2 var(--bf-mono); color: var(--bf-fg); white-space: nowrap; }
 
+/* Qual técnica escolher? */
+.ti-campo label a { font: 500 12px/1 var(--bf-mono); letter-spacing: .04em; color: var(--bf-soft); }
+.ti-tecnicas { margin-bottom: 16px; scroll-margin-top: calc(var(--bf-header-h) + 12px); }
+.ti-tecnicas p { margin: 0 0 10px; }
+.ti-tecnicas__lista { margin: 0 0 8px; }
+.ti-tecnicas__lista div { padding: 10px 0; border-top: 1px solid var(--bf-line); }
+.ti-tecnicas__lista dt { font-weight: 800; font-stretch: 70%; text-transform: uppercase; font-size: 18px; color: var(--bf-fg); }
+.ti-tecnicas__lista dd { margin: 4px 0 0; color: var(--bf-soft); }
+.ti-tecnicas__titulo { margin-top: 20px !important; font: 500 12px/1.3 var(--bf-mono); letter-spacing: .12em; text-transform: uppercase; color: var(--bf-fg); }
+.ti-tecnicas__tabela { overflow-x: auto; margin-bottom: 8px; }
+.ti-tecnicas table { width: 100%; border-collapse: collapse; font-size: 14px; }
+.ti-tecnicas th, .ti-tecnicas td { text-align: left; padding: 8px 6px 8px 0; border-bottom: 1px solid var(--bf-line); vertical-align: top; }
+.ti-tecnicas thead th { font: 500 11px/1.2 var(--bf-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--bf-mute); border-bottom-color: var(--bf-line-strong); }
+.ti-tecnicas thead th small { display: block; letter-spacing: .04em; text-transform: none; }
+.ti-tecnicas tbody th { font-weight: 400; color: var(--bf-soft); }
+.ti-tecnicas td { font: 500 16px/1.2 var(--bf-mono); color: var(--bf-fg); text-align: right; white-space: nowrap; }
+.ti-tecnicas thead th + th { text-align: right; }
+
 .ti-fontes-lista { margin-top: 32px; }
 .ti-fontes-lista li { font-size: 14px; }
 

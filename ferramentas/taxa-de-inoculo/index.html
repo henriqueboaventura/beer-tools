@@ -17,7 +17,7 @@
   <meta property="og:image:height" content="630">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="theme-color" content="#0b0b0b">
-  <link rel="manifest" href="../../manifest.webmanifest?v=1.9.0">
+  <link rel="manifest" href="../../manifest.webmanifest?v=1.10.0">
   <link rel="icon" href="../../favicon.ico" sizes="32x32">
   <link rel="icon" href="../../assets/img/favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="../../assets/img/icon-180.png">
@@ -27,10 +27,10 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../../assets/css/bf.css?v=1.9.0">
-  <link rel="stylesheet" href="app.css?v=1.9.0">
-  <script src="../../assets/js/versao.js?v=1.9.0"></script>
-  <script src="../../assets/js/shell.js?v=1.9.0"></script>
+  <link rel="stylesheet" href="../../assets/css/bf.css?v=1.10.0">
+  <link rel="stylesheet" href="app.css?v=1.10.0">
+  <script src="../../assets/js/versao.js?v=1.10.0"></script>
+  <script src="../../assets/js/shell.js?v=1.10.0"></script>
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Calculadora de taxa de inóculo","url":"https://www.brassagemforte.com.br/ferramentas/ferramentas/taxa-de-inoculo/","applicationCategory":"UtilitiesApplication","operatingSystem":"Web","inLanguage":"pt-BR","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"BRL"},"author":[{"@type":"Person","name":"Henrique Boaventura"}],"publisher":{"@type":"Organization","name":"Brassagem Forte","url":"https://www.brassagemforte.com.br","logo":"https://www.brassagemforte.com.br/ferramentas/assets/img/icon-512.png"}}</script>
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Ferramentas","item":"https://www.brassagemforte.com.br/ferramentas/"},{"@type":"ListItem","position":2,"name":"Taxa de inóculo","item":"https://www.brassagemforte.com.br/ferramentas/ferramentas/taxa-de-inoculo/"}]}</script>
 </head>
@@ -48,13 +48,7 @@
           <ol>
             <li><b>Sua cerveja:</b> as células necessárias são <b>taxa × litros × °P</b>. A taxa é em milhões de células por mL por °P: 0,75 para ale, 1,5 para lager (os mesmos números do Mr Malty, Brewers Friend e Craft Beer &amp; Brewing).</li>
             <li><b>Sua levedura:</b> um pacote líquido tem 100 bilhões de células quando sai da fábrica e perde cerca de 0,7% por dia. A seca é contada por grama. O fermento reaproveitado, pelos mL e pela proporção de sólidos.</li>
-            <li><b>Starter:</b> cada passo cresce a levedura do passo anterior. Entre um passo e outro, deixe fermentar, decante e jogue o starter novo por cima. Escolha o modelo pela técnica que você usa:
-              <ul>
-                <li><b>Braukaiser (placa agitadora):</b> o modelo medido por Kai Troester, cerca de 1,4 bilhão de células por grama de extrato. Com muita levedura para o volume, a levedura para de crescer.</li>
-                <li><b>Mr Malty (placa agitadora, aeração contínua, agitação manual, O₂ no início ou sem agitação):</b> uma curva só, em que o crescimento depende de quantas células há por mL de starter. Quanto mais oxigênio a técnica dá, mais o starter rende: a placa agitadora rende como um starter sem agitação com 2,67 vezes o volume. Conferido contra a calculadora do Mr Malty.</li>
-                <li><b>Chris White (sem agitação):</b> a curva publicada por White, a mesma do Brewers Friend.</li>
-              </ul>
-              Os dois modelos de placa agitadora concordam no meio do caminho. Com pouca levedura por litro, o da Braukaiser prevê mais crescimento; com muita, prevê menos. Na dúvida, siga o mais conservador.</li>
+            <li><b>Starter:</b> cada passo cresce a levedura do passo anterior. Entre um passo e outro, deixe fermentar, decante e jogue o starter novo por cima. O crescimento depende da técnica (placa agitadora, aeração, agitação manual, O₂ no início ou sem agitação) e do modelo: os de Kai Troester (Braukaiser), Mr Malty e Chris White. A diferença entre eles está em <a href="#tecnicas" data-abrir-tecnicas>Qual técnica escolher?</a>, no passo 03.</li>
           </ol>
           <p>São estimativas: a contagem real depende da cepa, da temperatura, dos nutrientes e da saúde do fermento.</p>
         </div>
@@ -197,6 +191,39 @@
             <p class="ti-nota" id="sugMsg" role="status"></p>
           </details>
 
+          <details class="bf-how ti-tecnicas" id="tecnicas">
+            <summary>Qual técnica escolher?</summary>
+            <div class="bf-how__body">
+              <p>A levedura cresce mais quando recebe oxigênio e fica em suspensão no mosto, em vez de assentar no fundo. As técnicas vão da que mais cresce para a que menos:</p>
+              <dl class="ti-tecnicas__lista">
+                <div><dt>Placa agitadora</dt><dd>Uma barra magnética gira o starter sem parar. A levedura fica sempre em suspensão, o oxigênio entra e o CO₂ sai o tempo todo. É a que mais rende. Tampe com papel-alumínio ou espuma, nunca com airlock, para o ar circular.</dd></div>
+                <div><dt>Aeração contínua</dt><dd>Uma bomba de aquário com filtro e pedra difusora borbulha ar no starter o tempo todo. Rende perto da placa, mas faz espuma e, sem o filtro, arrisca contaminar.</dd></div>
+                <div><dt>Agitação manual</dt><dd>Chacoalhe o frasco sempre que passar por ele, várias vezes ao dia. Põe a levedura de volta em suspensão e solta o CO₂. Rende quanto mais vezes você agitar.</dd></div>
+                <div><dt>O₂ no início</dt><dd>Oxigênio puro (cilindro e pedra difusora) por cerca de um minuto antes de inocular. Depois o starter fica parado.</dd></div>
+                <div><dt>Sem agitação</dt><dd>Inocule, misture e deixe o starter parado até terminar. É o que menos rende, porque a levedura assenta e o oxigênio acaba logo.</dd></div>
+              </dl>
+
+              <p class="ti-tecnicas__titulo">Quanto cada modelo prevê</p>
+              <p>Células no fim de um starter de 1 L a 1.036:</p>
+              <div class="ti-tecnicas__tabela">
+                <table>
+                  <thead><tr><th scope="col">Modelo</th><th scope="col">100 bi<small>1 pacote</small></th><th scope="col">300 bi<small>concentrado</small></th></tr></thead>
+                  <tbody id="tecnicasTabela"></tbody>
+                </table>
+              </div>
+
+              <p class="ti-tecnicas__titulo">Os dois modelos de placa agitadora</p>
+              <p><b>Braukaiser</b> é o modelo medido por Kai Troester. A levedura cresce cerca de 1,4 bilhão de células por grama de extrato do starter. Com muita levedura para o volume, ela cresce cada vez menos e para acima de 3,5 bilhões por grama. <b>Mr Malty</b> usa uma curva em que o crescimento depende de quantas células há por mL. Ele cresce menos com pouca levedura por litro, mas continua crescendo mesmo com o starter concentrado.</p>
+              <p>Os dois concordam no caso típico (1 pacote em 1 L). Com o starter concentrado, e nos passos finais de uma propagação grande, o Braukaiser prevê bem menos. O próprio Troester diz que os dados dele não batem com o Mr Malty.</p>
+
+              <p class="ti-tecnicas__titulo">As duas curvas sem agitação</p>
+              <p><b>Chris White</b> é a curva publicada por ele, a mesma do Brewers Friend. <b>Mr Malty</b> tem uma curva própria, com o mesmo formato. As duas quase coincidem no uso normal e se afastam um pouco nos extremos.</p>
+
+              <p class="ti-tecnicas__titulo">Na dúvida</p>
+              <p>Escolha a técnica que você realmente usa. Quando os modelos discordarem, planeje pelo que prevê menos células: faltar levedura é pior que sobrar um pouco. São estimativas; a contagem real depende da cepa, da temperatura e da saúde do fermento.</p>
+            </div>
+          </details>
+
           <div id="passos"></div>
           <button type="button" class="bf-btn" id="adicionar">+ Adicionar passo</button>
           <div id="final" aria-live="polite"></div>
@@ -220,7 +247,7 @@
 
   <footer data-bf-footer></footer>
 
-  <script src="calculo.js?v=1.9.0"></script>
-  <script src="app.js?v=1.9.0"></script>
+  <script src="calculo.js?v=1.10.0"></script>
+  <script src="app.js?v=1.10.0"></script>
 </body>
 </html>

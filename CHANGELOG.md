@@ -12,6 +12,21 @@ detalhe técnico, em `ferramentas/decoccao/CHANGELOG.md`.
 invalida o cache offline antigo e faz aparecer o aviso "Nova versão
 disponível" para quem já está com o site aberto.
 
+## [1.10.0] — 2026-09-28
+
+### Adicionado
+- **Taxa de inóculo: "Qual técnica escolher?"** Uma seção no passo 03 que
+  explica a diferença entre as técnicas de propagação:
+  - como é feita cada uma (placa agitadora, aeração contínua, agitação
+    manual, O₂ no início, sem agitação) e o que muda no crescimento;
+  - uma tabela com o que cada modelo prevê para um starter de 1 L, com 1
+    pacote e com o starter concentrado, calculada pelos próprios modelos;
+  - por que as duas placas agitadoras (Braukaiser e Mr Malty) discordam, e
+    o que fazer na dúvida.
+
+  Cada passo tem um link "qual escolher?" ao lado de "Agitação", que abre
+  a seção.
+
 ## [1.9.0] — 2026-09-28
 
 ### Adicionado
