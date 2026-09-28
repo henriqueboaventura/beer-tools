@@ -36,6 +36,13 @@
       titulo: "Parti-gyle",
       descricao: "Várias cervejas de uma mostura: divisão dos mostos, quanto malte e como misturar no dia.",
       status: "disponivel"
+    },
+    {
+      numero: "05",
+      slug: "taxa-de-inoculo",
+      titulo: "Taxa de inóculo",
+      descricao: "Quantas células de levedura a cerveja precisa e como propagar em starters, passo a passo.",
+      status: "disponivel"
     }
   ];
 

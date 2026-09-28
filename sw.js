@@ -59,6 +59,11 @@ const PRECACHE = [
   "ferramentas/parti-gyle/app.css",
   "ferramentas/parti-gyle/app.js",
   "ferramentas/parti-gyle/calculo.js",
+  "ferramentas/taxa-de-inoculo/",
+  "ferramentas/taxa-de-inoculo/index.html",
+  "ferramentas/taxa-de-inoculo/app.css",
+  "ferramentas/taxa-de-inoculo/app.js",
+  "ferramentas/taxa-de-inoculo/calculo.js",
 ];
 
 self.addEventListener("install", (event) => {

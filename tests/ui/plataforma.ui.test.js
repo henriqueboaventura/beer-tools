@@ -16,6 +16,7 @@ const PAGINAS = [
   "ferramentas/decoccao/sobre.html",
   "ferramentas/speise/",
   "ferramentas/parti-gyle/",
+  "ferramentas/taxa-de-inoculo/",
 ];
 
 suiteUI("Plataforma (interface)", (ctx) => {
@@ -54,12 +55,13 @@ suiteUI("Plataforma (interface)", (ctx) => {
     await pag.fechar();
   });
 
-  test("início lista as 4 ferramentas com links que abrem", async () => {
+  test("início lista as 5 ferramentas com links que abrem", async () => {
     const { pag } = ctx;
     await pag.ir("");
     const links = await pag.avaliar("ui.$$('main a[href^=\"ferramentas/\"]').map(a => a.getAttribute('href'))");
     assert.deepEqual([...new Set(links)], [
       "ferramentas/substituicao-leveduras/", "ferramentas/decoccao/", "ferramentas/speise/", "ferramentas/parti-gyle/",
+      "ferramentas/taxa-de-inoculo/",
     ]);
     await pag.avaliar("setTimeout(() => ui.clicar('main a[href=\"ferramentas/parti-gyle/\"]')); true");
     await pag.esperar("location.pathname.endsWith('/ferramentas/parti-gyle/') && document.readyState === 'complete'");
@@ -72,7 +74,7 @@ suiteUI("Plataforma (interface)", (ctx) => {
     await pag.avaliar("ui.clicar('.bf-menu-btn')");
     assert.equal(await pag.avaliar("ui.$('#bf-menu').hidden"), false);
     assert.equal(await pag.avaliar("ui.$('.bf-menu-btn').getAttribute('aria-expanded')"), "true");
-    assert.equal(await pag.avaliar("ui.$$('#bf-menu a[href*=\"ferramentas/\"]').length"), 4);
+    assert.equal(await pag.avaliar("ui.$$('#bf-menu a[href*=\"ferramentas/\"]').length"), 5);
     await pag.avaliar("document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' }))");
     assert.equal(await pag.avaliar("ui.$('#bf-menu').hidden"), true);
     assert.equal(await pag.avaliar("ui.texto('.bf-menu-btn__text')"), "Menu");

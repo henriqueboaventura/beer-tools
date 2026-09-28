@@ -12,6 +12,26 @@ detalhe técnico, em `ferramentas/decoccao/CHANGELOG.md`.
 invalida o cache offline antigo e faz aparecer o aviso "Nova versão
 disponível" para quem já está com o site aberto.
 
+## [1.7.0] — 2026-09-28
+
+### Adicionado
+- **Ferramenta 05 — Taxa de inóculo**: quanto fermento a cerveja precisa e
+  como chegar lá, sempre em litros.
+  - **Sua cerveja:** células necessárias = taxa × litros × °P, com as taxas
+    de ale, ale forte, lager e lager forte, ou qualquer valor.
+  - **Sua levedura:** líquida (viabilidade pela data de fabricação, 0,7%
+    por dia), seca (15 bilhões por grama, editável), fermento reaproveitado
+    ou contagem própria. Diz se dá para inocular direto e, se não, quanto
+    falta e quantos pacotes, gramas ou mL seriam sem starter.
+  - **Starter em passos:** quantos você quiser, com volume, densidade e
+    agitação de cada um. Placa agitadora usa o modelo da Braukaiser; sem
+    agitação, a curva de Chris White. Mostra células no começo e no fim,
+    inoculação e DME de cada passo. O botão "Sugerir passos" monta a
+    sequência a partir do maior starter que você consegue fazer.
+  - Comparada com Mr Malty, Brewers Friend e Craft Beer & Brewing. Os
+    testes reproduzem o exemplo publicado do Brewers Friend e batem com o
+    Mr Malty na placa agitadora.
+
 ## [1.6.1] — 2026-09-24
 
 ### Corrigido

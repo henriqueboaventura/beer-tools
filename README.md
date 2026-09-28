@@ -62,6 +62,18 @@ Várias cervejas de uma mostura só, de Henrique Boaventura. É um fluxo guiado:
 
 As regras e fórmulas vêm da BYO e da Craft Beer & Brewing: [`docs/specs/04-parti-gyle.md`](docs/specs/04-parti-gyle.md).
 
+### 05 — Taxa de inóculo
+
+`ferramentas/taxa-de-inoculo/`
+
+Quanto fermento a cerveja precisa e como chegar lá, de Henrique Boaventura. Tudo em litros.
+
+1. **Sua cerveja:** volume, OG (SG ou °P) e taxa (ale 0,75, lager 1,5 e as versões fortes, ou qualquer valor). Mostra as células necessárias.
+2. **Sua levedura:** líquida (pacotes e viabilidade pela data de fabricação), seca (gramas × células por grama), fermento reaproveitado (mL, % de sólidos e viabilidade) ou contagem própria. Diz se dá para inocular direto e, se não, quanto falta.
+3. **Starter:** quantos passos você quiser, cada um com volume, densidade e agitação (placa agitadora ou sem agitação), mostrando as células no começo e no fim e o DME. Um botão sugere os passos a partir do maior starter que você consegue fazer.
+
+Os modelos de crescimento são os publicados (Kai Troester/Braukaiser para placa agitadora, Chris White para sem agitação), comparados com Mr Malty, Brewers Friend e Craft Beer & Brewing: [`docs/specs/05-taxa-de-inoculo.md`](docs/specs/05-taxa-de-inoculo.md).
+
 ## Rodar localmente
 
 Só precisa de Python 3 (para servir os arquivos) e Node 18 ou mais novo (para os testes). Não há dependências para instalar.
@@ -97,6 +109,7 @@ Os testes usam só o runner nativo do Node (`node:test`). Eles cobrem:
 - **Decocção** (`ferramentas/decoccao/tests/`): o motor de cálculo, com valores conferidos contra a literatura.
 - **Speise** (`ferramentas/speise/tests/`): o cálculo, com valores conferidos à mão.
 - **Parti-gyle** (`ferramentas/parti-gyle/tests/`): os exemplos numéricos publicados nas fontes.
+- **Taxa de inóculo** (`ferramentas/taxa-de-inoculo/tests/`): o exemplo do Brewers Friend (viabilidade, crescimento sem agitação e DME), o modelo da Braukaiser e a comparação com o Mr Malty, e invariantes da sugestão de passos.
 
 - **Interface** (`tests/ui/`): abre o site num Chrome sem janela (headless), em tela de celular, e usa cada ferramenta como uma pessoa usaria: clica, digita e confere o que aparece. Também confere, em todas as páginas, que não há erro de JavaScript nem rolagem lateral, e que menu, tema e service worker funcionam.
   - Não precisa instalar nada além do Chrome (ou Chromium): os testes falam com ele direto pelo protocolo de depuração.

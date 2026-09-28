@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Calculadora de taxa de inóculo: quanto fermento e starter em passos | Brassagem Forte</title>
+  <meta name="description" content="Quantas células de levedura sua cerveja precisa, quanto você tem (líquida, seca ou reaproveitada) e como propagar em um ou mais starters, tudo em litros.">
+  <link rel="canonical" href="https://www.brassagemforte.com.br/ferramentas/ferramentas/taxa-de-inoculo/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Ferramentas Brassagem Forte">
+  <meta property="og:locale" content="pt_BR">
+  <meta property="og:title" content="Calculadora de taxa de inóculo: quanto fermento e starter em passos | Brassagem Forte">
+  <meta property="og:description" content="Quantas células de levedura sua cerveja precisa, quanto você tem (líquida, seca ou reaproveitada) e como propagar em um ou mais starters, tudo em litros.">
+  <meta property="og:url" content="https://www.brassagemforte.com.br/ferramentas/ferramentas/taxa-de-inoculo/">
+  <meta property="og:image" content="https://www.brassagemforte.com.br/ferramentas/assets/img/og-taxa-de-inoculo.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="theme-color" content="#0b0b0b">
+  <link rel="manifest" href="../../manifest.webmanifest?v=1.7.0">
+  <link rel="icon" href="../../favicon.ico" sizes="32x32">
+  <link rel="icon" href="../../assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="../../assets/img/icon-180.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-title" content="Brassagem Forte">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../assets/css/bf.css?v=1.7.0">
+  <link rel="stylesheet" href="app.css?v=1.7.0">
+  <script src="../../assets/js/versao.js?v=1.7.0"></script>
+  <script src="../../assets/js/shell.js?v=1.7.0"></script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Calculadora de taxa de inóculo","url":"https://www.brassagemforte.com.br/ferramentas/ferramentas/taxa-de-inoculo/","applicationCategory":"UtilitiesApplication","operatingSystem":"Web","inLanguage":"pt-BR","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"BRL"},"author":[{"@type":"Person","name":"Henrique Boaventura"}],"publisher":{"@type":"Organization","name":"Brassagem Forte","url":"https://www.brassagemforte.com.br","logo":"https://www.brassagemforte.com.br/ferramentas/assets/img/icon-512.png"}}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Ferramentas","item":"https://www.brassagemforte.com.br/ferramentas/"},{"@type":"ListItem","position":2,"name":"Taxa de inóculo","item":"https://www.brassagemforte.com.br/ferramentas/ferramentas/taxa-de-inoculo/"}]}</script>
+</head>
+<body>
+  <header data-bf-header></header>
+
+  <main>
+    <div class="wrap">
+      <p class="bf-crumb"><a href="../../">Ferramentas</a> / 05</p>
+      <h1 class="bf-title">Taxa de inóculo</h1>
+      <p class="bf-lead">Quantas células de levedura a sua cerveja precisa, quantas você tem e, se faltar, como chegar lá com um ou mais starters.</p>
+      <details class="bf-how">
+        <summary>Como funciona</summary>
+        <div class="bf-how__body">
+          <ol>
+            <li><b>Sua cerveja:</b> as células necessárias são <b>taxa × litros × °P</b>. A taxa é em milhões de células por mL por °P: 0,75 para ale, 1,5 para lager (os mesmos números do Mr Malty, Brewers Friend e Craft Beer &amp; Brewing).</li>
+            <li><b>Sua levedura:</b> um pacote líquido tem 100 bilhões de células quando sai da fábrica e perde cerca de 0,7% por dia. A seca é contada por grama. O fermento reaproveitado, pelos mL e pela proporção de sólidos.</li>
+            <li><b>Starter:</b> cada passo cresce a levedura do passo anterior. <b>Placa agitadora</b> usa o modelo de Kai Troester (Braukaiser): cerca de 1,4 bilhão de células por grama de extrato. <b>Sem agitação</b> usa a curva de Chris White, em que o crescimento depende de quantas células há por mL de starter. Entre um passo e outro, deixe fermentar, decante e jogue o starter novo por cima.</li>
+          </ol>
+          <p>São estimativas: a contagem real depende da cepa, da temperatura, dos nutrientes e da saúde do fermento.</p>
+        </div>
+      </details>
+
+      <!-- 01 Sua cerveja -->
+      <section class="bf-step" aria-labelledby="l-cerveja">
+        <h2 class="bf-step__label" id="l-cerveja"><b>01</b> Sua cerveja</h2>
+        <div class="ti-linha">
+          <div class="ti-campo">
+            <label for="volume">Volume no fermentador <span>L</span></label>
+            <input type="number" id="volume" inputmode="decimal" value="20" min="0" step="0.5">
+          </div>
+          <div class="ti-campo">
+            <div class="ti-rotulo">
+              <label for="og">OG</label>
+              <div class="bf-segmented ti-unidade" role="group" aria-label="Unidade de densidade">
+                <button type="button" class="bf-chip" data-unidade="sg" aria-pressed="true">SG</button>
+                <button type="button" class="bf-chip" data-unidade="plato" aria-pressed="false">°P</button>
+              </div>
+            </div>
+            <input type="number" id="og" inputmode="decimal" value="1.050" min="1.000" step="0.001">
+          </div>
+        </div>
+        <div class="ti-campo">
+          <label for="taxa">Taxa de inóculo <span>milhões / mL / °P</span></label>
+          <div class="bf-chips ti-taxas" role="group" aria-label="Taxas comuns">
+            <button type="button" class="bf-chip" data-taxa="0.75" aria-pressed="true">Ale 0,75</button>
+            <button type="button" class="bf-chip" data-taxa="1" aria-pressed="false">Ale forte 1,0</button>
+            <button type="button" class="bf-chip" data-taxa="1.5" aria-pressed="false">Lager 1,5</button>
+            <button type="button" class="bf-chip" data-taxa="2" aria-pressed="false">Lager forte 2,0</button>
+          </div>
+          <input type="number" id="taxa" inputmode="decimal" value="0.75" min="0" step="0.05">
+          <p class="ti-nota">"Forte": acima de 1.060 (15 °P).</p>
+        </div>
+        <div class="ti-resultado" aria-live="polite">
+          <p class="ti-resultado__rotulo">Você precisa de</p>
+          <p class="ti-resultado__valor"><span id="necessario">0</span> <small>bilhões de células</small></p>
+          <p class="ti-resultado__sub" id="necessarioSub"></p>
+        </div>
+      </section>
+
+      <!-- 02 Sua levedura -->
+      <section class="bf-step" aria-labelledby="l-levedura">
+        <h2 class="bf-step__label" id="l-levedura"><b>02</b> Sua levedura</h2>
+        <div class="bf-segmented ti-fontes" role="group" aria-label="Tipo de levedura">
+          <button type="button" class="bf-chip" data-fonte="liquida" aria-pressed="true">Líquida</button>
+          <button type="button" class="bf-chip" data-fonte="seca" aria-pressed="false">Seca</button>
+          <button type="button" class="bf-chip" data-fonte="reaproveitada" aria-pressed="false">Reaproveitada</button>
+          <button type="button" class="bf-chip" data-fonte="contagem" aria-pressed="false">Contagem</button>
+        </div>
+
+        <div class="ti-painel" data-painel="liquida">
+          <div class="ti-linha">
+            <div class="ti-campo">
+              <label for="pacotes">Pacotes ou vials <span>un.</span></label>
+              <input type="number" id="pacotes" inputmode="numeric" value="1" min="1" step="1">
+            </div>
+            <div class="ti-campo">
+              <label for="viabilidade">Viabilidade <span>%</span></label>
+              <input type="number" id="viabilidade" inputmode="decimal" value="100" min="0" max="100" step="1">
+            </div>
+          </div>
+          <div class="ti-campo">
+            <label for="fabricacao">Data de fabricação <span>opcional</span></label>
+            <input type="date" id="fabricacao">
+            <p class="ti-nota" id="idade">Sem data, conta como fresca (100%). Com a data, a viabilidade cai 0,7% por dia.</p>
+          </div>
+        </div>
+
+        <div class="ti-painel" data-painel="seca" hidden>
+          <div class="ti-linha">
+            <div class="ti-campo">
+              <label for="gramas">Levedura seca <span>g</span></label>
+              <input type="number" id="gramas" inputmode="decimal" value="11" min="0" step="0.5">
+            </div>
+            <div class="ti-campo">
+              <label for="celulasGrama">Células por grama <span>bilhões</span></label>
+              <input type="number" id="celulasGrama" inputmode="decimal" value="15" min="1" step="1">
+            </div>
+          </div>
+          <p class="ti-nota">Ninguém concorda sobre as células por grama: as fontes vão de 10 (Brewers Friend) a 20 (Mr Malty). 15 fica no meio. Um sachê tem 11 g.</p>
+        </div>
+
+        <div class="ti-painel" data-painel="reaproveitada" hidden>
+          <div class="ti-campo">
+            <label for="ml">Fermento reaproveitado <span>mL</span></label>
+            <input type="number" id="ml" inputmode="decimal" value="200" min="0" step="10">
+          </div>
+          <div class="ti-linha">
+            <div class="ti-campo">
+              <label for="solidos">Sólidos de levedura <span>%</span></label>
+              <input type="number" id="solidos" inputmode="decimal" value="25" min="1" max="100" step="1">
+            </div>
+            <div class="ti-campo">
+              <label for="viabSlurry">Viabilidade <span>%</span></label>
+              <input type="number" id="viabSlurry" inputmode="decimal" value="90" min="0" max="100" step="1">
+            </div>
+          </div>
+          <p class="ti-nota">Depois de decantar no frasco, sólidos = altura da camada de levedura ÷ altura total. Cada mL de levedura pura tem cerca de 4,5 bilhões de células. Sem contagem, a viabilidade é um palpite: abaixo de ~90%, acorde o fermento num starter pequeno antes.</p>
+        </div>
+
+        <div class="ti-painel" data-painel="contagem" hidden>
+          <div class="ti-campo">
+            <label for="celulas">Células viáveis <span>bilhões</span></label>
+            <input type="number" id="celulas" inputmode="decimal" value="100" min="0" step="1">
+          </div>
+          <p class="ti-nota">Para quem contou no microscópio (câmara de Neubauer) ou tem o número do laboratório.</p>
+        </div>
+
+        <div id="tem" aria-live="polite"></div>
+      </section>
+
+      <!-- 03 Starter -->
+      <section class="bf-step" aria-labelledby="l-starter">
+        <h2 class="bf-step__label" id="l-starter"><b>03</b> Starter</h2>
+        <div id="semStarterSeca" class="ti-descricao" hidden>
+          <p><b>Levedura seca não precisa de starter.</b> Ela já vem com as reservas que precisa, e um starter só gasta essas reservas. Reidrate em água morna (cerca de 35 °C) e inocule. Se faltar, use mais sachês.</p>
+        </div>
+        <div id="starter">
+          <p class="ti-descricao">Cada passo é um starter: a levedura cresce, você decanta e ela vai para o próximo. Monte os passos você mesmo ou peça uma sugestão.</p>
+
+          <details class="ti-sugerir" id="sugerirBox">
+            <summary>Sugerir passos</summary>
+            <div class="ti-linha">
+              <div class="ti-campo">
+                <label for="frasco">Maior starter <span>L</span></label>
+                <input type="number" id="frasco" inputmode="decimal" value="2" min="0.1" step="0.5">
+              </div>
+              <div class="ti-campo">
+                <label for="sugSg">Densidade <span>SG</span></label>
+                <input type="number" id="sugSg" inputmode="decimal" value="1.036" min="1.001" step="0.001">
+              </div>
+            </div>
+            <div class="bf-segmented ti-modelos" role="group" aria-label="Agitação da sugestão">
+              <button type="button" class="bf-chip" data-sug-modelo="braukaiser" aria-pressed="true">Placa agitadora</button>
+              <button type="button" class="bf-chip" data-sug-modelo="white" aria-pressed="false">Sem agitação</button>
+            </div>
+            <button type="button" class="bf-btn" id="sugerir">Sugerir passos</button>
+            <p class="ti-nota" id="sugMsg" role="status"></p>
+          </details>
+
+          <div id="passos"></div>
+          <button type="button" class="bf-btn" id="adicionar">+ Adicionar passo</button>
+          <div id="final" aria-live="polite"></div>
+        </div>
+      </section>
+
+      <details class="bf-how ti-fontes-lista">
+        <summary>Fontes</summary>
+        <div class="bf-how__body">
+          <ul>
+            <li><a href="https://mrmalty.com/pitching-rate-preview.html" rel="noopener">Mr Malty — Yeast Pitching Rate Calculator</a> (Jamil Zainasheff): taxas de inóculo, células por mL de fermento reaproveitado, e a comparação do volume de starter na placa agitadora.</li>
+            <li><a href="https://www.brewersfriend.com/yeast-pitch-rate-and-starter-calculator/" rel="noopener">Brewers Friend — Yeast Pitch Rate and Starter Calculator</a>: viabilidade de 0,7% por dia, os dois modelos de crescimento e o DME do starter.</li>
+            <li>Kai Troester (Braukaiser), <a href="https://braukaiser.com/documents/BFD_yeast_handling.pdf" rel="noopener">Advanced Yeast Handling</a>: a placa agitadora cresce cerca de 1,4 bilhão de células por grama de extrato.</li>
+            <li>Chris White e Jamil Zainasheff, <i>Yeast: The Practical Guide to Beer Fermentation</i>: curva de crescimento pela inoculação em starters sem agitação.</li>
+            <li><a href="https://www.beerandbrewing.com/tools/pitch-rate-calculator" rel="noopener">Craft Beer &amp; Brewing — Pitch Rate Calculator</a>: as mesmas taxas por estilo.</li>
+          </ul>
+        </div>
+      </details>
+    </div>
+  </main>
+
+  <footer data-bf-footer></footer>
+
+  <script src="calculo.js?v=1.7.0"></script>
+  <script src="app.js?v=1.7.0"></script>
+</body>
+</html>

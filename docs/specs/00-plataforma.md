@@ -20,6 +20,7 @@ Site estático, mobile first, publicado no GitHub Pages, que funciona como um **
 /ferramentas/decoccao/               → Ferramenta 02
 /ferramentas/speise/                 → Ferramenta 03
 /ferramentas/parti-gyle/             → Ferramenta 04
+/ferramentas/taxa-de-inoculo/        → Ferramenta 05
 /ferramentas/<slug>/                 → Ferramentas futuras
 ```
 
@@ -99,6 +100,7 @@ Tema: segue o sistema por padrão, e o botão do header alterna e guarda a escol
 │   ├── decoccao/                      # ferramenta 02 (motor e testes próprios)
 │   ├── speise/                        # ferramenta 03 (calculo.js + testes)
 │   ├── parti-gyle/                    # ferramenta 04 (calculo.js + testes)
+│   ├── taxa-de-inoculo/               # ferramenta 05 (calculo.js + testes)
 │   └── substituicao-leveduras/
 │       ├── index.html
 │       ├── app.js

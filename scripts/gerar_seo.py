@@ -35,6 +35,7 @@ PAGINAS_FIXAS = [
     "ferramentas/decoccao/sobre.html",
     "ferramentas/speise/",
     "ferramentas/parti-gyle/",
+    "ferramentas/taxa-de-inoculo/",
 ]
 
 NIVEL = {3: "Equivalente", 2: "Provável", 1: "Alternativa"}

@@ -1,0 +1,111 @@
+/* Estilos específicos da ferramenta 05 — Taxa de inóculo */
+
+.ti-campo { margin-bottom: 16px; min-width: 0; }
+.ti-campo label, .ti-rotulo {
+  display: flex; justify-content: space-between; align-items: baseline; gap: 8px;
+  font-size: 15px; color: var(--bf-soft); margin-bottom: 8px;
+}
+.ti-rotulo { align-items: center; }
+.ti-rotulo label { margin: 0; }
+/* rótulos lado a lado com a mesma altura (o seletor SG/°P é mais alto que o texto) */
+.ti-linha > .ti-campo > label, .ti-linha .ti-rotulo { min-height: 36px; align-items: center; }
+.ti-campo label span { font: 500 12px/1 var(--bf-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--bf-mute); }
+.ti-campo input, .ti-campo select {
+  width: 100%;
+  appearance: none;
+  background: var(--bf-raised);
+  border: 0;
+  border-bottom: 2px solid var(--bf-fg);
+  border-radius: 0;
+  color: var(--bf-fg);
+  /* 16px+ evita o zoom automático do Safari iOS */
+  font: 500 20px/1 var(--bf-mono);
+  padding: 12px;
+  min-height: 50px;
+  -moz-appearance: textfield;
+}
+.ti-campo select { font: 500 17px/1.2 var(--bf-font); cursor: pointer; }
+.ti-campo input[type="date"] { font: 500 18px/1 var(--bf-mono); }
+.ti-campo input:focus-visible, .ti-campo select:focus-visible { outline: none; background: var(--bf-raised-2); }
+
+.ti-linha { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.ti-nota { font-size: 13px; color: var(--bf-mute); margin: 8px 0 0; }
+.ti-nota b { color: var(--bf-fg); }
+.ti-descricao { font-size: 15px; color: var(--bf-soft); margin: 0 0 16px; max-width: 38em; }
+.ti-descricao p { margin: 0; }
+.ti-descricao b { color: var(--bf-fg); }
+
+.ti-unidade { grid-auto-columns: 52px; }
+.ti-unidade .bf-chip { min-height: 36px; padding: 0 10px; }
+/* as 4 taxas cabem numa grade 2×2 no celular, sem rolagem */
+.ti-taxas { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 0 0 10px; padding: 0; overflow: visible; }
+.ti-taxas .bf-chip { padding: 0 8px; }
+@media (min-width: 620px) { .ti-taxas { grid-template-columns: repeat(4, 1fr); } }
+.ti-fontes { grid-auto-columns: 1fr; margin-bottom: 16px; }
+.ti-fontes .bf-chip { padding: 0 6px; font-size: 12px; }
+.ti-modelos { grid-auto-columns: 1fr; margin: 0 0 12px; }
+
+/* Resultado: bloco invertido, como na speise */
+.ti-resultado { background: var(--bf-fg); color: var(--bf-bg); padding: 18px 16px 16px; text-align: center; margin-top: 8px; }
+.ti-resultado p { margin: 0; }
+.ti-resultado__rotulo { font: 500 12px/1 var(--bf-mono); letter-spacing: .12em; text-transform: uppercase; opacity: .8; }
+.ti-resultado__valor { font-weight: 900; font-stretch: 62%; font-size: 88px; line-height: .95; margin: 10px 0 4px !important; }
+.ti-resultado__valor small { display: block; font: 500 14px/1.2 var(--bf-mono); letter-spacing: .06em; text-transform: uppercase; margin-top: 6px; }
+.ti-resultado__sub { font: 400 13px/1.4 var(--bf-mono); opacity: .8; }
+
+.ti-tem { font-size: 17px; color: var(--bf-soft); margin: 4px 0 0; }
+.ti-tem b { color: var(--bf-fg); font: 500 20px/1 var(--bf-mono); }
+.ti-tem small { color: var(--bf-mute); font: 400 13px/1 var(--bf-mono); }
+
+/* Cores de informação: verde = ok, âmbar = falta/atenção */
+:root { --ti-ok: #4ade80; --ti-atencao: #fbbf24; }
+:root[data-theme="light"] { --ti-ok: #15803d; --ti-atencao: #b45309; }
+@media (prefers-color-scheme: light) { :root:not([data-theme="dark"]) { --ti-ok: #15803d; --ti-atencao: #b45309; } }
+
+.ti-status { margin: 10px 0 0; padding: 8px 10px; border-left: 4px solid var(--ti-atencao); background: color-mix(in srgb, var(--ti-atencao) 10%, transparent); font-size: 14px; color: var(--bf-soft); }
+.ti-status b { color: var(--bf-fg); }
+.ti-status--ok { border-left-color: var(--ti-ok); background: color-mix(in srgb, var(--ti-ok) 10%, transparent); }
+.ti-status--ok::before { content: "✓ "; color: var(--ti-ok); font-weight: 700; }
+
+/* Sugestão */
+.ti-sugerir { border-top: 1px solid var(--bf-line); border-bottom: 1px solid var(--bf-line); margin-bottom: 16px; }
+.ti-sugerir summary {
+  list-style: none; cursor: pointer; min-height: 44px; display: flex; align-items: center; justify-content: space-between;
+  font: 500 12px/1 var(--bf-mono); letter-spacing: .12em; text-transform: uppercase; color: var(--bf-soft);
+}
+.ti-sugerir summary::-webkit-details-marker { display: none; }
+.ti-sugerir summary::after { content: "+"; font-size: 18px; }
+.ti-sugerir[open] summary::after { content: "−"; }
+.ti-sugerir[open] { padding-bottom: 14px; }
+.ti-sugerir .bf-btn, #adicionar { color: var(--bf-fg); }
+
+/* Passos */
+.ti-passo { border-top: 4px solid var(--bf-fg); border-left: 1px solid var(--bf-line-strong); border-right: 1px solid var(--bf-line-strong); border-bottom: 1px solid var(--bf-line-strong); padding: 12px 14px 14px; margin-bottom: 12px; }
+.ti-passo__topo { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+.ti-passo__titulo { margin: 0; font-weight: 800; font-stretch: 70%; text-transform: uppercase; font-size: 24px; line-height: 1; color: var(--bf-fg); }
+.ti-remover {
+  background: none; border: 0; color: var(--bf-mute); cursor: pointer; min-height: 44px; padding: 0 4px;
+  font: 500 12px/1 var(--bf-mono); letter-spacing: .08em; text-transform: uppercase; text-decoration: underline;
+}
+.ti-remover:hover { color: var(--bf-fg); }
+.ti-passo__dados { display: grid; grid-template-columns: repeat(3, 1fr); margin: 4px 0 0; border-top: 1px solid var(--bf-line); }
+.ti-passo__dados div { padding: 8px 0 0; min-width: 0; }
+.ti-passo__dados div + div { padding-left: 8px; border-left: 1px solid var(--bf-line); }
+.ti-passo__dados dt { font: 500 10px/1.2 var(--bf-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--bf-mute); }
+.ti-passo__dados dd { margin: 4px 0 0; font: 500 16px/1.2 var(--bf-mono); color: var(--bf-fg); white-space: nowrap; }
+
+/* Resultado final dos passos */
+.ti-final { margin-top: 20px; background: var(--bf-fg); color: var(--bf-bg); padding: 16px; text-align: center; }
+.ti-final p { margin: 0; }
+.ti-final__rotulo { font: 500 12px/1 var(--bf-mono); letter-spacing: .12em; text-transform: uppercase; opacity: .8; }
+.ti-final__valor { font-weight: 900; font-stretch: 62%; font-size: 64px; line-height: 1; margin: 8px 0 4px !important; }
+.ti-final__valor small { font: 500 14px/1 var(--bf-mono); text-transform: uppercase; }
+.ti-final__sub { font: 400 13px/1.4 var(--bf-mono); opacity: .8; }
+
+.ti-fontes-lista { margin-top: 32px; }
+.ti-fontes-lista li { font-size: 14px; }
+
+@media (min-width: 720px) {
+  .ti-resultado__valor { font-size: 112px; }
+  .ti-fontes .bf-chip { font-size: 13px; }
+}
