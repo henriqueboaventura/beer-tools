@@ -43,7 +43,6 @@
 @media (min-width: 620px) { .ti-taxas { grid-template-columns: repeat(4, 1fr); } }
 .ti-fontes { grid-auto-columns: 1fr; margin-bottom: 16px; }
 .ti-fontes .bf-chip { padding: 0 6px; font-size: 12px; }
-.ti-modelos { grid-auto-columns: 1fr; margin: 0 0 12px; }
 
 /* Resultado: bloco invertido, como na speise */
 .ti-resultado { background: var(--bf-fg); color: var(--bf-bg); padding: 18px 16px 16px; text-align: center; margin-top: 8px; }

@@ -75,6 +75,20 @@ describe("crescimento — Chris White, sem agitação", () => {
     perto(p.fim, 189, 0.6, "células no fim");
     perto(p.dme, 239.7, 0.1, "DME");
   });
+  test("bate com o Mr Malty (starter simples) passo a passo, dentro de ±12% entre 20 e 180 M/mL (o Mr Malty arredonda as células)", () => {
+    // Passos devolvidos pela calculadora de starter em passos do Mr Malty
+    // (mrmalty.com/pitching-stepped-starter-preview.html, "Simple Starter"), 2026-09-28:
+    // [litros, células no começo, células no fim]
+    const mrMalty = [
+      [1.60, 100, 186], [4.00, 96, 270], [2.00, 96, 200], [2.00, 200, 303], [1.86, 303, 372],
+      [2.00, 192, 296], [1.92, 296, 372], [5.00, 223, 480], [5.00, 480, 740], [4.27, 740, 884],
+    ];
+    for (const [l, ini, fim] of mrMalty) {
+      const novas = I.crescimento("white", ini, l, 1.036);
+      const razao = novas / (fim - ini);
+      assert.ok(razao > 0.88 && razao < 1.12, `${l} L, ${ini}→${fim}: nosso cresce ${novas.toFixed(0)} (${(razao * 100).toFixed(0)}%)`);
+    }
+  });
   test("acima de ~244 M/mL não cresce (nunca encolhe)", () => {
     assert.equal(I.crescimento("white", 300, 1, 1.036), 0);
   });
@@ -100,16 +114,55 @@ describe("crescimento — Braukaiser, placa agitadora", () => {
   test("acima de 3,5 bi/g: não cresce", () => {
     assert.equal(I.crescimento("braukaiser", 4 * E, 1, 1.040), 0);
   });
-  test("bate com o Mr Malty na placa agitadora: 100 bi → 186 bi pede ~0,63 L", () => {
-    // Mr Malty (API, 20 L a 1.050, 1 pacote fresco): 1,27 L "simples com O₂"; placa agitadora = ÷ 2 → 0,64 L
-    const s = I.sugerirPassos(100, 186, 2, "braukaiser", 1.040);
-    assert.equal(s.motivo, "ok");
-    assert.equal(s.passos.length, 1);
-    perto(s.passos[0].litros, 0.64, 0.07);
+  test("diverge do Mr Malty: cresce mais com pouca levedura por litro, menos com muita, e para acima de 3,5 bi/g", () => {
+    // passos da calculadora de passos do Mr Malty (placa agitadora), 2026-09-28
+    const baixa = I.crescimento("braukaiser", 58, 5, 1.036);   // 12 M/mL — Mr Malty: +283
+    const media = I.crescimento("braukaiser", 93, 1, 1.036);   // 93 M/mL — Mr Malty: +129
+    const alta = I.crescimento("braukaiser", 597, 2, 1.036);   // 299 M/mL — Mr Malty: +265
+    assert.ok(baixa > 2 * 283, `baixa: ${baixa}`);
+    perto(media, 129, 0.05 * 129, "média");
+    assert.ok(alta < 0.2 * 265, `alta: ${alta}`);
+    assert.equal(I.crescimento("braukaiser", 862, 1.31, 1.036), 0, "658 M/mL — Mr Malty ainda cresce 22");
   });
   test("avisa densidade fora de 1.030–1.040", () => {
     assert.ok(I.propagar(100, [{ litros: 1, sg: 1.060, modelo: "braukaiser" }])[0].avisos.includes("densidade"));
     assert.ok(!I.propagar(100, [{ litros: 1, sg: 1.036, modelo: "braukaiser" }])[0].avisos.includes("densidade"));
+  });
+});
+
+describe("crescimento — Mr Malty, placa agitadora", () => {
+  // Passos devolvidos pela calculadora de starter em passos do Mr Malty
+  // (mrmalty.com/pitching-stepped-starter-preview.html, "Stir Plate"), 2026-09-28:
+  // [litros, células no começo, células no fim]
+  const mrMalty = [
+    [2.00, 58, 230], [2.00, 230, 501], [2.00, 501, 781], [0.60, 100, 186], [1.62, 96, 279],
+    [2.00, 96, 306], [0.69, 306, 372], [1.27, 192, 372], [1.75, 306, 557], [5.00, 58, 341],
+    [4.41, 341, 884], [2.00, 100, 313], [2.00, 313, 597], [2.00, 597, 862], [1.00, 20, 93],
+    [1.00, 93, 222], [0.64, 222, 300], [0.50, 50, 116], [0.50, 116, 186],
+  ];
+  test("curva de White com o volume × 2 ÷ 0,75 (fatores do Mr Malty)", () => {
+    perto(I.FATOR_PLACA_MRMALTY, 2.667, 0.001);
+    perto(I.crescimento("mrmalty", 100, 0.6, 1.036), I.crescimento("white", 100, 1.6, 1.036), 1e-9);
+  });
+  test("reproduz os passos do Mr Malty dentro de ±12%", () => {
+    for (const [l, ini, fim] of mrMalty) {
+      const razao = I.crescimento("mrmalty", ini, l, 1.036) / (fim - ini);
+      assert.ok(razao > 0.88 && razao < 1.12, `${l} L, ${ini}→${fim}: ${(razao * 100).toFixed(0)}%`);
+    }
+  });
+  test("exemplo padrão: 100 bi → 186 bi num starter de 0,6 L, como no Mr Malty", () => {
+    const s = I.sugerirPassos(100, 186, 2, "mrmalty", 1.036);
+    assert.deepEqual(s.passos.map((p) => p.litros), [0.6]);
+  });
+  test("lager de 884 bi com 1 pacote e frasco de 2 L: chega em 4 passos, como no Mr Malty", () => {
+    const s = I.sugerirPassos(100, 884, 2, "mrmalty", 1.036);
+    assert.equal(s.motivo, "ok");
+    assert.equal(s.passos.length, 4);
+    assert.equal(I.sugerirPassos(100, 884, 2, "braukaiser", 1.036).motivo, "frasco-pequeno", "o Braukaiser não chega");
+  });
+  test("aviso de inoculação usa o volume efetivo (faixa de ~67 a ~267 M/mL reais)", () => {
+    assert.deepEqual(I.propagar(200, [{ litros: 1, sg: 1.036, modelo: "mrmalty" }])[0].avisos, []);
+    assert.ok(I.propagar(300, [{ litros: 1, sg: 1.036, modelo: "mrmalty" }])[0].avisos.includes("inoculacao"));
   });
 });
 
@@ -151,7 +204,7 @@ describe("invariantes (casos aleatórios, semente fixa)", () => {
     inicial: 5 + rnd() * 300,
     alvo: 50 + rnd() * 1500,
     frasco: [0.5, 1, 2, 3, 5][Math.floor(rnd() * 5)],
-    modelo: rnd() < 0.5 ? "white" : "braukaiser",
+    modelo: I.MODELOS[Math.floor(rnd() * 3)],
     sg: 1.030 + Math.round(rnd() * 10) / 1000,
   }));
 

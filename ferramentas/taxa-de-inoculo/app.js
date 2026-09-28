@@ -3,12 +3,11 @@
 
   var C = window.BFInoculo;
   var $ = function (id) { return document.getElementById(id); };
-  var MODELOS = { braukaiser: "Placa agitadora", white: "Sem agitação" };
+  var MODELOS = { braukaiser: "Placa agitadora (Braukaiser)", mrmalty: "Placa agitadora (Mr Malty)", white: "Sem agitação" };
 
   var state = {
     unidade: "sg",
     fonte: "liquida",
-    sugModelo: "braukaiser",
     passos: [{ litros: "1", sg: "1.036", modelo: "braukaiser" }]
   };
   var ultimo = null; // último cálculo (usado pela sugestão)
@@ -90,7 +89,7 @@
   /* ---------- 03 Starter ---------- */
   function renderPassos() {
     $("passos").innerHTML = state.passos.map(function (p, i) {
-      var opcoes = Object.keys(MODELOS).map(function (m) {
+      var opcoes = C.MODELOS.map(function (m) {
         return '<option value="' + m + '"' + (p.modelo === m ? " selected" : "") + ">" + MODELOS[m] + "</option>";
       }).join("");
       return '<article class="ti-passo" data-i="' + i + '">' +
@@ -120,9 +119,9 @@
         (r.inicio > 0 ? " · a levedura cresce " + num(r.fator, 1) + "×" : "") + ".</p>";
     if (r.avisos.indexOf("sem-crescimento") > -1) html += status(false, "Starter pequeno demais para tanta levedura: não cresce. Aumente o volume.");
     if (r.avisos.indexOf("inoculacao") > -1) {
-      html += status(false, r.inoculacao < C.INOCULACAO_IDEAL[0]
-        ? "Pouca levedura para esse volume: a curva sem agitação é otimista abaixo de 25 milhões/mL. Faça um passo menor antes."
-        : "Muita levedura para esse volume: acima de 100 milhões/mL cresce pouco. Aumente o volume.");
+      html += status(false, r.inoculacaoWhite < C.INOCULACAO_IDEAL[0]
+        ? "Pouca levedura para esse volume: fora da faixa em que a curva foi medida, ela tende a exagerar o crescimento. Faça um passo menor antes."
+        : "Muita levedura para esse volume: cresce pouco. Aumente o volume.");
     }
     if (r.avisos.indexOf("densidade") > -1) html += status(false, "Use starter entre 1.030 e 1.040: mais denso estressa a levedura, mais fraco rende menos.");
     return html;
@@ -187,9 +186,6 @@
   document.querySelectorAll("[data-fonte]").forEach(function (b) {
     b.addEventListener("click", function () { trocarFonte(b.dataset.fonte); });
   });
-  document.querySelectorAll("[data-sug-modelo]").forEach(function (b) {
-    b.addEventListener("click", function () { state.sugModelo = b.dataset.sugModelo; marcar("[data-sug-modelo]", "data-sug-modelo", state.sugModelo); });
-  });
   ["volume", "og", "taxa", "pacotes", "viabilidade", "gramas", "celulasGrama", "ml", "solidos", "viabSlurry", "celulas"].forEach(function (id) {
     $(id).addEventListener("input", calcular);
   });
@@ -226,7 +222,7 @@
     var msg = $("sugMsg");
     if (!ultimo || !(ultimo.necessario > 0)) { msg.textContent = "Preencha a cerveja primeiro."; return; }
     var sg = val("sugSg");
-    var s = C.sugerirPassos(ultimo.tem, ultimo.necessario, val("frasco"), state.sugModelo, sg);
+    var s = C.sugerirPassos(ultimo.tem, ultimo.necessario, val("frasco"), $("sugModelo").value, sg);
     if (s.motivo === "incompleta") { msg.textContent = "Informe o fermento, o tamanho do starter e a densidade."; return; }
     if (s.motivo === "suficiente") { msg.textContent = "Você já tem levedura suficiente: não precisa de starter."; return; }
     state.passos = s.passos.map(function (p) { return { litros: p.litros.toFixed(1), sg: sg.toFixed(3), modelo: p.modelo }; });

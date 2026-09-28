@@ -12,6 +12,24 @@ detalhe técnico, em `ferramentas/decoccao/CHANGELOG.md`.
 invalida o cache offline antigo e faz aparecer o aviso "Nova versão
 disponível" para quem já está com o site aberto.
 
+## [1.8.0] — 2026-09-28
+
+### Adicionado
+- **Taxa de inóculo: segundo modelo de placa agitadora, o do Mr Malty.**
+  Validamos a ferramenta passo a passo contra a calculadora de starter em
+  passos do Mr Malty (24 cenários). O resultado:
+  - Sem agitação, a curva de Chris White bate com o "Simple Starter" dele,
+    dentro de ±10%.
+  - Na placa agitadora, o modelo da Braukaiser diverge. Com pouca levedura
+    por litro, ele prevê mais crescimento; com muita, menos, e a levedura
+    para de crescer. Numa lager de 884 bi com 1 pacote e starter de até
+    2 L, o Mr Malty chega em 4 passos e o Braukaiser não chega.
+  - Agora cada passo, e a sugestão de passos, deixa escolher entre
+    "Placa agitadora (Braukaiser)", "Placa agitadora (Mr Malty)" e "Sem
+    agitação". O modelo do Mr Malty é a curva de White com os fatores
+    publicados por ele, e reproduz os passos dele dentro de ±10% na maioria
+    dos casos.
+
 ## [1.7.0] — 2026-09-28
 
 ### Adicionado

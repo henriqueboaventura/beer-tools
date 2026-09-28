@@ -159,6 +159,22 @@ suiteUI("Taxa de inóculo (interface)", (ctx) => {
     assert.deepEqual(pag.erros, []);
   });
 
+  test("placa agitadora (Mr Malty): no passo e na sugestão, chega onde o Braukaiser não chega", async () => {
+    const { pag } = ctx;
+    await abrir();
+    assert.deepEqual(await pag.avaliar("ui.$$('#modelo0 option').map(o => o.value)"), ["braukaiser", "mrmalty", "white"]);
+    await pag.avaliar("const s = ui.$('#modelo0'); s.value = 'mrmalty'; s.dispatchEvent(new Event('change', { bubbles: true }))");
+    const [r] = C.propagar(100, [{ litros: 1, sg: 1.036, modelo: "mrmalty" }]);
+    assert.equal((await passos())[0].dados[1], br(r.fim, 0) + " bi");
+
+    await pag.avaliar("ui.digitar('#volume', '40'); ui.clicar('[data-taxa=\"1.5\"]'); ui.digitar('#og', '1.060')");
+    await pag.avaliar("ui.$('#sugerirBox').open = true; ui.$('#sugModelo').value = 'mrmalty'; ui.clicar('#sugerir')");
+    assert.match(await pag.avaliar("ui.texto('#sugMsg')"), /4 passos/);
+    assert.deepEqual(await pag.avaliar("ui.$$('.ti-passo select').map(s => s.value)"), ["mrmalty", "mrmalty", "mrmalty", "mrmalty"]);
+    assert.match(await pag.avaliar("ui.texto('#final')"), /Chega no alvo/);
+    assert.deepEqual(pag.erros, []);
+  });
+
   test("campo vazio pede para preencher, sem erro", async () => {
     const { pag } = ctx;
     await abrir();
