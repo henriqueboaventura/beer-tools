@@ -42,6 +42,10 @@
 .ti-taxas .bf-chip { padding: 0 8px; }
 @media (min-width: 620px) { .ti-taxas { grid-template-columns: repeat(4, 1fr); } }
 .ti-fontes { grid-auto-columns: 1fr; margin-bottom: 16px; }
+.ti-pacote { grid-auto-columns: 1fr; margin-top: -6px; }
+.ti-pacote .bf-chip { min-height: 36px; }
+.ti-pacote__nota { margin: 8px 0 16px; }
+.ti-idade { margin: -8px 0 0; }
 .ti-fontes .bf-chip { padding: 0 6px; font-size: 12px; }
 
 /* Resultado: bloco invertido, como na speise */

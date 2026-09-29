@@ -12,6 +12,16 @@ detalhe técnico, em `ferramentas/decoccao/CHANGELOG.md`.
 invalida o cache offline antigo e faz aparecer o aviso "Nova versão
 disponível" para quem já está com o site aberto.
 
+## [1.11.0] — 2026-09-29
+
+### Adicionado
+- **Taxa de inóculo: células por pacote de levedura líquida.** Nem todo
+  pacote ou vial tem 100 bilhões de células: algumas marcas vendem com
+  200. Agora dá para informar o do seu pacote.
+  - Atalhos de 100 e 200 bi, ou qualquer valor no campo.
+  - Entra na conta de quanto você tem e de quantos pacotes seriam sem
+    starter.
+
 ## [1.10.0] — 2026-09-28
 
 ### Adicionado

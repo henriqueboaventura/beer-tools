@@ -9,7 +9,8 @@
  *   células = taxa × volume (mL) × °P ÷ 1000  →  em litros: taxa × litros × °P
  *
  * O QUE VOCÊ TEM
- *   - líquida: 100 bi por pacote × viabilidade; viabilidade = 100% − 0,7% por
+ *   - líquida: pacotes × células por pacote (padrão 100 bi; há marcas com 200)
+ *     × viabilidade; viabilidade = 100% − 0,7% por
  *     dia desde a fabricação (Brewers Friend; o "clássico" do Mr Malty é quase
  *     igual, ≈ 0,72%/dia).
  *   - seca: gramas × bilhões por grama (padrão 15; as fontes vão de 10 a 20).
@@ -44,7 +45,7 @@
 (function (raiz) {
   "use strict";
 
-  var CELULAS_PACOTE = 100;          // bi por pacote/vial líquido fresco
+  var CELULAS_PACOTE = 100;          // bi por pacote/vial líquido fresco (padrão; algumas marcas usam 200)
   var PERDA_DIA = 0.7;               // % de viabilidade perdida por dia (líquida)
   var CELULAS_GRAMA_SECA = 15;       // bi por grama (padrão, editável)
   var CELULAS_ML_SOLIDOS = 4.5;      // bi por mL de sólidos de levedura (slurry)
@@ -98,14 +99,14 @@
 
   /*
    * f = { tipo: "liquida" | "seca" | "reaproveitada" | "contagem", ... }
-   *   liquida:        pacotes, viabilidade (%)
+   *   liquida:        pacotes, celulasPacote (bi, padrão 100), viabilidade (%)
    *   seca:           gramas, celulasGrama (bi/g)
    *   reaproveitada:  ml, solidos (%), viabilidade (%)
    *   contagem:       celulas (bi)
    */
   function celulasDisponiveis(f) {
     switch (f.tipo) {
-      case "liquida": return Math.max(0, num(f.pacotes) || 0) * CELULAS_PACOTE * (num(f.viabilidade) || 0) / 100;
+      case "liquida": return Math.max(0, num(f.pacotes) || 0) * (num(f.celulasPacote) || CELULAS_PACOTE) * (num(f.viabilidade) || 0) / 100;
       case "seca": return Math.max(0, num(f.gramas) || 0) * (num(f.celulasGrama) || CELULAS_GRAMA_SECA);
       case "reaproveitada":
         return Math.max(0, num(f.ml) || 0) * CELULAS_ML_SOLIDOS * (num(f.solidos) || 0) / 100 * (num(f.viabilidade) || 0) / 100;
@@ -119,7 +120,7 @@
     if (!(necessario > 0)) return null;
     switch (f.tipo) {
       case "liquida": {
-        var porPacote = CELULAS_PACOTE * (num(f.viabilidade) || 0) / 100;
+        var porPacote = (num(f.celulasPacote) || CELULAS_PACOTE) * (num(f.viabilidade) || 0) / 100;
         return porPacote > 0 ? { pacotes: Math.ceil(necessario / porPacote - 1e-9) } : null;
       }
       case "seca": {

@@ -55,7 +55,7 @@
   /* ---------- 02 Sua levedura ---------- */
   function fonte() {
     switch (state.fonte) {
-      case "liquida": return { tipo: "liquida", pacotes: val("pacotes"), viabilidade: val("viabilidade") };
+      case "liquida": return { tipo: "liquida", pacotes: val("pacotes"), celulasPacote: val("celulasPacote"), viabilidade: val("viabilidade") };
       case "seca": return { tipo: "seca", gramas: val("gramas"), celulasGrama: val("celulasGrama") };
       case "reaproveitada": return { tipo: "reaproveitada", ml: val("ml"), solidos: val("solidos"), viabilidade: val("viabSlurry") };
       default: return { tipo: "contagem", celulas: val("celulas") };
@@ -156,6 +156,7 @@
     var litros = val("volume"), P = plato(), taxa = val("taxa");
     var necessario = C.celulasNecessarias(litros, P, taxa);
     marcar("[data-taxa]", "data-taxa", String(taxa));
+    marcar("[data-celulas-pacote]", "data-celulas-pacote", String(val("celulasPacote")));
 
     var f = fonte();
     var tem = C.celulasDisponiveis(f);
@@ -204,10 +205,14 @@
   document.querySelectorAll("[data-fonte]").forEach(function (b) {
     b.addEventListener("click", function () { trocarFonte(b.dataset.fonte); });
   });
-  ["volume", "og", "taxa", "pacotes", "viabilidade", "gramas", "celulasGrama", "ml", "solidos", "viabSlurry", "celulas"].forEach(function (id) {
+  ["volume", "og", "taxa", "pacotes", "celulasPacote", "viabilidade", "gramas", "celulasGrama", "ml", "solidos", "viabSlurry", "celulas"].forEach(function (id) {
     $(id).addEventListener("input", calcular);
   });
   $("fabricacao").addEventListener("input", function () { aplicarData(); calcular(); });
+  // atalhos 100 / 200 bi preenchem o campo; o campo livre desmarca os atalhos se não bater
+  document.querySelectorAll("[data-celulas-pacote]").forEach(function (b) {
+    b.addEventListener("click", function () { $("celulasPacote").value = b.dataset.celulasPacote; calcular(); });
+  });
 
   // passos: atualiza só as saídas ao digitar (não recria os campos, para não perder o foco)
   $("passos").addEventListener("input", function (e) {

@@ -17,7 +17,7 @@
   <meta property="og:image:height" content="630">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="theme-color" content="#0b0b0b">
-  <link rel="manifest" href="../../manifest.webmanifest?v=1.10.0">
+  <link rel="manifest" href="../../manifest.webmanifest?v=1.11.0">
   <link rel="icon" href="../../favicon.ico" sizes="32x32">
   <link rel="icon" href="../../assets/img/favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="../../assets/img/icon-180.png">
@@ -27,10 +27,10 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../../assets/css/bf.css?v=1.10.0">
-  <link rel="stylesheet" href="app.css?v=1.10.0">
-  <script src="../../assets/js/versao.js?v=1.10.0"></script>
-  <script src="../../assets/js/shell.js?v=1.10.0"></script>
+  <link rel="stylesheet" href="../../assets/css/bf.css?v=1.11.0">
+  <link rel="stylesheet" href="app.css?v=1.11.0">
+  <script src="../../assets/js/versao.js?v=1.11.0"></script>
+  <script src="../../assets/js/shell.js?v=1.11.0"></script>
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Calculadora de taxa de inóculo","url":"https://www.brassagemforte.com.br/ferramentas/ferramentas/taxa-de-inoculo/","applicationCategory":"UtilitiesApplication","operatingSystem":"Web","inLanguage":"pt-BR","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"BRL"},"author":[{"@type":"Person","name":"Henrique Boaventura"}],"publisher":{"@type":"Organization","name":"Brassagem Forte","url":"https://www.brassagemforte.com.br","logo":"https://www.brassagemforte.com.br/ferramentas/assets/img/icon-512.png"}}</script>
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Ferramentas","item":"https://www.brassagemforte.com.br/ferramentas/"},{"@type":"ListItem","position":2,"name":"Taxa de inóculo","item":"https://www.brassagemforte.com.br/ferramentas/ferramentas/taxa-de-inoculo/"}]}</script>
 </head>
@@ -47,7 +47,7 @@
         <div class="bf-how__body">
           <ol>
             <li><b>Sua cerveja:</b> as células necessárias são <b>taxa × litros × °P</b>. A taxa é em milhões de células por mL por °P: 0,75 para ale, 1,5 para lager (os mesmos números do Mr Malty, Brewers Friend e Craft Beer &amp; Brewing).</li>
-            <li><b>Sua levedura:</b> um pacote líquido tem 100 bilhões de células quando sai da fábrica e perde cerca de 0,7% por dia. A seca é contada por grama. O fermento reaproveitado, pelos mL e pela proporção de sólidos.</li>
+            <li><b>Sua levedura:</b> um pacote líquido tem 100 bilhões de células quando sai da fábrica (algumas marcas usam 200; informe o do seu pacote) e perde cerca de 0,7% por dia. A seca é contada por grama. O fermento reaproveitado, pelos mL e pela proporção de sólidos.</li>
             <li><b>Starter:</b> cada passo cresce a levedura do passo anterior. Entre um passo e outro, deixe fermentar, decante e jogue o starter novo por cima. O crescimento depende da técnica (placa agitadora, aeração, agitação manual, O₂ no início ou sem agitação) e do modelo: os de Kai Troester (Braukaiser), Mr Malty e Chris White. A diferença entre eles está em <a href="#tecnicas" data-abrir-tecnicas>Qual técnica escolher?</a>, no passo 03.</li>
           </ol>
           <p>São estimativas: a contagem real depende da cepa, da temperatura, dos nutrientes e da saúde do fermento.</p>
@@ -108,15 +108,26 @@
               <input type="number" id="pacotes" inputmode="numeric" value="1" min="1" step="1">
             </div>
             <div class="ti-campo">
+              <label for="celulasPacote">Células por pacote <span>bi</span></label>
+              <input type="number" id="celulasPacote" inputmode="numeric" value="100" min="1" step="10">
+            </div>
+          </div>
+          <div class="bf-segmented ti-pacote" role="group" aria-label="Células por pacote">
+            <button type="button" class="bf-chip" data-celulas-pacote="100" aria-pressed="true">100 bi</button>
+            <button type="button" class="bf-chip" data-celulas-pacote="200" aria-pressed="false">200 bi</button>
+          </div>
+          <p class="ti-nota ti-pacote__nota">Confira na embalagem: a maioria dos pacotes e vials tem 100 bilhões de células; algumas marcas vendem com 200 bilhões.</p>
+          <div class="ti-linha">
+            <div class="ti-campo">
+              <label for="fabricacao">Fabricação <span>opcional</span></label>
+              <input type="date" id="fabricacao">
+            </div>
+            <div class="ti-campo">
               <label for="viabilidade">Viabilidade <span>%</span></label>
               <input type="number" id="viabilidade" inputmode="decimal" value="100" min="0" max="100" step="1">
             </div>
           </div>
-          <div class="ti-campo">
-            <label for="fabricacao">Data de fabricação <span>opcional</span></label>
-            <input type="date" id="fabricacao">
-            <p class="ti-nota" id="idade">Sem data, conta como fresca (100%). Com a data, a viabilidade cai 0,7% por dia.</p>
-          </div>
+          <p class="ti-nota ti-idade" id="idade">Sem data, conta como fresca (100%). Com a data, a viabilidade cai 0,7% por dia.</p>
         </div>
 
         <div class="ti-painel" data-painel="seca" hidden>
@@ -247,7 +258,7 @@
 
   <footer data-bf-footer></footer>
 
-  <script src="calculo.js?v=1.10.0"></script>
-  <script src="app.js?v=1.10.0"></script>
+  <script src="calculo.js?v=1.11.0"></script>
+  <script src="app.js?v=1.11.0"></script>
 </body>
 </html>

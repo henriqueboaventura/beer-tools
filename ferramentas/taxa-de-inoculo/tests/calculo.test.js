@@ -35,6 +35,12 @@ describe("o que você tem", () => {
     perto(I.viabilidadeLiquida(44), 69, 0.5);
     perto(I.celulasDisponiveis({ tipo: "liquida", pacotes: 1, viabilidade: I.viabilidadeLiquida(44) }), 69, 0.5);
   });
+  test("células por pacote: 100 bi por padrão, ou o que a embalagem disser (ex.: 200 bi)", () => {
+    assert.equal(I.celulasDisponiveis({ tipo: "liquida", pacotes: 2, viabilidade: 100 }), 200);
+    assert.equal(I.celulasDisponiveis({ tipo: "liquida", pacotes: 2, celulasPacote: 200, viabilidade: 80 }), 320);
+    assert.deepEqual(I.semStarter({ tipo: "liquida", celulasPacote: 200, viabilidade: 100 }, 186), { pacotes: 1 });
+    assert.deepEqual(I.semStarter({ tipo: "liquida", celulasPacote: 200, viabilidade: 50 }, 186), { pacotes: 2 });
+  });
   test("viabilidade: fresca 100%, nunca negativa, nunca acima de 100%", () => {
     assert.equal(I.viabilidadeLiquida(0), 100);
     assert.equal(I.viabilidadeLiquida(500), 0);

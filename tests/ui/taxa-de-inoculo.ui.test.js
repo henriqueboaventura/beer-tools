@@ -81,6 +81,25 @@ suiteUI("Taxa de inóculo (interface)", (ctx) => {
     assert.match(await pag.avaliar("ui.texto('#tem')"), /Você tem 69 bi/);
   });
 
+  test("células por pacote: atalhos 100/200 bi e valor livre", async () => {
+    const { pag } = ctx;
+    await abrir();
+    assert.equal(await pag.avaliar("ui.$('#celulasPacote').value"), "100");
+    assert.equal(await pag.avaliar("ui.$('[data-celulas-pacote=\"100\"]').getAttribute('aria-pressed')"), "true");
+    await pag.avaliar("ui.clicar('[data-celulas-pacote=\"200\"]')");
+    assert.equal(await pag.avaliar("ui.$('#celulasPacote').value"), "200");
+    assert.equal(await pag.avaliar("ui.$('[data-celulas-pacote=\"200\"]').getAttribute('aria-pressed')"), "true");
+    assert.match(await pag.avaliar("ui.texto('#tem')"), /Você tem 200 bi/);
+    assert.match(await pag.avaliar("ui.texto('#tem')"), /Dá para inocular direto/);
+    // com viabilidade menor, a sugestão sem starter conta pacotes de 200 bi
+    await pag.avaliar("ui.digitar('#viabilidade', '50')");
+    assert.match(await pag.avaliar("ui.texto('#tem')"), /Você tem 100 bi.*seriam 2 pacotes/);
+    await pag.avaliar("ui.digitar('#celulasPacote', '150')");
+    assert.equal(await pag.avaliar("ui.$$('[data-celulas-pacote][aria-pressed=\"true\"]').length"), 0, "valor livre não marca atalho");
+    assert.match(await pag.avaliar("ui.texto('#tem')"), /Você tem 75 bi/);
+    assert.deepEqual(pag.erros, []);
+  });
+
   test("seca: sem starter, diz quantos gramas e sachês usar", async () => {
     const { pag } = ctx;
     await abrir();
