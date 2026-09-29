@@ -9,7 +9,7 @@
  *   células = taxa × volume (mL) × °P ÷ 1000  →  em litros: taxa × litros × °P
  *
  * O QUE VOCÊ TEM
- *   - líquida: pacotes × células por pacote (padrão 100 bi; há marcas com 200)
+ *   - líquida: pacotes × células por pacote (padrão 200 bi; há pacotes de 100)
  *     × viabilidade; viabilidade = 100% − 0,7% por
  *     dia desde a fabricação (Brewers Friend; o "clássico" do Mr Malty é quase
  *     igual, ≈ 0,72%/dia).
@@ -45,7 +45,7 @@
 (function (raiz) {
   "use strict";
 
-  var CELULAS_PACOTE = 100;          // bi por pacote/vial líquido fresco (padrão; algumas marcas usam 200)
+  var CELULAS_PACOTE = 200;          // bi por pacote/vial líquido fresco (padrão; há pacotes de 100)
   var PERDA_DIA = 0.7;               // % de viabilidade perdida por dia (líquida)
   var CELULAS_GRAMA_SECA = 15;       // bi por grama (padrão, editável)
   var CELULAS_ML_SOLIDOS = 4.5;      // bi por mL de sólidos de levedura (slurry)
@@ -99,7 +99,7 @@
 
   /*
    * f = { tipo: "liquida" | "seca" | "reaproveitada" | "contagem", ... }
-   *   liquida:        pacotes, celulasPacote (bi, padrão 100), viabilidade (%)
+   *   liquida:        pacotes, celulasPacote (bi, padrão 200), viabilidade (%)
    *   seca:           gramas, celulasGrama (bi/g)
    *   reaproveitada:  ml, solidos (%), viabilidade (%)
    *   contagem:       celulas (bi)

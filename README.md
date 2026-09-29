@@ -69,7 +69,7 @@ As regras e fórmulas vêm da BYO e da Craft Beer & Brewing: [`docs/specs/04-par
 Quanto fermento a cerveja precisa e como chegar lá, de Henrique Boaventura. Tudo em litros.
 
 1. **Sua cerveja:** volume, OG (SG ou °P) e taxa (ale 0,75, lager 1,5 e as versões fortes, ou qualquer valor). Mostra as células necessárias.
-2. **Sua levedura:** líquida (pacotes, células por pacote, 100 ou 200 bi ou o que a embalagem disser, e viabilidade pela data de fabricação), seca (gramas × células por grama), fermento reaproveitado (mL, % de sólidos e viabilidade) ou contagem própria. Diz se dá para inocular direto e, se não, quanto falta.
+2. **Sua levedura:** líquida (pacotes, células por pacote, 200 bi por padrão, 100 bi ou o que a embalagem disser, e viabilidade pela data de fabricação), seca (gramas × células por grama), fermento reaproveitado (mL, % de sólidos e viabilidade) ou contagem própria. Diz se dá para inocular direto e, se não, quanto falta.
 3. **Starter:** quantos passos você quiser, cada um com volume, densidade e agitação, mostrando as células no começo e no fim e o DME. Um botão sugere os passos a partir do maior starter que você consegue fazer.
 
 Modelos de crescimento:

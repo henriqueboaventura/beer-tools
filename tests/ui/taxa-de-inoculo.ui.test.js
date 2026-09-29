@@ -13,11 +13,15 @@ const br = (n, casas) => n.toLocaleString("pt-BR", { minimumFractionDigits: casa
 const NECESSARIO = C.celulasNecessarias(20, C.sgParaPlato(1.05), 0.75); // exemplo padrão: 186 bi
 
 suiteUI("Taxa de inóculo (interface)", (ctx) => {
-  async function abrir() {
+  // O padrão é 200 bi por pacote, mas os cenários de starter começam com
+  // pacotes de 100 bi: os números vêm das fontes (Brewers Friend, Mr Malty),
+  // que usam pacotes de 100. O padrão tem um teste próprio.
+  async function abrir({ padrao = false } = {}) {
     const { pag } = ctx;
     pag.erros = [];
     await pag.ir(URL_FERRAMENTA);
     await pag.esperar("ui.texto('#necessario') !== '0'");
+    if (!padrao) await pag.avaliar("ui.digitar('#celulasPacote', '100')");
   }
   const passos = () => ctx.pag.avaliar(`ui.$$('.ti-passo').map(p => ({
     litros: p.querySelector('[data-campo="litros"]').value,
@@ -81,11 +85,16 @@ suiteUI("Taxa de inóculo (interface)", (ctx) => {
     assert.match(await pag.avaliar("ui.texto('#tem')"), /Você tem 69 bi/);
   });
 
-  test("células por pacote: atalhos 100/200 bi e valor livre", async () => {
+  test("células por pacote: padrão de 200 bi, atalhos 200/100 bi e valor livre", async () => {
     const { pag } = ctx;
-    await abrir();
+    await abrir({ padrao: true });
+    assert.equal(await pag.avaliar("ui.$('#celulasPacote').value"), "200");
+    assert.equal(await pag.avaliar("ui.$('[data-celulas-pacote=\"200\"]').getAttribute('aria-pressed')"), "true");
+    assert.match(await pag.avaliar("ui.texto('#tem')"), /Você tem 200 bi/);
+    await pag.avaliar("ui.clicar('[data-celulas-pacote=\"100\"]')");
     assert.equal(await pag.avaliar("ui.$('#celulasPacote').value"), "100");
     assert.equal(await pag.avaliar("ui.$('[data-celulas-pacote=\"100\"]').getAttribute('aria-pressed')"), "true");
+    assert.match(await pag.avaliar("ui.texto('#tem')"), /Você tem 100 bi/);
     await pag.avaliar("ui.clicar('[data-celulas-pacote=\"200\"]')");
     assert.equal(await pag.avaliar("ui.$('#celulasPacote').value"), "200");
     assert.equal(await pag.avaliar("ui.$('[data-celulas-pacote=\"200\"]').getAttribute('aria-pressed')"), "true");

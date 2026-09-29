@@ -33,10 +33,11 @@ describe("quanto precisa", () => {
 describe("o que você tem", () => {
   test("líquida com 44 dias: 69% de viabilidade (exemplo do Brewers Friend)", () => {
     perto(I.viabilidadeLiquida(44), 69, 0.5);
-    perto(I.celulasDisponiveis({ tipo: "liquida", pacotes: 1, viabilidade: I.viabilidadeLiquida(44) }), 69, 0.5);
+    perto(I.celulasDisponiveis({ tipo: "liquida", pacotes: 1, celulasPacote: 100, viabilidade: I.viabilidadeLiquida(44) }), 69, 0.5);
   });
-  test("células por pacote: 100 bi por padrão, ou o que a embalagem disser (ex.: 200 bi)", () => {
-    assert.equal(I.celulasDisponiveis({ tipo: "liquida", pacotes: 2, viabilidade: 100 }), 200);
+  test("células por pacote: 200 bi por padrão, ou o que a embalagem disser (ex.: 100 bi)", () => {
+    assert.equal(I.celulasDisponiveis({ tipo: "liquida", pacotes: 2, viabilidade: 100 }), 400);
+    assert.equal(I.celulasDisponiveis({ tipo: "liquida", pacotes: 2, celulasPacote: 100, viabilidade: 100 }), 200);
     assert.equal(I.celulasDisponiveis({ tipo: "liquida", pacotes: 2, celulasPacote: 200, viabilidade: 80 }), 320);
     assert.deepEqual(I.semStarter({ tipo: "liquida", celulasPacote: 200, viabilidade: 100 }, 186), { pacotes: 1 });
     assert.deepEqual(I.semStarter({ tipo: "liquida", celulasPacote: 200, viabilidade: 50 }, 186), { pacotes: 2 });
@@ -62,8 +63,9 @@ describe("o que você tem", () => {
     assert.equal(I.celulasDisponiveis({ tipo: "contagem", celulas: 250 }), 250);
   });
   test("sem starter: pacotes, gramas/sachês e mL necessários", () => {
-    assert.deepEqual(I.semStarter({ tipo: "liquida", viabilidade: 100 }, 186), { pacotes: 2 });
-    assert.deepEqual(I.semStarter({ tipo: "liquida", viabilidade: 100 }, 200), { pacotes: 2 });
+    assert.deepEqual(I.semStarter({ tipo: "liquida", celulasPacote: 100, viabilidade: 100 }, 186), { pacotes: 2 });
+    assert.deepEqual(I.semStarter({ tipo: "liquida", celulasPacote: 100, viabilidade: 100 }, 200), { pacotes: 2 });
+    assert.deepEqual(I.semStarter({ tipo: "liquida", viabilidade: 100 }, 186), { pacotes: 1 }, "padrão de 200 bi");
     const s = I.semStarter({ tipo: "seca", celulasGrama: 15 }, 186);
     perto(s.gramas, 12.4, 0.01);
     assert.equal(s.saches, 2);

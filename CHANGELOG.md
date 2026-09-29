@@ -12,6 +12,12 @@ detalhe técnico, em `ferramentas/decoccao/CHANGELOG.md`.
 invalida o cache offline antigo e faz aparecer o aviso "Nova versão
 disponível" para quem já está com o site aberto.
 
+## [1.11.1] — 2026-09-29
+
+### Alterado
+- **Taxa de inóculo: 200 bilhões de células por pacote como padrão.** O
+  atalho de 100 bi continua ao lado, e o campo aceita qualquer valor.
+
 ## [1.11.0] — 2026-09-29
 
 ### Adicionado

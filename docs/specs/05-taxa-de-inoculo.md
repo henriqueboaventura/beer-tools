@@ -99,7 +99,7 @@ Unidades: litros, bilhões de células, taxa em milhões/mL/°P (bilhões por li
 - **`celulasNecessarias(litros, °P, taxa)`** = taxa × litros × °P.
 - **`viabilidadeLiquida(dias)`** = 100 − 0,7 × dias, entre 0 e 100.
 - **`celulasDisponiveis(fonte)`**:
-  - líquida: pacotes × células por pacote (padrão 100 bi; há marcas com 200) × viabilidade;
+  - líquida: pacotes × células por pacote (padrão 200 bi; há pacotes de 100) × viabilidade;
   - seca: gramas × bi/g;
   - reaproveitada: mL × 4,5 × % sólidos × viabilidade;
   - contagem: o número informado.
@@ -117,7 +117,7 @@ Unidades: litros, bilhões de células, taxa em milhões/mL/°P (bilhões por li
 ## 7. Interface
 
 1. **01 Sua cerveja:** volume, OG (SG ou °P), taxa (chips + campo livre). Bloco com as células necessárias e a conta.
-2. **02 Sua levedura:** Líquida · Seca · Reaproveitada · Contagem. Na líquida, células por pacote (campo livre, com atalhos 100 e 200 bi). A data de fabricação preenche a viabilidade (que continua editável). Mostra quanto tem, a % do necessário e, se faltar, a alternativa sem starter.
+2. **02 Sua levedura:** Líquida · Seca · Reaproveitada · Contagem. Na líquida, células por pacote (campo livre, padrão 200 bi, com atalhos 200 e 100 bi). A data de fabricação preenche a viabilidade (que continua editável). Mostra quanto tem, a % do necessário e, se faltar, a alternativa sem starter.
 3. **03 Starter:**
    - Seção recolhível **"Qual técnica escolher?"**:
      - como é cada técnica (placa agitadora, aeração contínua, agitação manual, O₂ no início, sem agitação);
