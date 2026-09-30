@@ -12,6 +12,17 @@ detalhe técnico, em `ferramentas/decoccao/CHANGELOG.md`.
 invalida o cache offline antigo e faz aparecer o aviso "Nova versão
 disponível" para quem já está com o site aberto.
 
+## [1.13.0] — 2026-09-30
+
+### Adicionado
+- **Links da Brassagem Forte no menu**, no lugar do "Em breve":
+  - **Podcast**, no Spotify;
+  - **Site**, brassagemforte.com.br;
+  - **Sugira uma ferramenta**, que abre uma issue no GitHub e também serve
+    para relatar erros.
+
+  Abrem em aba nova, para não fechar a ferramenta no meio da brassagem.
+
 ## [1.12.0] — 2026-09-30
 
 ### Alterado

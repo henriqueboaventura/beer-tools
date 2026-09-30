@@ -46,10 +46,12 @@
     }
   ];
 
-  // links institucionais do menu. Placeholder até decidir quais entram:
-  // troque por itens como { titulo: "Podcast", url: "https://…" }. Item sem url aparece desabilitado.
+  // links institucionais do menu (seção "Brassagem Forte"). Abrem em aba nova.
+  // Item sem url aparece desabilitado.
   var LINKS = [
-    { titulo: "Em breve", url: null }
+    { titulo: "Podcast", url: "https://open.spotify.com/show/1WNPa08YmdOAIaKjKGc39d" },
+    { titulo: "Site", url: "https://www.brassagemforte.com.br/" },
+    { titulo: "Sugira uma ferramenta", url: "https://github.com/henriqueboaventura/beer-tools/issues/new" }
   ];
 
   var VERSAO = self.BF_VERSAO || "?";
@@ -122,7 +124,7 @@
     }).join("");
     var links = LINKS.map(function (l) {
       if (!l.url) return "<li><span><small>↗</small>" + esc(l.titulo) + "</span></li>";
-      return '<li><a href="' + l.url + '" rel="noopener"><small>↗</small>' + esc(l.titulo) + "</a></li>";
+      return '<li><a href="' + esc(l.url) + '" target="_blank" rel="noopener"><small>↗</small>' + esc(l.titulo) + "</a></li>";
     }).join("");
     return '<div class="wrap">' +
       '<p class="bf-menu__label">Ferramentas</p><ul class="bf-menu__list">' + itens + "</ul>" +

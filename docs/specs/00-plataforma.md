@@ -167,7 +167,7 @@ Quem estiver com o site aberto recebe o aviso de nova versão. Quem abrir depois
 
 ## 8. Questões em aberto
 
-1. Links institucionais do menu: por enquanto é um placeholder ("Em breve") em `LINKS`, no `shell.js`.
+1. ~~Links institucionais do menu~~ — definidos (2026-09-30), em `LINKS` no `shell.js`: Podcast (Spotify), Site (brassagemforte.com.br) e "Sugira uma ferramenta" (issues do GitHub). Abrem em aba nova. Loja e YouTube ficaram de fora, a pedido do Henrique.
 
 ## 9. Decisões registradas
 

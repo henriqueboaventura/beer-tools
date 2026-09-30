@@ -75,6 +75,13 @@ suiteUI("Plataforma (interface)", (ctx) => {
     assert.equal(await pag.avaliar("ui.$('#bf-menu').hidden"), false);
     assert.equal(await pag.avaliar("ui.$('.bf-menu-btn').getAttribute('aria-expanded')"), "true");
     assert.equal(await pag.avaliar("ui.$('#bf-menu a[aria-current=\"page\"]').href"), await pag.avaliar("location.origin + '/speise/'"), "ferramenta atual marcada");
+    // links da Brassagem Forte, abrindo em aba nova
+    assert.deepEqual(await pag.avaliar("ui.$$('#bf-menu a[target=\"_blank\"]').map(a => [a.textContent.replace('↗', ''), a.href, a.rel])"), [
+      ["Podcast", "https://open.spotify.com/show/1WNPa08YmdOAIaKjKGc39d", "noopener"],
+      ["Site", "https://www.brassagemforte.com.br/", "noopener"],
+      ["Sugira uma ferramenta", "https://github.com/henriqueboaventura/beer-tools/issues/new", "noopener"],
+    ]);
+    assert.equal(await pag.avaliar("ui.$$('#bf-menu li > span').length"), 0, "nenhum item desabilitado");
     // um link no menu para cada ferramenta do registro, no endereço dela
     assert.equal(await pag.avaliar("BF.ferramentas.filter(f => ui.$$('#bf-menu a').some(a => a.href === BF.urlFerramenta(f))).length"), 5);
     await pag.avaliar("document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' }))");
