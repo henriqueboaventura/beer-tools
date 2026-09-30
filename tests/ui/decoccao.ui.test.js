@@ -1,6 +1,6 @@
 /*
  * Interface da ferramenta 02 — Decocção.
- * O cálculo tem os próprios testes (ferramentas/decoccao/tests); aqui fica
+ * O cálculo tem os próprios testes (decoccao/tests); aqui fica
  * a tela: troca de método, parâmetros salvos, cronômetro e o cronômetro
  * fixo no topo no celular.
  */
@@ -8,7 +8,7 @@ const { test } = require("node:test");
 const assert = require("node:assert/strict");
 const { suiteUI } = require("./navegador");
 
-const URL_FERRAMENTA = "ferramentas/decoccao/";
+const URL_FERRAMENTA = "decoccao/";
 
 suiteUI("Decocção (interface)", (ctx) => {
   async function abrirLimpo() {

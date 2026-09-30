@@ -12,6 +12,29 @@ detalhe técnico, em `ferramentas/decoccao/CHANGELOG.md`.
 invalida o cache offline antigo e faz aparecer o aviso "Nova versão
 disponível" para quem já está com o site aberto.
 
+## [1.12.0] — 2026-09-30
+
+### Alterado
+- **Endereços sem o "ferramentas" repetido.** As ferramentas ficavam numa
+  pasta `ferramentas/` dentro de um site que já está em `/ferramentas/`, e
+  os endereços saíam como
+  `brassagemforte.com.br/ferramentas/ferramentas/speise/`. Agora são
+  `brassagemforte.com.br/ferramentas/speise/`.
+  - As pastas das ferramentas foram para a raiz do repositório.
+  - Canonical, sitemap, menu, manifest, service worker e 404 usam os
+    endereços novos.
+  - No teste, os endereços ficam `hboaventura.com/beer-tools/speise/`.
+
+### Adicionado
+- **Redirecionamento dos endereços antigos (produção).** Um `.htaccess` na
+  pasta `/ferramentas/` responde 301 de `/ferramentas/ferramentas/*` para
+  `/ferramentas/*`, mantendo parâmetros como `?levedura=us-05`. Links
+  compartilhados e páginas já indexadas continuam funcionando, e o deploy
+  confere o redirecionamento.
+- **Página "não encontrada" do próprio site em produção.** Antes, um
+  endereço inexistente dentro de `/ferramentas/` caía no WordPress do
+  domínio.
+
 ## [1.11.1] — 2026-09-29
 
 ### Alterado

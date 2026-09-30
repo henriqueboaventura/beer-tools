@@ -2,7 +2,7 @@
 
 Status: **v1 implementada**
 Autores: Henrique Boaventura e Fábio Koerich
-Diretório: `/ferramentas/substituicao-leveduras/` · Número: `01`
+Diretório: `/substituicao-leveduras/` · Número: `01`
 Atualizado: 2026-09-22
 
 ## 1. Problema
@@ -96,7 +96,7 @@ Os títulos seguem o padrão "SafAle US-05: substitutos e equivalentes | Brassag
 python3 scripts/gerar_leveduras.py
 ```
 
-O script lê a planilha (xlsx lido direto, com cores e tachado), os três JSONs de `dados/leveduras/` e gera `ferramentas/substituicao-leveduras/data/leveduras.json` (~490 leveduras, ~1100 relações, ~240 KB).
+O script lê a planilha (xlsx lido direto, com cores e tachado), os três JSONs de `dados/leveduras/` e gera `substituicao-leveduras/data/leveduras.json` (~490 leveduras, ~1100 relações, ~240 KB).
 
 Formato de referência nos JSONs: `"fabricante:CÓDIGO"` ou `"fabricante:CÓDIGO|Nome"`.
 

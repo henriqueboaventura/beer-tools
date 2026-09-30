@@ -10,7 +10,7 @@ const ler = (p) => fs.readFileSync(path.join(RAIZ, p), "utf8");
 const existe = (p) => fs.existsSync(path.join(RAIZ, p));
 
 // Todas as páginas HTML publicadas (fora de pastas de ferramentas de dev).
-// As páginas geradas de levedura (ferramentas/substituicao-leveduras/levedura/)
+// As páginas geradas de levedura (substituicao-leveduras/levedura/)
 // têm testes próprios em tests/seo.test.js.
 function paginas(dir = "") {
   const ignorar = new Set([".git", "node_modules", "examples", "docs", "tests", "dados", "scripts", ".github", "levedura"]);
@@ -44,14 +44,15 @@ describe("registro de ferramentas (shell.js)", () => {
   });
 
   for (const slug of slugs) {
-    test(`ferramenta "${slug}" tem ferramentas/${slug}/index.html`, () => {
-      assert.ok(existe(`ferramentas/${slug}/index.html`));
+    test(`ferramenta "${slug}" tem ${slug}/index.html`, () => {
+      assert.ok(existe(`${slug}/index.html`));
     });
   }
 
-  test("toda pasta em ferramentas/ está no registro", () => {
-    const pastas = fs.readdirSync(path.join(RAIZ, "ferramentas")).filter((n) =>
-      fs.statSync(path.join(RAIZ, "ferramentas", n)).isDirectory());
+  test("toda pasta na raiz é uma ferramenta do registro ou da plataforma", () => {
+    const plataforma = ["assets", "dados", "docs", "examples", "scripts", "tests", "node_modules"];
+    const pastas = fs.readdirSync(RAIZ).filter((n) => !n.startsWith(".") && !plataforma.includes(n) &&
+      fs.statSync(path.join(RAIZ, n)).isDirectory());
     assert.deepEqual(pastas.sort(), [...slugs].sort());
   });
 });
@@ -120,7 +121,9 @@ describe("PWA (sw.js e manifest)", () => {
   });
 
   test("todo script e estilo das ferramentas está no PRECACHE (senão não abre offline)", () => {
-    for (const pagina of paginas("ferramentas")) {
+    const shell = ler("assets/js/shell.js");
+    const slugs = [...shell.matchAll(/slug: "([^"]+)"/g)].map((m) => m[1]);
+    for (const pagina of slugs.flatMap((s) => paginas(s))) {
       const dir = path.dirname(pagina);
       const refs = [...ler(pagina).matchAll(/<(?:script|link rel="stylesheet")[^>]*(?:src|href)="([^"]+\.(?:js|css))"/g)]
         .map((m) => m[1]).filter((u) => !/^https?:/.test(u));
@@ -170,6 +173,19 @@ describe("ambientes (teste no GitHub Pages, produção no brassagemforte.com.br)
     assert.match(deploy, /\|\| erro "rsync falhou; nada foi confirmado em produção\."/);
   });
 
+  test(".htaccess: endereços antigos /ferramentas/ferramentas/* redirecionam (301) e a 404 é a do site", () => {
+    const h = ler(".htaccess");
+    assert.match(h, /^RewriteEngine On$/m);
+    assert.match(h, /^RewriteRule \^ferramentas\/\(\.\*\)\$ \/ferramentas\/\$1 \[R=301,L\]$/m);
+    assert.match(h, /^ErrorDocument 404 \/ferramentas\/404\.html$/m);
+    assert.doesNotMatch(deploy, /rm -rf[^\n]*\s404\.html/, "a 404.html precisa ir para produção");
+    assert.match(deploy, /redirecionamento dos endereços antigos não funciona/, "o deploy confere o redirecionamento");
+  });
+
+  test("nenhuma ferramenta mora em ferramentas/<slug> (a URL de produção já é /ferramentas/)", () => {
+    assert.ok(!existe("ferramentas"), "a pasta ferramentas/ não deve existir no repositório");
+  });
+
   test("credenciais (.env.deploy) ficam fora do git", () => {
     assert.match(ler(".gitignore"), /^\.env\.deploy$/m);
     assert.ok(existe(".env.deploy.example"));
@@ -186,8 +202,8 @@ describe("cache: versão nos endereços (?v=)", () => {
   }
 
   test("todo script, estilo e manifest local das páginas usa ?v=<versão atual> (rode scripts/versionar.py)", () => {
-    const todas = [...paginas(), "404.html", "ferramentas/substituicao-leveduras/levedura/index.html",
-      "ferramentas/substituicao-leveduras/levedura/fermentis-us-05/index.html"];
+    const todas = [...paginas(), "404.html", "substituicao-leveduras/levedura/index.html",
+      "substituicao-leveduras/levedura/fermentis-us-05/index.html"];
     for (const p of todas) {
       for (const ref of refsLocais(ler(p))) {
         assert.ok(ref.endsWith(`?v=${versao}`), `${p}: ${ref} (esperado ?v=${versao})`);
@@ -202,7 +218,7 @@ describe("cache: versão nos endereços (?v=)", () => {
   });
 
   test("a ferramenta de leveduras busca o JSON com ?v=", () => {
-    assert.match(ler("ferramentas/substituicao-leveduras/app.js"), /fetch\("data\/leveduras\.json\?v=" \+ encodeURIComponent\(BF\.versao\)\)/);
+    assert.match(ler("substituicao-leveduras/app.js"), /fetch\("data\/leveduras\.json\?v=" \+ encodeURIComponent\(BF\.versao\)\)/);
   });
 });
 
@@ -214,8 +230,8 @@ describe("versionamento", () => {
   });
 
   test("versão da calculadora de decocção é igual à última entrada do changelog dela", () => {
-    const m = ler("ferramentas/decoccao/version.js").match(/self\.APP_VERSION = "(\d+\.\d+\.\d+)"/);
+    const m = ler("decoccao/version.js").match(/self\.APP_VERSION = "(\d+\.\d+\.\d+)"/);
     assert.ok(m);
-    assert.equal(m[1], versaoChangelog("ferramentas/decoccao/CHANGELOG.md"));
+    assert.equal(m[1], versaoChangelog("decoccao/CHANGELOG.md"));
   });
 });

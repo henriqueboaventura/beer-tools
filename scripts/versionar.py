@@ -17,10 +17,10 @@ import runpy
 RAIZ = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SITE = "https://www.brassagemforte.com.br/ferramentas/"
 # páginas escritas à mão (as de levedura são geradas pelo gerar_seo.py)
-PAGINAS = ["index.html", "404.html", "ferramentas/substituicao-leveduras/index.html",
-           "ferramentas/decoccao/index.html", "ferramentas/decoccao/sobre.html",
-           "ferramentas/speise/index.html", "ferramentas/parti-gyle/index.html",
-           "ferramentas/taxa-de-inoculo/index.html"]
+PAGINAS = ["index.html", "404.html", "substituicao-leveduras/index.html",
+           "decoccao/index.html", "decoccao/sobre.html",
+           "speise/index.html", "parti-gyle/index.html",
+           "taxa-de-inoculo/index.html"]
 REF = re.compile(r'((?:href|src)=")([^"?#]+\.(?:js|css|webmanifest))(?:\?v=[^"]*)?(")')
 
 

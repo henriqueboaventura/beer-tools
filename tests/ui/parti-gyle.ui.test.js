@@ -7,9 +7,9 @@
 const { test } = require("node:test");
 const assert = require("node:assert/strict");
 const { suiteUI } = require("./navegador");
-const P = require("../../ferramentas/parti-gyle/calculo.js");
+const P = require("../../parti-gyle/calculo.js");
 
-const URL_FERRAMENTA = "ferramentas/parti-gyle/";
+const URL_FERRAMENTA = "parti-gyle/";
 const br = (n, casas) => n.toLocaleString("pt-BR", { minimumFractionDigits: casas, maximumFractionDigits: casas });
 
 suiteUI("Parti-gyle (interface)", (ctx) => {

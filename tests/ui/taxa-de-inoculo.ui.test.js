@@ -6,9 +6,9 @@
 const { test } = require("node:test");
 const assert = require("node:assert/strict");
 const { suiteUI } = require("./navegador");
-const C = require("../../ferramentas/taxa-de-inoculo/calculo.js");
+const C = require("../../taxa-de-inoculo/calculo.js");
 
-const URL_FERRAMENTA = "ferramentas/taxa-de-inoculo/";
+const URL_FERRAMENTA = "taxa-de-inoculo/";
 const br = (n, casas) => n.toLocaleString("pt-BR", { minimumFractionDigits: casas, maximumFractionDigits: casas });
 const NECESSARIO = C.celulasNecessarias(20, C.sgParaPlato(1.05), 0.75); // exemplo padrão: 186 bi
 

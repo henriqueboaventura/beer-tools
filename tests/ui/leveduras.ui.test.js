@@ -7,7 +7,7 @@ const { test } = require("node:test");
 const assert = require("node:assert/strict");
 const { suiteUI } = require("./navegador");
 
-const URL_FERRAMENTA = "ferramentas/substituicao-leveduras/";
+const URL_FERRAMENTA = "substituicao-leveduras/";
 
 suiteUI("Substituição de leveduras (interface)", (ctx) => {
   async function abrir(query = "") {

@@ -6,9 +6,9 @@
 const { test } = require("node:test");
 const assert = require("node:assert/strict");
 const { suiteUI } = require("./navegador");
-const S = require("../../ferramentas/speise/calculo.js");
+const S = require("../../speise/calculo.js");
 
-const URL_FERRAMENTA = "ferramentas/speise/";
+const URL_FERRAMENTA = "speise/";
 const br = (n, casas) => n.toLocaleString("pt-BR", { minimumFractionDigits: casas, maximumFractionDigits: casas });
 
 suiteUI("Speise (interface)", (ctx) => {

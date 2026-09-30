@@ -12,7 +12,7 @@ O site é feito de HTML, CSS e JavaScript puros, sem framework e sem etapa de bu
 
 ### 01 — Substituição de leveduras
 
-`ferramentas/substituicao-leveduras/`
+`substituicao-leveduras/`
 
 De Henrique Boaventura e Fábio Koerich. A receita pede uma levedura que você não encontrou? Escolha a original e veja as equivalentes de outros fabricantes, secas ou líquidas.
 
@@ -27,7 +27,7 @@ Quando as fontes discordam, a prioridade é esta: [Yeast Master](http://tinyurl.
 
 ### 02 — Decocção
 
-`ferramentas/decoccao/`
+`decoccao/`
 
 Calculadora de programas de mostura por decocção, de Henrique Boaventura e Fábio Koerich.
 
@@ -36,11 +36,11 @@ Calculadora de programas de mostura por decocção, de Henrique Boaventura e Fá
 - Cronômetro para o dia da brassagem. Ele se ajusta ao seu ritmo real ("Cheguei"), tem alarme e mantém a tela acesa.
 - Predefinições salvas no aparelho, com exportação e importação em JSON.
 
-Os detalhes técnicos (métodos, fontes, testes e histórico) estão em [`ferramentas/decoccao/README.md`](ferramentas/decoccao/README.md). O "Por que decocção?" está na própria ferramenta.
+Os detalhes técnicos (métodos, fontes, testes e histórico) estão em [`decoccao/README.md`](decoccao/README.md). O "Por que decocção?" está na própria ferramenta.
 
 ### 03 — Speise
 
-`ferramentas/speise/`
+`speise/`
 
 Calculadora de carbonatação natural com o próprio mosto, de Henrique Boaventura.
 
@@ -48,11 +48,11 @@ Calculadora de carbonatação natural com o próprio mosto, de Henrique Boaventu
 - OG em SG ou °Plato, atenuação esperada, CO₂ alvo e temperatura no envase.
 - Tabela avançada para dosar a speise garrafa por garrafa.
 
-O cálculo está em [`ferramentas/speise/calculo.js`](ferramentas/speise/calculo.js) e é explicado em [`docs/specs/03-speise.md`](docs/specs/03-speise.md).
+O cálculo está em [`speise/calculo.js`](speise/calculo.js) e é explicado em [`docs/specs/03-speise.md`](docs/specs/03-speise.md).
 
 ### 04 — Parti-gyle
 
-`ferramentas/parti-gyle/`
+`parti-gyle/`
 
 Várias cervejas de uma mostura só, de Henrique Boaventura. É um fluxo guiado:
 
@@ -64,7 +64,7 @@ As regras e fórmulas vêm da BYO e da Craft Beer & Brewing: [`docs/specs/04-par
 
 ### 05 — Taxa de inóculo
 
-`ferramentas/taxa-de-inoculo/`
+`taxa-de-inoculo/`
 
 Quanto fermento a cerveja precisa e como chegar lá, de Henrique Boaventura. Tudo em litros.
 
@@ -110,11 +110,11 @@ Os testes usam só o runner nativo do Node (`node:test`). Eles cobrem:
   - o manifest é válido;
   - a versão bate com o CHANGELOG;
   - SEO: título único, descrição, `canonical`, Open Graph e JSON-LD em todas as páginas, sitemap igual às páginas indexáveis, e páginas geradas em dia com os dados.
-- **Substituição de leveduras** (`ferramentas/substituicao-leveduras/tests/`): consistência dos dados, casos conferidos à mão contra as fontes, e a busca.
-- **Decocção** (`ferramentas/decoccao/tests/`): o motor de cálculo, com valores conferidos contra a literatura.
-- **Speise** (`ferramentas/speise/tests/`): o cálculo, com valores conferidos à mão.
-- **Parti-gyle** (`ferramentas/parti-gyle/tests/`): os exemplos numéricos publicados nas fontes.
-- **Taxa de inóculo** (`ferramentas/taxa-de-inoculo/tests/`): o exemplo do Brewers Friend (viabilidade, crescimento sem agitação e DME), o modelo da Braukaiser, as 166 simulações e os passos coletados da calculadora do Mr Malty, e invariantes da sugestão de passos.
+- **Substituição de leveduras** (`substituicao-leveduras/tests/`): consistência dos dados, casos conferidos à mão contra as fontes, e a busca.
+- **Decocção** (`decoccao/tests/`): o motor de cálculo, com valores conferidos contra a literatura.
+- **Speise** (`speise/tests/`): o cálculo, com valores conferidos à mão.
+- **Parti-gyle** (`parti-gyle/tests/`): os exemplos numéricos publicados nas fontes.
+- **Taxa de inóculo** (`taxa-de-inoculo/tests/`): o exemplo do Brewers Friend (viabilidade, crescimento sem agitação e DME), o modelo da Braukaiser, as 166 simulações e os passos coletados da calculadora do Mr Malty, e invariantes da sugestão de passos.
 
 - **Interface** (`tests/ui/`): abre o site num Chrome sem janela (headless), em tela de celular, e usa cada ferramenta como uma pessoa usaria: clica, digita e confere o que aparece. Também confere, em todas as páginas, que não há erro de JavaScript nem rolagem lateral, e que menu, tema e service worker funcionam.
   - Não precisa instalar nada além do Chrome (ou Chromium): os testes falam com ele direto pelo protocolo de depuração.
@@ -139,7 +139,8 @@ assets/js/shell.js          header, menu, rodapé, tema, PWA e aviso de nova ver
 assets/js/versao.js         versão do site
 sw.js, manifest.webmanifest PWA
 sitemap.xml, 404.html       SEO (sitemap gerado por scripts/gerar_seo.py)
-ferramentas/<nome>/         uma pasta por ferramenta, com HTML, JS, CSS, dados e testes
+<nome>/                     uma pasta por ferramenta na raiz (ex.: speise/), com HTML, JS, CSS, dados e testes
+.htaccess                   produção: redireciona os endereços antigos e serve a 404.html
 dados/leveduras/            fontes transcritas e curadas das leveduras (editáveis)
 scripts/gerar_leveduras.py  gera o JSON da ferramenta de leveduras
 scripts/gerar_seo.py        gera as páginas estáticas por levedura e o sitemap
@@ -160,11 +161,11 @@ Detalhes em [`docs/specs/00-plataforma.md`](docs/specs/00-plataforma.md).
 
 ### Adicionar uma ferramenta
 
-1. Crie `ferramentas/<nome>/index.html` copiando o esqueleto de uma ferramenta existente. O esqueleto tem o `<head>` com `bf.css`, `versao.js` e `shell.js`, os marcadores `<header data-bf-header>` e `<footer data-bf-footer>`, e o cabeçalho padrão (trilha, título, explicação e "Como funciona").
+1. Crie `<nome>/index.html` (uma pasta na raiz: o endereço vira `/ferramentas/<nome>/` em produção) copiando o esqueleto de uma ferramenta existente. O esqueleto tem o `<head>` com `bf.css`, `versao.js` e `shell.js`, os marcadores `<header data-bf-header>` e `<footer data-bf-footer>`, e o cabeçalho padrão (trilha, título, explicação e "Como funciona").
 2. Coloque JS, CSS e dados **dentro da pasta**. Importe de fora só o que está em `assets/`.
 3. Registre a ferramenta em `FERRAMENTAS`, no `assets/js/shell.js`. Ela passa a aparecer na página inicial e no menu.
 4. Adicione os arquivos dela ao `PRECACHE` do `sw.js`, para funcionar offline.
-5. Escreva testes em `ferramentas/<nome>/tests/*.test.js`. O `npm test` já pega essa pasta.
+5. Escreva testes em `<nome>/tests/*.test.js`. O `npm test` já pega essa pasta.
 6. Escreva a spec em `docs/specs/NN-<nome>.md`.
 7. SEO: dê à página `<title>`, `meta description`, `canonical`, Open Graph e JSON-LD (copie de uma ferramenta existente), coloque o link dela em HTML na página inicial e adicione o caminho em `PAGINAS_FIXAS` no `scripts/gerar_seo.py` (sitemap).
 
@@ -172,7 +173,7 @@ Os testes da plataforma avisam se faltar algum desses passos.
 
 ### Atualizar os dados de leveduras
 
-O JSON da ferramenta (`ferramentas/substituicao-leveduras/data/leveduras.json`) é **gerado**. Não edite esse arquivo à mão.
+O JSON da ferramenta (`substituicao-leveduras/data/leveduras.json`) é **gerado**. Não edite esse arquivo à mão.
 
 1. Edite as fontes em `dados/leveduras/`:
    - `aeb.json` e `imperial.json` são transcrições dos guias dos fabricantes;
@@ -215,7 +216,7 @@ Todo recurso novo passa primeiro pelo teste:
 
 O endereço oficial das páginas (`canonical`, sitemap) é sempre o de produção, inclusive na versão de teste, para as duas não concorrerem no Google.
 
-Na decocção, mudanças na calculadora também sobem a versão dela (`ferramentas/decoccao/version.js` e `ferramentas/decoccao/CHANGELOG.md`).
+Na decocção, mudanças na calculadora também sobem a versão dela (`decoccao/version.js` e `decoccao/CHANGELOG.md`).
 
 ## Créditos
 

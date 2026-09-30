@@ -14,15 +14,19 @@ Site estático, mobile first, publicado no GitHub Pages, que funciona como um **
 
 ## 3. Arquitetura de informação
 
+Relativo à raiz do site (produção: `https://www.brassagemforte.com.br/ferramentas/`; teste: `https://www.hboaventura.com/beer-tools/`):
+
 ```
-/                                    → Diretório (lista de ferramentas)
-/ferramentas/substituicao-leveduras/ → Ferramenta 01
-/ferramentas/decoccao/               → Ferramenta 02
-/ferramentas/speise/                 → Ferramenta 03
-/ferramentas/parti-gyle/             → Ferramenta 04
-/ferramentas/taxa-de-inoculo/        → Ferramenta 05
-/ferramentas/<slug>/                 → Ferramentas futuras
+/                          → Diretório (lista de ferramentas)
+/substituicao-leveduras/   → Ferramenta 01
+/decoccao/                 → Ferramenta 02
+/speise/                   → Ferramenta 03
+/parti-gyle/               → Ferramenta 04
+/taxa-de-inoculo/          → Ferramenta 05
+/<slug>/                   → Ferramentas futuras
 ```
+
+Até a versão 1.11.1 as ferramentas ficavam numa pasta `ferramentas/`, o que dava `/ferramentas/ferramentas/<slug>/` em produção. Desde a 1.12.0 elas ficam na raiz. O `.htaccess` redireciona os endereços antigos com 301 (produção).
 
 O registro de ferramentas (número, título, descrição, status `disponivel` | `em-breve`) fica em `assets/js/shell.js` (`FERRAMENTAS`). O diretório e o menu são gerados a partir dele.
 
@@ -74,7 +78,7 @@ Tema: segue o sistema por padrão, e o botão do header alterna e guarda a escol
 | Stack | **HTML, CSS e JS puros**, sem framework nem build do site |
 | Layout compartilhado | `assets/js/shell.js` monta header, menu e rodapé em placeholders que já reservam altura (sem deslocamento de layout) |
 | Largura | Padrão 760px. Ferramentas com duas colunas no desktop usam `<body class="bf-wide">` (1200px) — header e conteúdo continuam alinhados |
-| Testes | `npm test` na raiz (só `node:test`, zero dependências): `tests/` (plataforma) + `ferramentas/*/tests/` (cada ferramenta). CI em `.github/workflows/test.yml` roda em todo push |
+| Testes | `npm test` na raiz (só `node:test`, zero dependências): `tests/` (plataforma) + `<ferramenta>/tests/` (cada ferramenta). CI em `.github/workflows/test.yml` roda em todo push |
 | Caminhos | Relativos. `shell.js` descobre a raiz pelo próprio `src`, então funciona em `usuario.github.io/beer-tools/` |
 | Dados | JSON versionado dentro da pasta da ferramenta. Quando os dados vêm de fontes brutas, um script (só stdlib do Python) gera o JSON, e o resultado é commitado |
 | Estado | Query string (`?levedura=<id>`): link compartilhável e o botão voltar funciona |
@@ -96,16 +100,16 @@ Tema: segue o sistema por padrão, e o botão do header alterna e guarda a escol
 │   ├── css/bf.css                     # tokens + componentes compartilhados
 │   ├── js/shell.js                    # registro, header, menu, rodapé, tema
 │   └── img/                           # logo
-├── ferramentas/
-│   ├── decoccao/                      # ferramenta 02 (motor e testes próprios)
-│   ├── speise/                        # ferramenta 03 (calculo.js + testes)
-│   ├── parti-gyle/                    # ferramenta 04 (calculo.js + testes)
-│   ├── taxa-de-inoculo/               # ferramenta 05 (calculo.js + testes)
-│   └── substituicao-leveduras/
-│       ├── index.html
-│       ├── app.js
-│       ├── app.css
-│       └── data/leveduras.json        # GERADO — não editar à mão
+├── substituicao-leveduras/            # ferramenta 01 (uma pasta por ferramenta, na raiz)
+│   ├── index.html
+│   ├── app.js
+│   ├── app.css
+│   └── data/leveduras.json            # GERADO — não editar à mão
+├── decoccao/                          # ferramenta 02 (motor e testes próprios)
+├── speise/                            # ferramenta 03 (calculo.js + testes)
+├── parti-gyle/                        # ferramenta 04 (calculo.js + testes)
+├── taxa-de-inoculo/                   # ferramenta 05 (calculo.js + testes)
+├── .htaccess                          # produção: 301 dos endereços antigos e 404 do site
 ├── dados/leveduras/                   # fontes transcritas/curadas (editáveis)
 ├── scripts/gerar_leveduras.py         # gera o JSON da ferramenta 01
 ├── examples/                          # fontes originais (planilha, PDFs) — fora do git
@@ -140,7 +144,7 @@ Quem estiver com o site aberto recebe o aviso de nova versão. Quem abrir depois
 
 ### Testes da plataforma (`tests/plataforma.test.js`)
 
-- Registro de ferramentas × pastas em `ferramentas/`.
+- Registro de ferramentas × pastas de ferramenta na raiz.
 - Toda página: `lang`, viewport, shell (header/rodapé/`bf.css`/`versao.js` antes do `shell.js`), manifest e ícones, e **todo caminho local existindo**.
 - `sw.js`: todo item do `PRECACHE` existe, e todo JS/CSS das ferramentas está no `PRECACHE`.
 - Manifest válido, com ícones que existem.
@@ -148,11 +152,11 @@ Quem estiver com o site aberto recebe o aviso de nova versão. Quem abrir depois
 
 ### Como adicionar uma ferramenta
 
-1. Criar `ferramentas/<slug>/index.html` copiando o esqueleto da ferramenta 01 (head com `bf.css` e `shell.js`, placeholders de header e rodapé, cabeçalho padrão).
+1. Criar `<slug>/index.html` (pasta na raiz) copiando o esqueleto da ferramenta 01 (head com `bf.css` e `shell.js`, placeholders de header e rodapé, cabeçalho padrão).
 2. Colocar JS, CSS e dados **dentro da pasta** da ferramenta. Importar só de `assets/`.
 3. Adicionar a entrada em `FERRAMENTAS`, no `shell.js`.
 4. Adicionar os arquivos dela ao `PRECACHE` do `sw.js`.
-5. Colocar os testes em `ferramentas/<slug>/tests/*.test.js`. O `npm test` já pega essa pasta.
+5. Colocar os testes em `<slug>/tests/*.test.js`. O `npm test` já pega essa pasta.
 
 ## 7. Acessibilidade
 

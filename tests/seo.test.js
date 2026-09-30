@@ -8,8 +8,8 @@ const RAIZ = path.join(__dirname, "..");
 const ler = (p) => fs.readFileSync(path.join(RAIZ, p), "utf8");
 const existe = (p) => fs.existsSync(path.join(RAIZ, p));
 const SITE = ler("scripts/gerar_seo.py").match(/^SITE = "([^"]+)"/m)[1];
-const LEV = "ferramentas/substituicao-leveduras/levedura";
-const DB = JSON.parse(ler("ferramentas/substituicao-leveduras/data/leveduras.json"));
+const LEV = "substituicao-leveduras/levedura";
+const DB = JSON.parse(ler("substituicao-leveduras/data/leveduras.json"));
 
 function todasPaginas(dir = "") {
   const ignorar = new Set([".git", "node_modules", "examples", "docs", "tests", "dados", "scripts", ".github"]);
@@ -158,10 +158,10 @@ describe("rastreabilidade", () => {
     const bloco = shell.slice(shell.indexOf("var FERRAMENTAS"), shell.indexOf("];", shell.indexOf("var FERRAMENTAS")));
     const slugs = [...bloco.matchAll(/slug: "([^"]+)"/g)].map((m) => m[1]);
     const home = ler("index.html");
-    for (const s of slugs) assert.ok(home.includes(`href="ferramentas/${s}/"`), `home sem link estático para ${s}`);
+    for (const s of slugs) assert.ok(home.includes(`href="${s}/"`), `home sem link estático para ${s}`);
   });
 
   test("a ferramenta de leveduras tem link estático para o índice de todas as leveduras", () => {
-    assert.match(ler("ferramentas/substituicao-leveduras/index.html"), /<a href="levedura\/">/);
+    assert.match(ler("substituicao-leveduras/index.html"), /<a href="levedura\/">/);
   });
 });

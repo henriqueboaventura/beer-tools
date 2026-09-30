@@ -54,7 +54,7 @@ passo "Testes"
 npm test --silent >/dev/null 2>&1 || { npm test; erro "testes falharam."; }
 echo "ok"
 python3 scripts/gerar_seo.py >/dev/null
-git diff --quiet -- sitemap.xml ferramentas/substituicao-leveduras/levedura || \
+git diff --quiet -- sitemap.xml substituicao-leveduras/levedura || \
   erro "páginas geradas desatualizadas: rode python3 scripts/gerar_seo.py e faça commit."
 
 # ---------------------------------------------------------------- credenciais
@@ -87,8 +87,11 @@ trap 'rm -rf "$PACOTE"' EXIT
 # (openrsync) não aceita a opção.
 chmod 755 "$PACOTE"
 git archive HEAD | tar -x -C "$PACOTE"
-( cd "$PACOTE" && rm -rf .github docs dados scripts tests examples package.json .gitignore .nojekyll .env.deploy.example 404.html \
-    ferramentas/*/tests ferramentas/decoccao/scripts && find . -name '*.md' -delete )
+# as ferramentas ficam em pastas na raiz; a lista vem do registro do shell
+FERRAMENTAS=$(sed -nE 's/^ *slug: "([^"]+)".*/\1/p' assets/js/shell.js)
+[ -n "$FERRAMENTAS" ] || erro "não achei as ferramentas no registro (assets/js/shell.js)."
+( cd "$PACOTE" && rm -rf .github docs dados scripts tests examples package.json .gitignore .nojekyll .env.deploy.example \
+    $(for f in $FERRAMENTAS; do echo "$f/tests"; done) decoccao/scripts && find . -name '*.md' -delete )
 find "$PACOTE" -type d -exec chmod 755 {} +
 find "$PACOTE" -type f -exec chmod 644 {} +
 echo "$(find "$PACOTE" -type f | wc -l | tr -d ' ') arquivos, $(du -sh "$PACOTE" | cut -f1)"
@@ -118,7 +121,7 @@ publicada=$(curl -s "${URL_PRODUCAO}assets/js/versao.js?v=$RANDOM" | sed -nE 's/
 # do CDN no hPanel (Websites -> brassagemforte.com.br -> CDN).
 falhas=""
 for caminho in "" sitemap.xml sw.js manifest.webmanifest \
-    $(cd "$PACOTE" && find assets ferramentas -maxdepth 3 -type f \( -name '*.js' -o -name '*.css' -o -name 'index.html' -o -name '*.json' \) \
+    $(cd "$PACOTE" && find assets $FERRAMENTAS -maxdepth 3 -type f \( -name '*.js' -o -name '*.css' -o -name 'index.html' -o -name '*.json' \) \
       -not -path '*/levedura/*' | sort); do
   # JS/CSS/JSON são pedidos pelas páginas com ?v=<versão>; confere igual ao navegador
   case "$caminho" in *.js|*.css|*.json|*.webmanifest) url="${URL_PRODUCAO}${caminho}?v=$VERSAO" ;; *) url="${URL_PRODUCAO}${caminho}" ;; esac
@@ -126,7 +129,13 @@ for caminho in "" sitemap.xml sw.js manifest.webmanifest \
   [ "$codigo" = 200 ] || falhas="$falhas\n  $codigo $url"
 done
 [ -z "$falhas" ] || erro "arquivos sem 200 em produção (servidor ou cache do CDN):$(printf "$falhas")"
-echo "ok: versão $VERSAO no ar"
+# Endereços antigos (até a 1.11.1 as ferramentas ficavam em /ferramentas/ferramentas/<slug>/):
+# o .htaccess desta pasta redireciona com 301, mantendo o ?levedura=…
+antigo="${URL_PRODUCAO}ferramentas/substituicao-leveduras/?levedura=us-05"
+destino=$(curl -s -o /dev/null -w '%{http_code} %{redirect_url}' "$antigo")
+[ "$destino" = "301 ${URL_PRODUCAO}substituicao-leveduras/?levedura=us-05" ] \
+  || erro "redirecionamento dos endereços antigos não funciona: $antigo → $destino"
+echo "ok: versão $VERSAO no ar (endereços antigos redirecionam)"
 
 git tag -a "$TAG" -m "Produção $VERSAO ($URL_PRODUCAO)"
 git push -q origin "$TAG"

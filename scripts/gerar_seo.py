@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 """Gera as páginas estáticas de SEO e o sitemap a partir de leveduras.json.
 
-- ferramentas/substituicao-leveduras/levedura/<id>/index.html — uma página por
+- substituicao-leveduras/levedura/<id>/index.html — uma página por
   levedura, com os substitutos já no HTML (indexável sem JavaScript).
   Leveduras sem nenhum substituto ganham página com `noindex` e ficam fora do sitemap.
-- ferramentas/substituicao-leveduras/levedura/index.html — índice de todas.
+- substituicao-leveduras/levedura/index.html — índice de todas.
 - sitemap.xml — páginas do site + páginas de levedura indexáveis.
 
 Só usa a biblioteca padrão. Roda sozinho ou no fim de gerar_leveduras.py:
@@ -22,20 +22,20 @@ import unicodedata
 RAIZ = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SITE = "https://www.brassagemforte.com.br/ferramentas/"  # URL canônica = PRODUÇÃO (com barra no fim).
 # O GitHub Pages é só ambiente de teste: as páginas dele apontam o canonical para cá.
-FERRAMENTA = "ferramentas/substituicao-leveduras/"
+FERRAMENTA = "substituicao-leveduras/"
 PASTA = os.path.join(RAIZ, FERRAMENTA, "levedura")
 DADOS = os.path.join(RAIZ, FERRAMENTA, "data", "leveduras.json")
 
 # Páginas fixas do site (caminho relativo à raiz), na ordem do sitemap.
 PAGINAS_FIXAS = [
     "",
-    "ferramentas/substituicao-leveduras/",
-    "ferramentas/substituicao-leveduras/levedura/",
-    "ferramentas/decoccao/",
-    "ferramentas/decoccao/sobre.html",
-    "ferramentas/speise/",
-    "ferramentas/parti-gyle/",
-    "ferramentas/taxa-de-inoculo/",
+    "substituicao-leveduras/",
+    "substituicao-leveduras/levedura/",
+    "decoccao/",
+    "decoccao/sobre.html",
+    "speise/",
+    "parti-gyle/",
+    "taxa-de-inoculo/",
 ]
 
 NIVEL = {3: "Equivalente", 2: "Provável", 1: "Alternativa"}
@@ -156,7 +156,7 @@ def meter(n):
 
 
 def pagina_levedura(B, y):
-    raiz = "../../../../"
+    raiz = "../../../"
     # vínculo direto antes do derivado ("… foi associada à X, que é equivalente à Y")
     rels = sorted(B.rel(y), key=lambda r: (-r[1], "que é equivalente à" in (r[3] if len(r) > 3 else ""),
                                            B.por_id[r[0]].get("descontinuada", False),
@@ -279,7 +279,7 @@ def pagina_levedura(B, y):
 
 
 def pagina_indice(B):
-    raiz = "../../../"
+    raiz = "../../"
     caminho = FERRAMENTA + "levedura/"
     titulo = "Todas as leveduras de cerveja: equivalências por fabricante | Brassagem Forte"
     total = len(B.db["leveduras"])

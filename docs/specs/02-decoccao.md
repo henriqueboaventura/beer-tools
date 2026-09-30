@@ -1,14 +1,14 @@
 # Spec 02 — Decocção
 
 Status: **integrada (branch `ferramenta-decoccao`)**
-Diretório: `/ferramentas/decoccao/` · Número: `02`
+Diretório: `/decoccao/` · Número: `02`
 Atualizado: 2026-09-22
 
 ## 1. Origem
 
 A calculadora existia como app independente (`henriqueboaventura/decoccao`, v1.14.2). Tem motor de cálculo próprio, auditado em várias rodadas externas, e 183 testes. Ela foi trazida para o diretório sem reescrever a lógica.
 
-A documentação funcional completa (métodos, cronômetro, testes, histórico) fica em `ferramentas/decoccao/README.md` e `ferramentas/decoccao/CHANGELOG.md`.
+A documentação funcional completa (métodos, cronômetro, testes, histórico) fica em `decoccao/README.md` e `decoccao/CHANGELOG.md`.
 
 ## 2. Regras da integração
 
@@ -32,4 +32,4 @@ A documentação funcional completa (métodos, cronômetro, testes, histórico) 
 ## 4. Pendências
 
 - Gráfico no celular: o SVG tem proporção fixa (640×218, como no app original) e fica com ~115px de altura a 360px de largura. Os rótulos dos eixos ficam pequenos. Melhorar exige desenhar o gráfico com outra geometria no celular (`renderChart` no `app.js`).
-- O endereço antigo (`/decoccao/`) continua no ar. Decidir se ele redireciona para `/beer-tools/ferramentas/decoccao/`.
+- O endereço antigo (`/decoccao/`) continua no ar. Decidir se ele redireciona para `/beer-tools/decoccao/`.

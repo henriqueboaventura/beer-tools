@@ -92,10 +92,12 @@
       return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c];
     });
   }
-  function urlFerramenta(f) { return BASE + "ferramentas/" + f.slug + "/"; }
+  // cada ferramenta fica numa pasta na raiz do site: <base>/<slug>/
+  function urlFerramenta(f) { return BASE + f.slug + "/"; }
   function atual() {
-    var m = location.pathname.match(/\/ferramentas\/([^/]+)\//);
-    return m ? m[1] : null;
+    var resto = location.href.indexOf(BASE) === 0 ? location.href.slice(BASE.length) : "";
+    var slug = resto.split(/[/?#]/)[0];
+    return FERRAMENTAS.some(function (f) { return f.slug === slug; }) ? slug : null;
   }
 
   function header() {

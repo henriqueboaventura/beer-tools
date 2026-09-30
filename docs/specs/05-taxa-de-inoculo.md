@@ -1,7 +1,7 @@
 # Spec 05 — Taxa de inóculo
 
 Status: **implementada** (versão 1.9.0: as cinco técnicas do Mr Malty, ajustadas na API dele)
-Diretório: `/ferramentas/taxa-de-inoculo/` · Número: `05`
+Diretório: `/taxa-de-inoculo/` · Número: `05`
 Autor: Henrique Boaventura
 Atualizado: 2026-09-28
 
@@ -70,7 +70,7 @@ Depois pedimos as cinco técnicas do Mr Malty. Para estabelecer o modelo, fizemo
 - metas de 1,05× a 6×;
 - frasco de 50 L, para que tudo caiba num passo só e a API devolva o menor volume que chega na meta.
 
-Os dados estão em `ferramentas/taxa-de-inoculo/tests/mrmalty-simulacoes.json`.
+Os dados estão em `taxa-de-inoculo/tests/mrmalty-simulacoes.json`.
 
 O que as simulações mostram:
 

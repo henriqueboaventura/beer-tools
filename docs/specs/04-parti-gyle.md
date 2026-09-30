@@ -1,7 +1,7 @@
 # Spec 04 — Parti-gyle
 
 Status: **v2 implementada** (fluxo guiado, versão 1.6.0)
-Diretório: `/ferramentas/parti-gyle/` · Número: `04`
+Diretório: `/parti-gyle/` · Número: `04`
 Autor: Henrique Boaventura
 Atualizado: 2026-09-24
 

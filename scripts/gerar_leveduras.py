@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Gera ferramentas/substituicao-leveduras/data/leveduras.json a partir das fontes.
+"""Gera substituicao-leveduras/data/leveduras.json a partir das fontes.
 
 Fontes, em ordem de prioridade:
   1. Yeast Master (David M. Taylor) — examples/*.xlsx

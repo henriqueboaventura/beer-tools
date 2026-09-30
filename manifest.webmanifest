@@ -33,23 +33,23 @@
   "shortcuts": [
     {
       "name": "Substituição de leveduras",
-      "url": "ferramentas/substituicao-leveduras/"
+      "url": "substituicao-leveduras/"
     },
     {
       "name": "Decocção",
-      "url": "ferramentas/decoccao/"
+      "url": "decoccao/"
     },
     {
       "name": "Speise",
-      "url": "ferramentas/speise/"
+      "url": "speise/"
     },
     {
       "name": "Parti-gyle",
-      "url": "ferramentas/parti-gyle/"
+      "url": "parti-gyle/"
     },
     {
       "name": "Taxa de inóculo",
-      "url": "ferramentas/taxa-de-inoculo/"
+      "url": "taxa-de-inoculo/"
     }
   ]
 }

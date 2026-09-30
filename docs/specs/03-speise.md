@@ -1,7 +1,7 @@
 # Spec 03 — Speise
 
 Status: **v1 implementada** (migrada de `henriqueboaventura/speise`)
-Diretório: `/ferramentas/speise/` · Número: `03`
+Diretório: `/speise/` · Número: `03`
 Autor: Henrique Boaventura
 Atualizado: 2026-09-23
 
@@ -41,7 +41,7 @@ Exemplo conferido à mão: 20 L, OG 1.050 (12,39 °P), 75%, 2,4 vol a 20 °C. O 
 
 ## 5. Testes
 
-`ferramentas/speise/tests/calculo.test.js`:
+`speise/tests/calculo.test.js`:
 - conversões SG ↔ °P;
 - CO₂ residual;
 - o caso de exemplo;
