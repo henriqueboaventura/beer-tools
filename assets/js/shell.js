@@ -43,6 +43,13 @@
       titulo: "Taxa de inóculo",
       descricao: "Quantas células de levedura a cerveja precisa e como propagar em starters, passo a passo.",
       status: "disponivel"
+    },
+    {
+      numero: "06",
+      slug: "carbonatacao",
+      titulo: "Carbonatação",
+      descricao: "Quanto açúcar usar para carbonatar na garrafa ou no barril: total do lote e dose por garrafa.",
+      status: "disponivel"
     }
   ];
 

@@ -20,7 +20,7 @@ SITE = "https://www.brassagemforte.com.br/ferramentas/"
 PAGINAS = ["index.html", "404.html", "substituicao-leveduras/index.html",
            "decoccao/index.html", "decoccao/sobre.html",
            "speise/index.html", "parti-gyle/index.html",
-           "taxa-de-inoculo/index.html"]
+           "taxa-de-inoculo/index.html", "carbonatacao/index.html"]
 REF = re.compile(r'((?:href|src)=")([^"?#]+\.(?:js|css|webmanifest))(?:\?v=[^"]*)?(")')
 
 

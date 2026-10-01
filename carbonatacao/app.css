@@ -1,0 +1,96 @@
+/* Estilos específicos da ferramenta 06 — Carbonatação */
+
+.cb-campo { margin-bottom: 16px; min-width: 0; }
+.cb-campo label {
+  display: flex; justify-content: space-between; align-items: baseline; gap: 8px;
+  font-size: 15px; color: var(--bf-soft); margin-bottom: 8px;
+}
+.cb-campo label span { font: 500 12px/1 var(--bf-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--bf-mute); text-align: right; }
+.cb-campo input, .cb-campo select {
+  width: 100%;
+  appearance: none;
+  background: var(--bf-raised);
+  border: 0;
+  border-bottom: 2px solid var(--bf-fg);
+  border-radius: 0;
+  color: var(--bf-fg);
+  /* 16px+ evita o zoom automático do Safari iOS */
+  font: 500 20px/1 var(--bf-mono);
+  padding: 12px;
+  min-height: 50px;
+  -moz-appearance: textfield;
+}
+.cb-campo select { font: 500 17px/1.2 var(--bf-font); cursor: pointer; }
+.cb-campo input:focus-visible, .cb-campo select:focus-visible { outline: none; background: var(--bf-raised-2); }
+
+.cb-linha { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.cb-nota { font-size: 13px; color: var(--bf-mute); margin: 8px 0 0; }
+.cb-nota b { color: var(--bf-fg); }
+.cb-nota--campo { margin: -8px 0 16px; }
+.cb-eco { font-size: 15px; color: var(--bf-soft); margin: 10px 0 0; }
+.cb-eco b { color: var(--bf-fg); font-family: var(--bf-mono); font-weight: 500; }
+
+/* envases: grade 2 colunas no celular, sem rolagem */
+.cb-envases { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.cb-envases .bf-chip { padding: 0 8px; }
+.cb-envases .bf-chip:last-child { grid-column: 1 / -1; }
+@media (min-width: 620px) {
+  .cb-envases { grid-template-columns: repeat(5, 1fr); }
+  .cb-envases .bf-chip:last-child { grid-column: auto; }
+}
+.cb-inicio, .cb-modo { grid-auto-columns: 1fr; margin-bottom: 12px; }
+.cb-inicio .bf-chip, .cb-modo .bf-chip { padding: 0 6px; }
+
+/* Resultado em destaque (bloco invertido, como na speise) */
+.cb-destaque { background: var(--bf-fg); color: var(--bf-bg); padding: 18px 16px 16px; text-align: center; }
+.cb-destaque p { margin: 0; }
+.cb-destaque__rotulo { font: 500 12px/1.3 var(--bf-mono); letter-spacing: .1em; text-transform: uppercase; opacity: .8; }
+.cb-destaque__valor { font-weight: 900; font-stretch: 62%; font-size: 88px; line-height: .95; margin: 10px 0 4px !important; }
+.cb-destaque__valor small { font: 500 22px/1 var(--bf-mono); }
+.cb-destaque__sub { font: 400 13px/1.4 var(--bf-mono); opacity: .8; }
+
+/* Tabelas (por garrafa e outros açúcares) */
+.cb-tabela__titulo { font: 500 12px/1.3 var(--bf-mono); letter-spacing: .1em; text-transform: uppercase; color: var(--bf-fg); margin: 0 0 8px; }
+.cb-tabela { width: 100%; border-collapse: collapse; font-size: 15px; }
+.cb-tabela th, .cb-tabela td { text-align: left; padding: 10px 6px 10px 0; border-bottom: 1px solid var(--bf-line); vertical-align: top; }
+.cb-tabela thead th { font: 500 11px/1.2 var(--bf-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--bf-mute); border-bottom-color: var(--bf-line-strong); }
+.cb-tabela td { font: 500 17px/1.2 var(--bf-mono); color: var(--bf-fg); text-align: right; white-space: nowrap; }
+.cb-tabela thead th + th { text-align: right; }
+.cb-tabela tbody th { font-weight: 400; color: var(--bf-soft); font-size: 14px; }
+.cb-tabela--garrafas td:first-child { text-align: left; color: var(--bf-soft); }
+.cb-tabela--garrafas td:nth-child(2) { font-size: 20px; }
+.cb-tabela--garrafas td:last-child { color: var(--bf-mute); font-size: 14px; }
+.cb-atual th, .cb-atual td { color: var(--bf-fg) !important; font-weight: 700; }
+
+/* Resumo: já tem · acrescenta · alvo */
+.cb-resumo { display: grid; grid-template-columns: repeat(3, 1fr); margin: 16px 0 0; border-top: 1px solid var(--bf-line-strong); }
+.cb-resumo div { padding: 10px 0 0; min-width: 0; }
+.cb-resumo div + div { padding-left: 10px; border-left: 1px solid var(--bf-line); }
+.cb-resumo dt { font: 500 10px/1.2 var(--bf-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--bf-mute); }
+.cb-resumo dd { margin: 4px 0 0; font: 500 20px/1.2 var(--bf-mono); color: var(--bf-fg); }
+.cb-resumo dd small { font-size: 11px; color: var(--bf-mute); }
+
+/* Pressão e avisos (cores de informação: verde ok, âmbar atenção, vermelho perigo) */
+:root { --cb-ok: #4ade80; --cb-atencao: #fbbf24; --cb-perigo: #f87171; }
+:root[data-theme="light"] { --cb-ok: #15803d; --cb-atencao: #b45309; --cb-perigo: #b91c1c; }
+@media (prefers-color-scheme: light) { :root:not([data-theme="dark"]) { --cb-ok: #15803d; --cb-atencao: #b45309; --cb-perigo: #b91c1c; } }
+
+.cb-pressao { margin-top: 24px; padding-top: 16px; border-top: 1px solid var(--bf-line-strong); }
+.cb-pressao__valor { font-weight: 900; font-stretch: 62%; font-size: 56px; line-height: 1; color: var(--bf-fg); margin: 0; }
+.cb-pressao__valor small { font: 500 16px/1 var(--bf-mono); }
+
+.cb-status { margin: 10px 0 0; padding: 8px 10px; border-left: 4px solid var(--cb-cor); background: color-mix(in srgb, var(--cb-cor) 10%, transparent); font-size: 14px; line-height: 1.45; color: var(--bf-soft); }
+.cb-status b { color: var(--bf-fg); }
+.cb-status--ok { --cb-cor: var(--cb-ok); }
+.cb-status--atencao { --cb-cor: var(--cb-atencao); }
+.cb-status--perigo { --cb-cor: var(--cb-perigo); }
+.cb-status--info { --cb-cor: var(--bf-line-strong); }
+#avisos { margin-top: 16px; }
+
+.cb-outros, .cb-fontes { margin-top: 24px; }
+.cb-outros p { margin: 0 0 10px; }
+.cb-fontes li { font-size: 14px; }
+
+@media (min-width: 720px) {
+  .cb-destaque__valor { font-size: 112px; }
+}

@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Calculadora de carbonatação: açúcar de priming por lote e por garrafa | Brassagem Forte</title>
+  <meta name="description" content="Quanto açúcar usar para carbonatar a cerveja na garrafa, na lata ou no barril: total do lote, dose por garrafa e a pressão na embalagem. Tudo em litros e gramas.">
+  <link rel="canonical" href="https://www.brassagemforte.com.br/ferramentas/carbonatacao/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Ferramentas Brassagem Forte">
+  <meta property="og:locale" content="pt_BR">
+  <meta property="og:title" content="Calculadora de carbonatação: açúcar de priming por lote e por garrafa | Brassagem Forte">
+  <meta property="og:description" content="Quanto açúcar usar para carbonatar a cerveja na garrafa, na lata ou no barril: total do lote, dose por garrafa e a pressão na embalagem. Tudo em litros e gramas.">
+  <meta property="og:url" content="https://www.brassagemforte.com.br/ferramentas/carbonatacao/">
+  <meta property="og:image" content="https://www.brassagemforte.com.br/ferramentas/assets/img/og-carbonatacao.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="theme-color" content="#0b0b0b">
+  <link rel="manifest" href="../manifest.webmanifest?v=1.14.0">
+  <link rel="icon" href="../favicon.ico" sizes="32x32">
+  <link rel="icon" href="../assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="../assets/img/icon-180.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-title" content="Brassagem Forte">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/bf.css?v=1.14.0">
+  <link rel="stylesheet" href="app.css?v=1.14.0">
+  <script src="../assets/js/versao.js?v=1.14.0"></script>
+  <script src="../assets/js/shell.js?v=1.14.0"></script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Calculadora de carbonatação","url":"https://www.brassagemforte.com.br/ferramentas/carbonatacao/","applicationCategory":"UtilitiesApplication","operatingSystem":"Web","inLanguage":"pt-BR","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"BRL"},"author":[{"@type":"Person","name":"Henrique Boaventura"}],"publisher":{"@type":"Organization","name":"Brassagem Forte","url":"https://www.brassagemforte.com.br","logo":"https://www.brassagemforte.com.br/ferramentas/assets/img/icon-512.png"}}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Ferramentas","item":"https://www.brassagemforte.com.br/ferramentas/"},{"@type":"ListItem","position":2,"name":"Carbonatação","item":"https://www.brassagemforte.com.br/ferramentas/carbonatacao/"}]}</script>
+</head>
+<body>
+  <header data-bf-header></header>
+
+  <main>
+    <div class="wrap">
+      <p class="bf-crumb"><a href="../">Ferramentas</a> / 06</p>
+      <h1 class="bf-title">Carbonatação</h1>
+      <p class="bf-lead">Quanto açúcar usar para carbonatar a cerveja na garrafa, na lata ou no barril: o total para o lote todo ou a dose de cada garrafa.</p>
+      <details class="bf-how">
+        <summary>Como funciona</summary>
+        <div class="bf-how__body">
+          <ol>
+            <li><b>A cerveja já tem CO₂.</b> Ao sair da fermentação, ela guarda CO₂ dissolvido, e quanto mais fria, mais guarda. O que conta é a temperatura <b>mais alta</b> que ela atingiu depois que a fermentação acabou: resfriar depois não devolve o CO₂ que já escapou.</li>
+            <li><b>O açúcar cobre a diferença</b> até o alvo. Um volume de CO₂ são 1,964 g por litro, e cada açúcar rende uma quantidade fixa de CO₂ por grama: o açúcar comum rende mais que o açúcar de milho, que tem água na composição.</li>
+            <li><b>No barril</b>, o espaço vazio também guarda CO₂, então ele pede mais açúcar que a garrafa para chegar no mesmo alvo.</li>
+            <li><b>A pressão</b> é calculada na temperatura mais quente em que a embalagem vai ficar guardada, para avisar quando a garrafa corre risco de estourar.</li>
+          </ol>
+          <p>Mesma física da calculadora de priming do Mr Malty, em litros, gramas, °C e bar, ao nível do mar.</p>
+        </div>
+      </details>
+
+      <!-- 01 Envase -->
+      <section class="bf-step" aria-labelledby="l-envase">
+        <h2 class="bf-step__label" id="l-envase"><b>01</b> Envase</h2>
+        <div class="cb-envases" role="group" aria-label="Embalagem">
+          <button type="button" class="bf-chip" data-envase="vidro" aria-pressed="true">Garrafa de vidro</button>
+          <button type="button" class="bf-chip" data-envase="vidro-reforcado" aria-pressed="false">Garrafa reforçada</button>
+          <button type="button" class="bf-chip" data-envase="pet" aria-pressed="false">Garrafa PET</button>
+          <button type="button" class="bf-chip" data-envase="lata" aria-pressed="false">Lata</button>
+          <button type="button" class="bf-chip" data-envase="barril" aria-pressed="false">Barril</button>
+        </div>
+        <p class="cb-nota" id="envaseNota"></p>
+        <div class="cb-campo" id="espacoVazioCampo" hidden>
+          <label for="espacoVazio">Espaço vazio no barril <span>L</span></label>
+          <input type="number" id="espacoVazio" inputmode="decimal" value="2" min="0" step="0.5">
+          <p class="cb-nota">O volume de gás acima da cerveja. Ele também guarda CO₂, por isso o barril pede mais açúcar que a garrafa.</p>
+        </div>
+      </section>
+
+      <!-- 02 A cerveja -->
+      <section class="bf-step" aria-labelledby="l-cerveja">
+        <h2 class="bf-step__label" id="l-cerveja"><b>02</b> A cerveja</h2>
+        <div class="cb-linha">
+          <div class="cb-campo">
+            <label for="litros">Volume a envasar <span>L</span></label>
+            <input type="number" id="litros" inputmode="decimal" value="20" min="0" step="0.5">
+          </div>
+          <div class="cb-campo">
+            <label for="tempC">Temp. mais alta <span>°C</span></label>
+            <input type="number" id="tempC" inputmode="decimal" value="20" step="1">
+          </div>
+        </div>
+        <p class="cb-nota cb-nota--campo">A mais alta <b>depois que a fermentação acabou</b>, não a do envase. Se ela ficou a 20 °C e depois foi para a geladeira, use 20 °C.</p>
+        <div class="bf-segmented cb-inicio" role="group" aria-label="Como a cerveja está">
+          <button type="button" class="bf-chip" data-inicio="fermentada" aria-pressed="true">Fermentada</button>
+          <button type="button" class="bf-chip" data-inicio="pressao" aria-pressed="false">Sob pressão</button>
+        </div>
+        <div class="cb-campo" id="pressaoCampo" hidden>
+          <label for="pressaoBar">Manômetro (spunding) <span>bar</span></label>
+          <input type="number" id="pressaoBar" inputmode="decimal" value="1" min="0" step="0.1">
+          <p class="cb-nota">Se a cerveja já carbonatou em parte sob pressão, leia o manômetro e use como temperatura a da cerveja na hora da leitura. O açúcar cobre só o que falta.</p>
+        </div>
+        <p class="cb-eco" id="residualEco"></p>
+      </section>
+
+      <!-- 03 Carbonatação -->
+      <section class="bf-step" aria-labelledby="l-alvo">
+        <h2 class="bf-step__label" id="l-alvo"><b>03</b> Carbonatação</h2>
+        <div class="cb-campo">
+          <label for="estilo">Pelo estilo <span>opcional</span></label>
+          <select id="estilo"></select>
+        </div>
+        <div class="cb-campo">
+          <label for="alvo">Alvo <span>volumes de CO₂</span></label>
+          <input type="number" id="alvo" inputmode="decimal" value="2.4" min="0.5" max="5" step="0.1">
+          <p class="cb-eco" id="alvoEco"></p>
+        </div>
+      </section>
+
+      <!-- 04 Açúcar -->
+      <section class="bf-step" aria-labelledby="l-acucar">
+        <h2 class="bf-step__label" id="l-acucar"><b>04</b> Açúcar</h2>
+        <div class="cb-campo">
+          <label for="acucar">Fonte</label>
+          <select id="acucar"></select>
+        </div>
+        <div class="cb-campo" id="rendimentoCampo">
+          <label for="rendimento">Rendimento <span id="rendimentoTag">confirmado</span></label>
+          <input type="number" id="rendimento" inputmode="decimal" min="0.1" max="0.6" step="0.001">
+          <p class="cb-nota" id="acucarNota"></p>
+        </div>
+        <div class="cb-campo" id="naturalCampo" hidden>
+          <label for="densidadeFinal">Densidade final esperada <span>SG</span></label>
+          <input type="number" id="densidadeFinal" inputmode="decimal" value="1.010" min="0.990" step="0.001">
+          <p class="cb-nota" id="naturalNota"></p>
+        </div>
+      </section>
+
+      <!-- 05 Resultado -->
+      <section class="bf-step" aria-labelledby="l-resultado">
+        <h2 class="bf-step__label" id="l-resultado"><b>05</b> Resultado</h2>
+        <div class="bf-segmented cb-modo" role="group" aria-label="Como dosar" id="modo">
+          <button type="button" class="bf-chip" data-modo="total" aria-pressed="true">No lote todo</button>
+          <button type="button" class="bf-chip" data-modo="garrafa" aria-pressed="false">Por garrafa</button>
+        </div>
+        <div id="resultado" aria-live="polite"></div>
+        <div id="resumo"></div>
+
+        <div class="cb-pressao" id="pressaoBloco">
+          <div class="cb-campo">
+            <label for="tempArmazenamento">Guardada a até <span>°C</span></label>
+            <input type="number" id="tempArmazenamento" inputmode="decimal" step="1">
+            <p class="cb-nota">A temperatura mais quente em que a embalagem fechada vai ficar. Começa igual à da cerveja.</p>
+          </div>
+          <div id="pressao" aria-live="polite"></div>
+        </div>
+
+        <div id="avisos"></div>
+
+        <details class="bf-how cb-outros" id="outrosBloco">
+          <summary>Com outro açúcar</summary>
+          <div class="bf-how__body">
+            <p>A mesma carbonatação em cada açúcar: muda o peso porque cada um rende uma quantidade diferente de CO₂ por grama.</p>
+            <table class="cb-tabela">
+              <thead><tr><th scope="col">Açúcar</th><th scope="col">Lote</th><th scope="col">500 mL</th></tr></thead>
+              <tbody id="outros"></tbody>
+            </table>
+          </div>
+        </details>
+      </section>
+
+      <details class="bf-how cb-fontes">
+        <summary>Fontes</summary>
+        <div class="bf-how__body">
+          <ul>
+            <li><a href="https://mrmalty.com/priming-sugar-calculator.html" rel="noopener">Mr Malty — Priming Sugar Calculator</a>: CO₂ residual pela temperatura, solubilidade sob pressão, rendimento de cada açúcar, espaço vazio do barril, pressão de armazenamento e os limites de cada embalagem. Os resultados foram conferidos contra o código da própria calculadora.</li>
+            <li>A mesma fórmula de CO₂ residual da <a href="../speise/">calculadora de speise</a>.</li>
+          </ul>
+        </div>
+      </details>
+    </div>
+  </main>
+
+  <footer data-bf-footer></footer>
+
+  <script src="calculo.js?v=1.14.0"></script>
+  <script src="app.js?v=1.14.0"></script>
+</body>
+</html>

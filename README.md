@@ -79,6 +79,22 @@ Modelos de crescimento:
 
 Os dois modelos de placa agitadora discordam quando o starter tem muita ou pouca levedura por litro. A comparação com Mr Malty, Brewers Friend e Craft Beer & Brewing, e a validação passo a passo contra o Mr Malty, estão em [`docs/specs/05-taxa-de-inoculo.md`](docs/specs/05-taxa-de-inoculo.md).
 
+### 06 — Carbonatação
+
+`carbonatacao/`
+
+Quanto açúcar usar para carbonatar, de Henrique Boaventura. Unidades métricas e densidade em SG.
+
+- **Envase:** garrafa de vidro (comum ou reforçada), PET, lata ou barril. No barril, o espaço vazio entra na conta.
+- **A cerveja:** volume e a temperatura mais alta depois da fermentação, ou o manômetro, se ela já estava sob pressão.
+- **Alvo** em volumes de CO₂, com sugestões por estilo.
+- **Açúcar:** de milho, refinado/cristal, dextrose anidra, mascavo, DME ou mel, ou carbonatação natural (fechar antes do fim da fermentação).
+- **Resultado:**
+  - no lote todo ou por garrafa, com as mesmas garrafas da speise;
+  - a pressão na temperatura de armazenamento, com o aviso de garrafa estourando.
+
+Mesma física da calculadora de priming do Mr Malty, conferida contra o código dela: [`docs/specs/06-carbonatacao.md`](docs/specs/06-carbonatacao.md).
+
 ## Rodar localmente
 
 Só precisa de Python 3 (para servir os arquivos) e Node 18 ou mais novo (para os testes). Não há dependências para instalar.
@@ -114,6 +130,7 @@ Os testes usam só o runner nativo do Node (`node:test`). Eles cobrem:
 - **Decocção** (`decoccao/tests/`): o motor de cálculo, com valores conferidos contra a literatura.
 - **Speise** (`speise/tests/`): o cálculo, com valores conferidos à mão.
 - **Parti-gyle** (`parti-gyle/tests/`): os exemplos numéricos publicados nas fontes.
+- **Carbonatação** (`carbonatacao/tests/`): oito cenários conferidos contra o código da calculadora do Mr Malty, e a consistência com a speise.
 - **Taxa de inóculo** (`taxa-de-inoculo/tests/`): o exemplo do Brewers Friend (viabilidade, crescimento sem agitação e DME), o modelo da Braukaiser, as 166 simulações e os passos coletados da calculadora do Mr Malty, e invariantes da sugestão de passos.
 
 - **Interface** (`tests/ui/`): abre o site num Chrome sem janela (headless), em tela de celular, e usa cada ferramenta como uma pessoa usaria: clica, digita e confere o que aparece. Também confere, em todas as páginas, que não há erro de JavaScript nem rolagem lateral, e que menu, tema e service worker funcionam.

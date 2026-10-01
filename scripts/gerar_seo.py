@@ -36,6 +36,7 @@ PAGINAS_FIXAS = [
     "speise/",
     "parti-gyle/",
     "taxa-de-inoculo/",
+    "carbonatacao/",
 ]
 
 NIVEL = {3: "Equivalente", 2: "Provável", 1: "Alternativa"}

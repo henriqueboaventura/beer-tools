@@ -64,6 +64,11 @@ const PRECACHE = [
   "taxa-de-inoculo/app.css",
   "taxa-de-inoculo/app.js",
   "taxa-de-inoculo/calculo.js",
+  "carbonatacao/",
+  "carbonatacao/index.html",
+  "carbonatacao/app.css",
+  "carbonatacao/app.js",
+  "carbonatacao/calculo.js",
 ];
 
 self.addEventListener("install", (event) => {

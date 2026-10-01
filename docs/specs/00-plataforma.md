@@ -23,6 +23,7 @@ Relativo à raiz do site (produção: `https://www.brassagemforte.com.br/ferrame
 /speise/                   → Ferramenta 03
 /parti-gyle/               → Ferramenta 04
 /taxa-de-inoculo/          → Ferramenta 05
+/carbonatacao/             → Ferramenta 06
 /<slug>/                   → Ferramentas futuras
 ```
 
@@ -109,6 +110,7 @@ Tema: segue o sistema por padrão, e o botão do header alterna e guarda a escol
 ├── speise/                            # ferramenta 03 (calculo.js + testes)
 ├── parti-gyle/                        # ferramenta 04 (calculo.js + testes)
 ├── taxa-de-inoculo/                   # ferramenta 05 (calculo.js + testes)
+├── carbonatacao/                      # ferramenta 06 (calculo.js + testes)
 ├── .htaccess                          # produção: 301 dos endereços antigos e 404 do site
 ├── dados/leveduras/                   # fontes transcritas/curadas (editáveis)
 ├── scripts/gerar_leveduras.py         # gera o JSON da ferramenta 01

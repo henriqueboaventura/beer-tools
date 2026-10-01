@@ -1,7 +1,7 @@
 {
   "name": "Ferramentas Brassagem Forte",
   "short_name": "Brassagem Forte",
-  "description": "Ferramentas para cervejeiros caseiros: substituição de leveduras, decocção, speise, parti-gyle, taxa de inóculo e mais.",
+  "description": "Ferramentas para cervejeiros caseiros: substituição de leveduras, decocção, speise, parti-gyle, taxa de inóculo, carbonatação e mais.",
   "id": "./",
   "start_url": "./",
   "scope": "./",
@@ -50,6 +50,10 @@
     {
       "name": "Taxa de inóculo",
       "url": "taxa-de-inoculo/"
+    },
+    {
+      "name": "Carbonatação",
+      "url": "carbonatacao/"
     }
   ]
 }

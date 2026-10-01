@@ -12,6 +12,29 @@ detalhe técnico, em `ferramentas/decoccao/CHANGELOG.md`.
 invalida o cache offline antigo e faz aparecer o aviso "Nova versão
 disponível" para quem já está com o site aberto.
 
+## [1.14.0] — 2026-10-01
+
+### Adicionado
+- **Ferramenta 06 — Carbonatação**: quanto açúcar usar para carbonatar,
+  no lote todo ou por garrafa.
+  - Garrafa de vidro (comum ou reforçada), PET, lata ou barril. No barril,
+    o espaço vazio entra na conta.
+  - O CO₂ que a cerveja já tem, pela temperatura mais alta depois da
+    fermentação ou pelo manômetro, se ela estava sob pressão.
+  - Alvo em volumes de CO₂, com sugestões por estilo.
+  - Açúcar de milho, refinado/cristal, dextrose anidra, mascavo, DME ou
+    mel, com rendimento editável, ou carbonatação natural (densidade para
+    fechar e pressão da válvula de spunding).
+  - Dose por garrafa com as mesmas garrafas da speise.
+  - Pressão na temperatura de armazenamento, com aviso de garrafa
+    estourando por tipo de embalagem.
+  - Mesma física da calculadora de priming do Mr Malty, em litros, gramas,
+    °C e bar. Os resultados batem exatamente com o código dela.
+
+### Corrigido
+- **Página inicial:** nomes longos de ferramenta quebram em vez de vazar
+  da tela quando a fonte do site não carrega.
+
 ## [1.13.0] — 2026-09-30
 
 ### Adicionado
