@@ -33,6 +33,14 @@ suiteUI("Carbonatação (interface)", (ctx) => {
     assert.deepEqual(pag.erros, []);
   });
 
+  test("cada botão de envase tem um ícone", async () => {
+    const { pag } = ctx;
+    await abrir();
+    const r = await pag.avaliar("ui.$$('[data-envase]').map(b => [b.dataset.envase, !!b.querySelector('svg.cb-icone[aria-hidden=\"true\"]'), b.textContent.trim()])");
+    assert.deepEqual(r.map((x) => x[0]), Object.keys(C.ENVASES));
+    for (const [id, icone, texto] of r) { assert.ok(icone, `${id} sem ícone`); assert.ok(texto.length > 2, `${id} sem texto`); }
+  });
+
   test("por garrafa: as garrafas da speise, com a dose de cada uma", async () => {
     const { pag } = ctx;
     await abrir();

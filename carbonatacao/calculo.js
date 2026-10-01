@@ -48,11 +48,11 @@
     { id: "dextrose", nome: "Dextrose anidra", rendimento: 0.489, confirmado: true,
       nota: "Dextrose sem a água de cristalização: rende entre o açúcar de milho e o comum." },
     { id: "mascavo", nome: "Açúcar mascavo", rendimento: 0.500, confirmado: true,
-      nota: "Quase sacarose, com melaço: deixa uma nota leve de caramelo." },
+      nota: "Quase sacarose, com melaço: deixa uma nota leve de caramelo. O Brewers Friend usa 0,437, o que pede cerca de 14% mais açúcar: o mascavo brasileiro, menos refinado, tende a ficar mais perto desse valor." },
     { id: "dme", nome: "Extrato de malte seco (DME claro)", rendimento: 0.40, confirmado: false,
-      nota: "Estimativa para um DME claro que fermenta cerca de 80%. Carbonata um pouco mais devagar e dá mais corpo. Ajuste se souber o do seu." },
+      nota: "Estimativa para um DME claro que fermenta cerca de 80%. Carbonata um pouco mais devagar e dá mais corpo. O Brewers Friend usa 0,334, o que pede cerca de 20% mais DME. Ajuste se souber o do seu." },
     { id: "mel", nome: "Mel", rendimento: 0.41, confirmado: false,
-      nota: "Estimativa: cerca de 80% de açúcares fermentáveis. Varia de mel para mel." },
+      nota: "Estimativa: cerca de 80% de açúcares fermentáveis. Varia de mel para mel. O Brewers Friend usa 0,364, o que pede cerca de 13% mais mel." },
     { id: "natural", nome: "Carbonatação natural (fechar antes do fim)", rendimento: null, confirmado: true,
       nota: "Sem açúcar: feche o barril ou fermentador enquanto a cerveja ainda está alguns pontos acima da densidade final, e o resto da fermentação carbonata." }
   ];

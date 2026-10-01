@@ -1,6 +1,6 @@
 # Spec 06 — Carbonatação
 
-Status: **implementada** (versão 1.14.0)
+Status: **implementada** (versão 1.14.1)
 Diretório: `/carbonatacao/` · Número: `06`
 Autor: Henrique Boaventura
 Atualizado: 2026-10-01
@@ -23,6 +23,29 @@ O pedido (Henrique, 2026-10-01): algo como a [Priming Sugar Calculator do Mr Mal
 ## 2. Fonte e validação
 
 A calculadora do Mr Malty roda no navegador, e as fórmulas estão no código da página. Portamos a matemática e rodamos as funções dele e as nossas lado a lado em 8 cenários: garrafa, barril com espaço vazio, cerveja sob pressão de spunding, temperaturas de 4 a 25 °C e armazenamento mais quente. A diferença foi **zero** no CO₂ residual, no açúcar e na pressão. Os números viraram testes em `carbonatacao/tests/calculo.test.js`.
+
+### Comparação com outras calculadoras (2026-10-01)
+
+**Brewers Friend** ([Beer Priming Sugar Calculator](https://www.brewersfriend.com/beer-priming-calculator/)). O cálculo roda no servidor, então preenchemos o formulário com 6 cenários de garrafa: 5 a 40 L, 1,5 a 3,5 volumes, 4 a 25 °C.
+
+| | Nós ÷ Brewers Friend | Rendimento (nós × BF, g de CO₂ por g) |
+|---|---|---|
+| CO₂ já na cerveja | **igual** nos 6 | — |
+| Açúcar de milho | +0,4% a +0,7% | 0,444 × 0,447 |
+| Açúcar comum | −4,5% | 0,514 (estequiométrico) × 0,491 |
+| Mascavo | −12,6% | 0,500 × 0,437 |
+| Mel | −11,4% | 0,41 × 0,364 |
+| DME | −16,5% | 0,40 × 0,334 |
+
+- Nos açúcares de rendimento confirmado, a diferença é pequena e sempre para o lado de **menos açúcar** que o Brewers Friend, o lado seguro contra garrafa estourando.
+- Nos estimados (DME, mel, mascavo), as duas referências discordam entre 11% e 17%. A nota de cada um mostra o valor do Brewers Friend, e o rendimento é editável.
+- Os números do Brewers Friend viraram testes.
+
+**Craft Beer & Brewing** ([Priming Sugar Calculator](https://www.beerandbrewing.com/tools/priming-sugar)). O código da página tem um erro: converte a temperatura para °C e aplica a fórmula do CO₂ residual feita para °F.
+
+- A 20 °C, ela considera que a cerveja já tem 2,14 volumes. O certo é 0,86, o que Mr Malty, Brewers Friend e esta ferramenta concordam.
+- Por isso recomenda muito menos açúcar: 19 g de açúcar comum para 20 L a 2,4 volumes, contra cerca de 120 g. Em cerveja fria, recomenda zero.
+- Não serve de referência. Os fatores dela, em g/L por volume (dextrose 4, sacarose 3,7, DME 5,3, mel 4,9), ficam na mesma faixa dos outros.
 
 ## 3. Cálculo (`calculo.js`)
 
@@ -59,7 +82,7 @@ A calculadora do Mr Malty roda no navegador, e as fórmulas estão no código da
 ## 4. Interface
 
 1. **01 Envase:**
-   - garrafa de vidro, garrafa reforçada, PET, lata ou barril;
+   - garrafa de vidro, garrafa reforçada, PET, lata ou barril, cada botão com um ícone de traço (SVG na cor do texto);
    - o barril pede o espaço vazio, em L.
 2. **02 A cerveja:**
    - volume e temperatura mais alta depois da fermentação;

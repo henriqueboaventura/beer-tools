@@ -37,6 +37,35 @@ describe("bate com o Mr Malty", () => {
   }
 });
 
+describe("comparação com o Brewers Friend", () => {
+  // Formulário da Beer Priming Sugar Calculator do Brewers Friend
+  // (https://www.brewersfriend.com/beer-priming-calculator/, unidades métricas), 2026-10-01:
+  // [litros, alvo, °C] → [CO₂ na cerveja, açúcar de milho (g), açúcar comum (g)]
+  const bf = [
+    [[20, 2.4, 20], [0.86, 135.3, 123.1]],
+    [[20, 2.6, 4], [1.48, 98.2, 89.3]],
+    [[19, 3.5, 25], [0.76, 229.0, 208.4]],
+    [[40, 2.5, 18], [0.92, 278.7, 253.6]],
+    [[5, 1.5, 22], [0.81, 15.1, 13.7]],
+    [[23, 2.2, 12], [1.12, 109.5, 99.6]],
+  ];
+  test("CO₂ na cerveja igual ao Brewers Friend", () => {
+    for (const [[litros, alvo, tempC], [res]] of bf) assert.equal(C.calcular({ ...base, litros, alvo, tempC }).residual.toFixed(2), res.toFixed(2));
+  });
+  test("açúcar de milho dentro de 1% do Brewers Friend", () => {
+    for (const [[litros, alvo, tempC], [, milho]] of bf) {
+      const g = C.calcular({ ...base, litros, alvo, tempC }).gramas;
+      assert.ok(Math.abs(g / milho - 1) < 0.01, `${litros} L ${alvo} vol ${tempC} °C: ${g.toFixed(1)} × ${milho}`);
+    }
+  });
+  test("açúcar comum: 4,5% abaixo do Brewers Friend (rendimento estequiométrico 0,514 × 0,491 dele), nunca acima", () => {
+    for (const [[litros, alvo, tempC], [, , comum]] of bf) {
+      const g = C.calcular({ ...base, litros, alvo, tempC, acucar: "sacarose" }).gramas;
+      assert.ok(g <= comum && g / comum > 0.94, `${litros} L ${alvo} vol ${tempC} °C: ${g.toFixed(1)} × ${comum}`);
+    }
+  });
+});
+
 describe("CO₂ residual e rendimentos", () => {
   test("o CO₂ residual é o mesmo da calculadora de speise", () => {
     for (let t = 0; t <= 30; t += 2.5) perto(C.co2Residual(t), Speise.co2Residual(t), 1e-12, `${t} °C`);

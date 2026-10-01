@@ -12,6 +12,22 @@ detalhe técnico, em `ferramentas/decoccao/CHANGELOG.md`.
 invalida o cache offline antigo e faz aparecer o aviso "Nova versão
 disponível" para quem já está com o site aberto.
 
+## [1.14.1] — 2026-10-01
+
+### Adicionado
+- **Carbonatação: ícones nos botões do envase.** Garrafa long neck,
+  garrafa de champanhe, PET, lata e barril, em traço na cor do texto.
+
+### Alterado
+- **Carbonatação: comparada com o Brewers Friend.**
+  - CO₂ já na cerveja igual nos 6 cenários; açúcar de milho dentro de 1%;
+    açúcar comum 4,5% abaixo (rendimento estequiométrico).
+  - Nos açúcares estimados (DME, mel, mascavo), a nota mostra o
+    rendimento que o Brewers Friend usa, porque as referências discordam.
+  - A Craft Beer & Brewing tem um erro de temperatura que subestima muito
+    o açúcar, e ficou fora como referência.
+  - Detalhes em `docs/specs/06-carbonatacao.md`.
+
 ## [1.14.0] — 2026-10-01
 
 ### Adicionado
