@@ -16,14 +16,14 @@ O site é feito de HTML, CSS e JavaScript puros, sem framework e sem etapa de bu
 
 De Henrique Boaventura e Fábio Koerich. A receita pede uma levedura que você não encontrou? Escolha a original e veja as equivalentes de outros fabricantes, secas ou líquidas.
 
-- Cerca de 490 leveduras de 20 fabricantes, incluindo as nacionais: Levteck, Smartyeast e Bio4.
+- Cerca de 500 leveduras de 21 fabricantes, incluindo as nacionais: Levteck, Smartyeast e Bio4.
 - Busca por nome, código, fabricante ou origem, em qualquer ordem ("imperial l17", "us05", "chico").
 - Alternativas agrupadas por proximidade: **Equivalente**, **Provável** e **Alternativa**. Cada uma mostra a fonte e o motivo.
 - **Parecem, mas não são equivalentes:** leveduras que costumam ser confundidas com a escolhida, num bloco fechado por padrão.
 - Filtros por forma (seca ou líquida), só nacionais, e para esconder os vínculos ainda não revisados.
 - Link compartilhável: `?levedura=us-05`.
 
-Quando as fontes discordam, a prioridade é esta: [Yeast Master](http://tinyurl.com/yeastmaster) (David M. Taylor), guia de substituição da AEB, guia da Imperial Yeast, tabela de substituição da Levteck e curadoria da Brassagem Forte. As regras completas estão em [`docs/specs/01-substituicao-leveduras.md`](docs/specs/01-substituicao-leveduras.md).
+Quando as fontes discordam, a prioridade é esta: [Yeast Master](http://tinyurl.com/yeastmaster) (David M. Taylor), guia de substituição da AEB, guia da Imperial Yeast, tabelas da Levteck (equivalência e substituição) e curadoria da Brassagem Forte. As regras completas estão em [`docs/specs/01-substituicao-leveduras.md`](docs/specs/01-substituicao-leveduras.md).
 
 ### 02 — Decocção
 
@@ -194,7 +194,7 @@ O JSON da ferramenta (`substituicao-leveduras/data/leveduras.json`) é **gerado*
 
 1. Edite as fontes em `dados/leveduras/`:
    - `aeb.json` e `imperial.json` são transcrições dos guias dos fabricantes;
-   - `nacionais.json` tem Levteck, Smartyeast e Bio4. O campo `curadoria` guarda os vínculos revisados, `inferida` os ainda não revisados e `fabricante` a tabela de substituição do próprio fabricante.
+   - `nacionais.json` tem Levteck, Smartyeast e Bio4. O campo `curadoria` guarda os vínculos revisados, `inferida` os ainda não revisados, `equivalente` e `alternativa` a tabela de equivalência do próprio fabricante e `fabricante` a tabela de substituição dele.
 2. Gere o JSON:
 
    ```sh
@@ -237,7 +237,7 @@ Na decocção, mudanças na calculadora também sobem a versão dela (`decoccao/
 
 ## Créditos
 
-- **Substituição de leveduras:** Henrique Boaventura e Fábio Koerich. Fontes dos dados: Yeast Master (David M. Taylor), AEB Brewing Yeast Substitution Guide, Imperial Yeast Strain Cross Reference Guide, tabela de substituição Levteck e curadoria da Brassagem Forte.
+- **Substituição de leveduras:** Henrique Boaventura e Fábio Koerich. Fontes dos dados: Yeast Master (David M. Taylor), AEB Brewing Yeast Substitution Guide, Imperial Yeast Strain Cross Reference Guide, tabelas da Levteck e curadoria da Brassagem Forte.
 - **Decocção:** Henrique Boaventura e Fábio Koerich. As fontes da literatura estão no README da ferramenta.
 - **Speise:** Henrique Boaventura.
 - **Parti-gyle:** Henrique Boaventura. Baseada em BYO ("Introduction to Parti-Gyle Brewing", "Parti-Gyle Brewing Techniques") e Craft Beer & Brewing ("Practical Parti-Gyle Brewing").

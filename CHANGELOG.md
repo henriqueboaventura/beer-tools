@@ -12,6 +12,26 @@ detalhe técnico, em `ferramentas/decoccao/CHANGELOG.md`.
 invalida o cache offline antigo e faz aparecer o aviso "Nova versão
 disponível" para quem já está com o site aberto.
 
+## [1.15.0] — 2026-10-02
+
+### Adicionado
+- **Leveduras: tabela de equivalência da Levteck.** O próprio fabricante
+  indica a equivalente de cada TeckBrew (entra como Equivalente) e, em
+  alguns casos, uma alternativa (entra como Alternativa).
+  - 10 TeckBrews novas da linha profissional (vendida só para
+    cervejarias, fora da loja online), com a etiqueta "Profissional":
+    TB04, TB15, TB18, TB28, TB29, TB48, TB50, TB53, TB55 e TB89.
+    Temperatura, atenuação, floculação e descrição vêm da página de
+    produção industrial da Levteck.
+  - GigaYeast GY054 (Vermont IPA), a equivalente da TB04.
+  - Seljeset Kveik equivalente à LalBrew Voss Kveik (mesma cepa).
+  - A tabela confirma 11 vínculos que a curadoria já tinha; eles sobem de
+    Provável para Equivalente.
+
+### Corrigido
+- O gerador dos dados de leveduras gravava na pasta antiga `ferramentas/`
+  desde a 1.12.0; agora grava em `substituicao-leveduras/data/`.
+
 ## [1.14.4] — 2026-10-02
 
 ### Alterado

@@ -167,7 +167,8 @@
     var naoConf = (nao[y.id] || []).map(function (i) { return byId[i]; }).filter(Boolean);
     var tags = (y.descontinuada ? '<span class="bf-tag">Descontinuada</span>' : "") +
       (y.blend ? '<span class="bf-tag">Blend</span>' : "") +
-      (y.foraCatalogo ? '<span class="bf-tag">Fora do catálogo</span>' : "");
+      (y.foraCatalogo ? '<span class="bf-tag">Fora do catálogo</span>' : "") +
+      (y.profissional ? '<span class="bf-tag">Profissional</span>' : "");
 
     baseEl.innerHTML =
       '<article class="yx-base" id="yx-base" data-fab="' + y.fab + '" aria-label="Levedura base">' +
@@ -291,6 +292,7 @@
       (y.descontinuada ? '<span class="bf-tag">Descontinuada</span>' : "") +
       (y.blend ? '<span class="bf-tag">Blend</span>' : "") +
       (y.foraCatalogo ? '<span class="bf-tag">Fora do catálogo</span>' : "") +
+      (y.profissional ? '<span class="bf-tag">Profissional</span>' : "") +
       '<span class="bf-tag' + (y.forma === "seca" ? " bf-tag--solid" : "") + '">' + forma(y) + "</span>";
     var prefixo = a.fontes.indexOf("inferida") > -1 ? "<b>Inferida pelo nome, ainda não revisada.</b> "
       : a.fontes.indexOf("curadoria") > -1 ? "<b>Curadoria BF:</b> " : "";

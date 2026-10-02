@@ -205,7 +205,7 @@ def pagina_levedura(B, y):
     specs = [s for s in specs if s[1]]
     tags = "".join(f'<span class="bf-tag">{t}</span>' for t, c in
                    (("Descontinuada", y.get("descontinuada")), ("Blend", y.get("blend")),
-                    ("Fora do catálogo", y.get("foraCatalogo"))) if c)
+                    ("Fora do catálogo", y.get("foraCatalogo")), ("Profissional", y.get("profissional"))) if c)
     nao = [B.por_id[i] for i in B.db["naoConfundir"].get(y["id"], []) if i in B.por_id]
 
     out.append(f'''
@@ -261,6 +261,7 @@ def pagina_levedura(B, y):
                     spec.append(f"<span><em>Origem</em>{e(a['origem'])}</span>")
                 atags = ('<span class="bf-tag">Nacional</span>' if B.db["fabricantes"][a["fab"]].get("nacional") else "") + \
                     ('<span class="bf-tag">Descontinuada</span>' if a.get("descontinuada") else "") + \
+                    ('<span class="bf-tag">Profissional</span>' if a.get("profissional") else "") + \
                     (f'<span class="bf-tag{" bf-tag--solid" if a.get("forma") == "seca" else ""}">{B.forma(a).capitalize()}</span>' if B.forma(a) else "")
                 out.append(f'''
         <article class="yx-alt yx-nivel-{n}{' yx-alt--off' if a.get('descontinuada') else ''}" data-fab="{a['fab']}">

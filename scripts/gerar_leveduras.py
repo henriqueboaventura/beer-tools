@@ -5,7 +5,8 @@ Fontes, em ordem de prioridade:
   1. Yeast Master (David M. Taylor) — examples/*.xlsx
   2. AEB Brewing Yeast Substitution Guide — dados/leveduras/aeb.json (transcrito)
   3. Imperial Yeast Strain Cross Reference — dados/leveduras/imperial.json (transcrito)
-  4. Curadoria Brassagem Forte (Levteck, Smartyeast; revisada) e inferências por nome (Bio4; não revisadas)
+  4. Tabela de equivalência da Levteck (o próprio fabricante), curadoria Brassagem Forte
+     (Levteck, Smartyeast; revisada) e inferências por nome (Bio4; não revisadas)
      — dados/leveduras/nacionais.json
 
 Só usa a biblioteca padrão do Python. Uso:
@@ -23,7 +24,7 @@ import zipfile
 
 RAIZ = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DADOS = os.path.join(RAIZ, "dados", "leveduras")
-SAIDA = os.path.join(RAIZ, "ferramentas", "substituicao-leveduras", "data", "leveduras.json")
+SAIDA = os.path.join(RAIZ, "substituicao-leveduras", "data", "leveduras.json")
 
 FABRICANTES = {
     "fermentis": ("Fermentis", "seca"),
@@ -45,6 +46,7 @@ FABRICANTES = {
     "muntons": ("Muntons", "seca"),
     "edme": ("EDME", "seca"),
     "whc": ("WHC Lab", "liquida"),
+    "gigayeast": ("GigaYeast", "liquida"),
     "outros": ("Outros", None),
 }
 NACIONAIS = {"levteck", "bio4", "smartyeast"}
@@ -409,12 +411,16 @@ def carregar_nacionais(base):
     for item in dados["leveduras"]:
         k = base.ref(item["ref"], "curadoria")
         y = base.lev[k]
-        for campo in ("codigo", "temp", "aten", "floc", "descr", "url", "origem", "cat", "blend", "foraCatalogo", "aviso"):
+        for campo in ("codigo", "temp", "aten", "floc", "descr", "url", "origem", "cat", "blend", "foraCatalogo", "profissional", "aviso"):
             if campo in item:
                 y["codigoExibido" if campo == "codigo" else campo] = item[campo]
+        fab = item["ref"].split(":")[0]
+        # tabela de equivalência do fabricante: "Equivalente" é declarada por ele
+        for r in item.get("equivalente", []):
+            base.evid(k, base.ref(r, fab), "eq", fab)
         # substitutas indicadas pelo próprio fabricante: estilo parecido, não necessariamente mesma cepa
-        for r in item.get("fabricante", []):
-            base.evid(k, base.ref(r, item["ref"].split(":")[0]), "alt", item["ref"].split(":")[0])
+        for r in item.get("fabricante", []) + item.get("alternativa", []):
+            base.evid(k, base.ref(r, fab), "alt", fab)
         for fonte in ("curadoria", "inferida"):
             for inf in item.get(fonte, []):
                 alvo = base.ref(inf["ref"], fonte)
@@ -541,7 +547,7 @@ def main():
         elif y["fab"] not in SEM_CODIGO and y["fab"] not in NACIONAIS:
             item["codigo"] = y["codigo"]
         for campo in ("origem", "temp", "aten", "atenYm", "floc", "descr", "notaYm", "url", "descontinuada", "blend", "notaBlend",
-                      "foraCatalogo", "aviso"):
+                      "foraCatalogo", "profissional", "aviso"):
             if y.get(campo):
                 item[campo] = y[campo]
         item["fontes"] = sorted(y["fontes"])
@@ -558,8 +564,8 @@ def main():
                          "url": "https://www.imperialyeast.com/", "descricao": "Tabela de referência cruzada da Imperial."},
             "curadoria": {"nome": "Curadoria Brassagem Forte", "autor": "Brassagem Forte",
                           "descricao": "Leveduras nacionais (Levteck, Smartyeast) associadas pela Brassagem Forte comparando fichas técnicas. Não é declaração do fabricante."},
-            "levteck": {"nome": "Tabela de substituição Levteck", "autor": "Levteck (fabricante)",
-                        "descricao": "Substitutas indicadas pelo próprio fabricante para cada TeckBrew. Indicam estilo parecido, não necessariamente a mesma cepa."},
+            "levteck": {"nome": "Tabelas da Levteck", "autor": "Levteck (fabricante)",
+                        "descricao": "Equivalentes e substitutas indicadas pelo próprio fabricante para cada TeckBrew. A equivalente é declarada pela Levteck; as substitutas indicam estilo parecido, não necessariamente a mesma cepa."},
             "inferida": {"nome": "Inferências não revisadas", "autor": "Brassagem Forte",
                          "descricao": "Vínculos deduzidos só pelo nome do produto (Bio4). Ainda não revisados — use com cautela."},
         },

@@ -109,10 +109,23 @@ describe("casos conferidos à mão contra as fontes", () => {
     assert.equal(rel("fermentis-w-34-70", "imperial-l13")[1], 1);
   });
 
-  test("Levteck TB10 -> Wyeast 1272: curadoria + tabela do fabricante, Provável", () => {
+  test("Levteck TB10 -> Wyeast 1272: equivalente pela tabela de equivalência do fabricante", () => {
     const r = rel("levteck-tb10", "wyeast-1272");
-    assert.equal(r[1], 2);
-    assert.deepEqual(r[2], ["curadoria", "levteck"]);
+    assert.equal(r[1], 3);
+    assert.deepEqual(r[2], ["levteck"]);
+  });
+
+  test("tabela de equivalência Levteck: Equivalente e Alternativa, com TeckBrews fora do catálogo", () => {
+    assert.equal(rel("levteck-tb29", "white-labs-wlp099")[1], 3);
+    assert.equal(rel("levteck-tb86", "imperial-l28")[1], 3);
+    assert.equal(rel("levteck-tb04", "gigayeast-gy054")[1], 3);
+    assert.equal(rel("levteck-tb59", "wyeast-3787")[1], 1);
+    assert.equal(rel("levteck-tb01", "lallemand-nottingham")[1], 1);
+    assert.equal(rel("levteck-seljeset", "lallemand-voss")[1], 3, "mesma cepa da LalBrew Voss");
+    assert.equal(rel("levteck-seljeset", "omega-oyl-061"), undefined, "Seljeset liga só à Lallemand");
+    const tb29 = porId.get("levteck-tb29");
+    assert.ok(tb29.profissional && !tb29.foraCatalogo);
+    assert.deepEqual([tb29.temp, tb29.aten], [[18, 20], [80, 100]], "specs da página de produção industrial");
   });
 
   test("Levteck TB10 -> US-05 só pela tabela do fabricante: Alternativa", () => {

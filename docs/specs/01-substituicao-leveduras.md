@@ -26,7 +26,7 @@ A receita pede uma levedura específica e ela não está disponível, está cara
 | 1 | **Yeast Master** (David M. Taylor), atualizada em 19/09/2026 | `examples/YEAST MASTER….xlsx` (local, fora do git) | Grupos de equivalência, "(NOT X)", incertezas (`?` ou célula amarela), descontinuadas (tachado), atenuação aprox. e notas |
 | 2 | **AEB Brewing Yeast Substitution Guide v.5** | `dados/leveduras/aeb.json` (transcrito) | Equivalentes (vermelho no PDF) e alternativas (preto), origem |
 | 3 | **Imperial Yeast Strain Cross Reference** | `dados/leveduras/imperial.json` (transcrito) | Equivalentes Wyeast/WLP/Omega e origem provável |
-| 4 | **Tabela de substituição Levteck** (do fabricante) | `dados/leveduras/nacionais.json` → `fabricante` | Substitutas por estilo para cada TeckBrew (entram como Alternativa; somam fonte quando coincidem com a curadoria). Inclui a TB07, fora do catálogo online |
+| 4 | **Tabelas da Levteck** (do fabricante) | `dados/leveduras/nacionais.json` → `equivalente`, `alternativa` e `fabricante` | Tabela de equivalência (02/10/2026): a coluna Equivalente entra como Equivalente e a Alternativa como Alternativa. Tabela de substituição (22/09/2026): substitutas por estilo, entram como Alternativa e somam fonte quando coincidem com a curadoria. Inclui a TB07, fora do catálogo online, e a linha profissional (TB04, TB15, TB18, TB28, TB29, TB48, TB50, TB53, TB55, TB89: no catálogo, mas vendida só para cervejarias, com a etiqueta "Profissional"; specs e descrição da página de produção industrial da Levteck). A Seljeset Kveik está como Alternativa na tabela, mas é a mesma cepa da LalBrew Voss Kveik (confirmado pela Brassagem Forte) e entra como Equivalente. A "Vermont IPA" da TB04 é a GigaYeast GY054, que só aparece por essa ligação |
 | 5 | **Curadoria Brassagem Forte** | `dados/leveduras/nacionais.json` → `curadoria` | Levteck e Smartyeast associadas por comparação de fichas técnicas (revisado pela BF) |
 | 6 | **Inferências não revisadas** | `dados/leveduras/nacionais.json` → `inferida` | Bio4 associada só pelo nome do produto |
 
@@ -96,7 +96,7 @@ Os títulos seguem o padrão "SafAle US-05: substitutos e equivalentes | Brassag
 python3 scripts/gerar_leveduras.py
 ```
 
-O script lê a planilha (xlsx lido direto, com cores e tachado), os três JSONs de `dados/leveduras/` e gera `substituicao-leveduras/data/leveduras.json` (~490 leveduras, ~1100 relações, ~240 KB).
+O script lê a planilha (xlsx lido direto, com cores e tachado), os três JSONs de `dados/leveduras/` e gera `substituicao-leveduras/data/leveduras.json` (~500 leveduras, ~1150 relações, ~240 KB).
 
 Formato de referência nos JSONs: `"fabricante:CÓDIGO"` ou `"fabricante:CÓDIGO|Nome"`.
 

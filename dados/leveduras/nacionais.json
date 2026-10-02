@@ -1,9 +1,9 @@
 {
-  "_fonte": "Curadoria Brassagem Forte. 'curadoria' = vínculos revisados pela Brassagem Forte comparando fichas técnicas (Levteck, Smartyeast). 'inferida' = vínculos deduzidos só pelo nome/descrição, ainda não revisados (Bio4). Nenhum fabricante nacional declara equivalências oficialmente. Levteck: catálogo oficial (levteck.com.br, 22/09/2026). Bio4: site fora do ar em 22/09/2026; catálogo arquivado (Wayback Machine, 2024–2025). 'fabricante' = substitutas indicadas pelo próprio fabricante (tabela de substituição da Levteck, enviada pela Brassagem Forte em 22/09/2026); indica produto de estilo parecido, não necessariamente a mesma cepa.",
+  "_fonte": "Curadoria Brassagem Forte. 'curadoria' = vínculos revisados pela Brassagem Forte comparando fichas técnicas (Levteck, Smartyeast). 'inferida' = vínculos deduzidos só pelo nome/descrição, ainda não revisados (Bio4). Nenhum fabricante nacional declara equivalências oficialmente. Levteck: catálogo oficial (levteck.com.br, 22/09/2026). Bio4: site fora do ar em 22/09/2026; catálogo arquivado (Wayback Machine, 2024–2025). 'fabricante' = substitutas indicadas pelo próprio fabricante (tabela de substituição da Levteck, enviada pela Brassagem Forte em 22/09/2026); indica produto de estilo parecido, não necessariamente a mesma cepa. 'equivalente' e 'alternativa' = tabela de equivalência da Levteck (colunas Equivalente e Alternativa), enviada pela Brassagem Forte em 02/10/2026: a equivalente é declarada pelo próprio fabricante. A Seljeset Kveik aparece como Alternativa na tabela, mas é a mesma cepa da LalBrew Voss Kveik (confirmado pela Brassagem Forte em 02/10/2026), por isso está em 'equivalente'. Linha profissional (TB04, TB15, TB18, TB28, TB29, TB48, TB50, TB53, TB55, TB89): temperatura, atenuação, floculação e descrição da página de produção industrial da Levteck (levteck.com.br/producao-industrial, 02/10/2026).",
   "fabricantes": {
     "levteck": {
       "url": "https://levteck.com.br/",
-      "tabela": "Tabela de substituição da Levteck (material do fabricante)."
+      "tabela": "Tabelas de substituição (22/09/2026) e de equivalência (02/10/2026) da Levteck (material do fabricante)."
     },
     "bio4": {
       "url": "https://bio4.com.br/",
@@ -31,6 +31,12 @@
           "ref": "imperial:A01",
           "motivo": "Quase as mesmas specs."
         }
+      ],
+      "equivalente": [
+        "imperial:A01"
+      ],
+      "alternativa": [
+        "lallemand:NOTTINGHAM"
       ]
     },
     {
@@ -52,6 +58,9 @@
           "ref": "imperial:A38",
           "motivo": "Exatamente as mesmas specs."
         }
+      ],
+      "equivalente": [
+        "imperial:A38"
       ]
     },
     {
@@ -85,6 +94,9 @@
           "ref": "white-labs:WLP090",
           "motivo": "Exatamente as mesmas specs."
         }
+      ],
+      "equivalente": [
+        "white-labs:WLP090"
       ]
     },
     {
@@ -112,6 +124,9 @@
         "lallemand:BRY-97",
         "white-labs:WLP001",
         "wyeast:1272"
+      ],
+      "equivalente": [
+        "wyeast:1272"
       ]
     },
     {
@@ -138,6 +153,9 @@
         "fermentis:T-58",
         "lallemand:BELLE SAISON",
         "wyeast:3711"
+      ],
+      "equivalente": [
+        "wyeast:3711"
       ]
     },
     {
@@ -159,6 +177,9 @@
           "ref": "wyeast:1318",
           "motivo": "Exatamente as mesmas specs."
         }
+      ],
+      "equivalente": [
+        "wyeast:1318"
       ]
     },
     {
@@ -185,6 +206,9 @@
         "lallemand:NOTTINGHAM",
         "white-labs:WLP036",
         "wyeast:1007"
+      ],
+      "equivalente": [
+        "white-labs:WLP036"
       ]
     },
     {
@@ -212,6 +236,9 @@
         "lallemand:ABBAYE",
         "white-labs:WLP530",
         "wyeast:1762"
+      ],
+      "equivalente": [
+        "white-labs:WLP540"
       ]
     },
     {
@@ -227,7 +254,10 @@
       ],
       "floc": "média",
       "descr": "Isolada na região de Vleteren; ésteres de ameixa, damasco e frutas secas, fenólico leve.",
-      "url": "https://levteck.com.br/produto/trapista-vleteren-ale-teckbrew-59/"
+      "url": "https://levteck.com.br/produto/trapista-vleteren-ale-teckbrew-59/",
+      "alternativa": [
+        "wyeast:3787"
+      ]
     },
     {
       "ref": "levteck:TB68|Weizen Ale",
@@ -253,6 +283,9 @@
         "fermentis:WB-06",
         "lallemand:MUNICH CLASSIC",
         "white-labs:WLP300",
+        "wyeast:3068"
+      ],
+      "equivalente": [
         "wyeast:3068"
       ]
     },
@@ -281,6 +314,9 @@
         "lallemand:DIAMOND",
         "white-labs:WLP810",
         "wyeast:2112"
+      ],
+      "equivalente": [
+        "white-labs:WLP810"
       ]
     },
     {
@@ -307,6 +343,9 @@
         "fermentis:S-23",
         "white-labs:WLP800",
         "wyeast:2124"
+      ],
+      "equivalente": [
+        "wyeast:2124"
       ]
     },
     {
@@ -328,6 +367,209 @@
           "ref": "wyeast:2278",
           "motivo": "Exatamente as mesmas specs."
         }
+      ],
+      "equivalente": [
+        "imperial:L28"
+      ]
+    },
+    {
+      "ref": "levteck:TB04|Double IPA Ale",
+      "codigo": "TeckBrew 04",
+      "temp": [
+        16,
+        24
+      ],
+      "aten": [
+        76,
+        82
+      ],
+      "floc": "baixa–média",
+      "descr": "Excelente levedura para cervejas com alta carga de lúpulos. Produz cerveja com corpo mais elevado e ésteres frutados medianos que combinam com lúpulos aromáticos.",
+      "url": "https://levteck.com.br/leveduras/double-ipa-teckbrew-04/",
+      "profissional": true,
+      "aviso": "Linha profissional da Levteck: está no catálogo, mas é vendida só para cervejarias, não na loja online.",
+      "equivalente": [
+        "gigayeast:GY054|Vermont IPA"
+      ]
+    },
+    {
+      "ref": "levteck:TB15|Classic Saison",
+      "codigo": "TeckBrew 15",
+      "temp": [
+        20,
+        30
+      ],
+      "aten": [
+        78,
+        85
+      ],
+      "floc": "média",
+      "descr": "Levedura clássica para a produção de cervejas Saison. Produz tons terrosos, de pimenta e notas de especiarias. Final levemente doce. Pode parar a fermentação e retomar a atividade após 10 dias. Baixa atenuação em cervejas high gravity. Levedura isolada na região da Wallonia. Para melhores resultados, oxigenar muito bem o mosto e fermentar em temperaturas mais altas.",
+      "url": "https://levteck.com.br/leveduras/classic-saison-teckbrew-15/",
+      "profissional": true,
+      "aviso": "Linha profissional da Levteck: está no catálogo, mas é vendida só para cervejarias, não na loja online.",
+      "equivalente": [
+        "white-labs:WLP565"
+      ]
+    },
+    {
+      "ref": "levteck:TB18|Irish Ale",
+      "codigo": "TeckBrew 18",
+      "temp": [
+        16,
+        22
+      ],
+      "aten": [
+        71,
+        75
+      ],
+      "floc": "média",
+      "descr": "Esta levedura versátil fermenta extremamente bem mostos escuros. É uma boa escolha para a maioria das cervejas de alta densidade. Cervejas fermentadas a baixas temperaturas possuem um perfil seco com suaves notas frutadas. Sabores de frutas e ésteres aumentam quando utilizadas temperaturas de fermentação acima de 18°C.",
+      "url": "https://levteck.com.br/leveduras/irish-ale-teckbrew-18/",
+      "profissional": true,
+      "aviso": "Linha profissional da Levteck: está no catálogo, mas é vendida só para cervejarias, não na loja online.",
+      "equivalente": [
+        "wyeast:1084"
+      ]
+    },
+    {
+      "ref": "levteck:TB28|Strong Scottish Ale",
+      "codigo": "TeckBrew 28",
+      "temp": [
+        18,
+        21
+      ],
+      "aten": [
+        70,
+        75
+      ],
+      "floc": "média",
+      "descr": "Levedura específica para cervejas fortes e maltadas tradicionais da Escócia. Pode ser utilizada como levedura padrão para diversos estilos, pois fermenta limpo e neutro. Temperaturas de fermentação mais altas irão aumentar o perfil de ésteres na cerveja.",
+      "url": "https://levteck.com.br/leveduras/strong-scottish-ale-teckbrew-28/",
+      "profissional": true,
+      "aviso": "Linha profissional da Levteck: está no catálogo, mas é vendida só para cervejarias, não na loja online.",
+      "equivalente": [
+        "white-labs:WLP028"
+      ]
+    },
+    {
+      "ref": "levteck:TB29|Super High Gravity",
+      "codigo": "TeckBrew 29",
+      "temp": [
+        18,
+        20
+      ],
+      "aten": [
+        80,
+        100
+      ],
+      "floc": "média",
+      "descr": "Original da Inglaterra, esta cepa de levedura produz esteres que aumentam de acordo com o aumento da densidade inicial. Notas de malte dominam em cervejas com baixa densidade inicial. Pode fermentar até 25% de álcool.",
+      "url": "https://levteck.com.br/leveduras/super-high-gravity/",
+      "profissional": true,
+      "aviso": "Linha profissional da Levteck: está no catálogo, mas é vendida só para cervejarias, não na loja online.",
+      "equivalente": [
+        "white-labs:WLP099"
+      ]
+    },
+    {
+      "ref": "levteck:TB48|Belgian Strong II",
+      "codigo": "TeckBrew 48",
+      "temp": [
+        18,
+        26
+      ],
+      "aten": [
+        74,
+        78
+      ],
+      "floc": "baixa",
+      "descr": "Produz um perfil de ésteres complexos bem balanceado com notas sutis de fenóis. Aromas e sabores de malte irão permanecer mesmo com final bem atenuado e seco. Pode não terminar a atenuação, e aumentar a taxa de oxigenação favorece que esta cepa complete a atenuação da cerveja.",
+      "url": "https://levteck.com.br/leveduras/belgian-strong-ii/",
+      "profissional": true,
+      "aviso": "Linha profissional da Levteck: está no catálogo, mas é vendida só para cervejarias, não na loja online.",
+      "equivalente": [
+        "wyeast:1388"
+      ]
+    },
+    {
+      "ref": "levteck:TB50|Super Trapista",
+      "codigo": "TeckBrew 50",
+      "temp": [
+        18,
+        22
+      ],
+      "aten": [
+        75,
+        80
+      ],
+      "floc": "baixa–média",
+      "descr": "Levedura tradicionalmente utilizada por monges Belgas para produção de cervejas, produz notáveis ésteres frutados com características próximas a ameixas. Excelente escolha para cervejas de alta densidade, Belgian ales, Dubbel e Tripel. Baixas temperaturas podem resultar em cervejas menos frutadas e com características terrosas.",
+      "url": "https://levteck.com.br/leveduras/super-trapista-teckbrew-50/",
+      "profissional": true,
+      "aviso": "Linha profissional da Levteck: está no catálogo, mas é vendida só para cervejarias, não na loja online.",
+      "equivalente": [
+        "white-labs:WLP500"
+      ]
+    },
+    {
+      "ref": "levteck:TB53|Abbey Ale II",
+      "codigo": "TeckBrew 53",
+      "temp": [
+        19,
+        22
+      ],
+      "aten": [
+        70,
+        85
+      ],
+      "floc": "média–alta",
+      "descr": "Baixo frutado com alta tolerância ao etanol. Uma excelente escolha para cerveja de alta densidade.",
+      "url": "https://levteck.com.br/leveduras/abbey-ale-ii-teckbrew-53/",
+      "profissional": true,
+      "aviso": "Linha profissional da Levteck: está no catálogo, mas é vendida só para cervejarias, não na loja online.",
+      "equivalente": [
+        "white-labs:WLP530"
+      ]
+    },
+    {
+      "ref": "levteck:TB55|Belgian Pale Ale",
+      "codigo": "TeckBrew 55",
+      "temp": [
+        18,
+        25
+      ],
+      "aten": [
+        72,
+        76
+      ],
+      "floc": "alta",
+      "descr": "Isolada da região de Ardennes na Bélgica, é a levedura mais versátil para a produção de estilos clássicos Belgas. Esta levedura produz um delicado balanço entre ésteres frutados e sutil condimento, sem domínio de nenhum. Excelente floculação que produz cervejas brilhantes.",
+      "url": "https://levteck.com.br/leveduras/belgian-pale-ale/",
+      "profissional": true,
+      "aviso": "Linha profissional da Levteck: está no catálogo, mas é vendida só para cervejarias, não na loja online.",
+      "equivalente": [
+        "wyeast:3522"
+      ]
+    },
+    {
+      "ref": "levteck:TB89|Mariachi Lager",
+      "codigo": "TeckBrew 89",
+      "temp": [
+        10,
+        13
+      ],
+      "aten": [
+        70,
+        78
+      ],
+      "floc": "média",
+      "descr": "Esta levedura produz cervejas lagers extremamente limpas e refrescantes. Excelente para estilos “light-lagers” e cervejas lagers escuras.",
+      "url": "https://levteck.com.br/leveduras/mariachi-lager-teckbrew-89/",
+      "profissional": true,
+      "aviso": "Linha profissional da Levteck: está no catálogo, mas é vendida só para cervejarias, não na loja online.",
+      "equivalente": [
+        "white-labs:WLP940"
       ]
     },
     {
@@ -382,7 +624,10 @@
       "floc": "alta",
       "descr": "Kveik de Grodås (Noruega) com várias cepas; frutado cítrico, floculação muito alta.",
       "url": "https://levteck.com.br/produto/seljeset-kveik/",
-      "cat": "kveik"
+      "cat": "kveik",
+      "equivalente": [
+        "lallemand:VOSS"
+      ]
     },
     {
       "ref": "bio4:SY025|American Ale",
