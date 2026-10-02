@@ -19,6 +19,9 @@
  *   açúcar para chegar no mesmo alvo dissolvido. Em garrafa e lata é desprezível.
  * - Pressão na temperatura de armazenamento: o CO₂ total se redistribui entre a
  *   cerveja e o espaço vazio, mais o ar preso na embalagem.
+ * - Risco: a pressão no armazenamento contra a pressão que os limites da
+ *   embalagem (em volumes) dariam nas mesmas condições. Conta o CO₂ que a
+ *   embalagem realmente tem, mesmo quando a cerveja já passou do alvo.
  * - Carbonatação natural (fechar antes do fim): cada ponto de densidade
  *   aparente fermentado gera 0,989 g/L de CO₂.
  */
@@ -30,6 +33,8 @@
   var PSI_POR_BAR = 14.5037738;
   var R = 8.314, M_CO2 = 44.01;
   var C_OFF = 0.003342;
+  // temperatura fixa da conferência de segurança: um armário no verão
+  var TEMP_SEGURANCA_C = 30;
   // CO₂ por ponto de densidade aparente fermentado (Mr Malty: ABV por ponto → etanol → CO₂)
   var CO2_POR_PONTO_GL = (0.13125 / 100) * 1000 * 0.789 * (44.01 / 46.07); // ≈ 0,989 g/L
 
@@ -41,16 +46,16 @@
    * "confirmado" = estequiométrico; "estimativa" = depende de quanto fermenta.
    */
   var ACUCARES = [
-    { id: "milho", nome: "Açúcar de milho (dextrose monoidratada)", rendimento: 0.444, confirmado: true,
-      nota: "O açúcar de priming mais comum. Cerca de um décimo do peso é água de cristalização, por isso rende menos que o açúcar comum." },
     { id: "sacarose", nome: "Açúcar refinado ou cristal (sacarose)", rendimento: 0.514, confirmado: true,
       nota: "O açúcar comum. É o que mais rende CO₂ por grama." },
+    { id: "milho", nome: "Açúcar de milho (dextrose monoidratada)", rendimento: 0.444, confirmado: true,
+      nota: "O açúcar de priming mais comum. Cerca de um décimo do peso é água de cristalização, por isso rende menos que o açúcar comum." },
     { id: "dextrose", nome: "Dextrose anidra", rendimento: 0.489, confirmado: true,
       nota: "Dextrose sem a água de cristalização: rende entre o açúcar de milho e o comum." },
     { id: "mascavo", nome: "Açúcar mascavo", rendimento: 0.500, confirmado: true,
       nota: "Quase sacarose, com melaço: deixa uma nota leve de caramelo. O Brewers Friend usa 0,437, o que pede cerca de 14% mais açúcar: o mascavo brasileiro, menos refinado, tende a ficar mais perto desse valor." },
     { id: "dme", nome: "Extrato de malte seco (DME claro)", rendimento: 0.40, confirmado: false,
-      nota: "Estimativa para um DME claro que fermenta cerca de 80%. Carbonata um pouco mais devagar e dá mais corpo. O Brewers Friend usa 0,334, o que pede cerca de 20% mais DME. Ajuste se souber o do seu." },
+      nota: "Estimativa para um DME claro que fermenta cerca de 80%. Carbonata um pouco mais devagar e dá mais corpo. O Brewers Friend usa 0,334, o que pede cerca de 20% mais DME." },
     { id: "mel", nome: "Mel", rendimento: 0.41, confirmado: false,
       nota: "Estimativa: cerca de 80% de açúcares fermentáveis. Varia de mel para mel. O Brewers Friend usa 0,364, o que pede cerca de 13% mais mel." },
     { id: "natural", nome: "Carbonatação natural (fechar antes do fim)", rendimento: null, confirmado: true,
@@ -58,7 +63,7 @@
   ];
 
   /*
-   * Envases. limite = volumes de CO₂ em que vale atenção e em que é perigoso.
+   * Envases. atencao/perigo = volumes de CO₂ em que vale atenção e em que é perigoso.
    * espacoVazio: só o barril considera o espaço vazio na conta.
    * porGarrafa: mostra a dose por embalagem.
    */
@@ -183,7 +188,14 @@
     r.semPrimingEquilibrio = volumesEquilibrio(0, residual, litros, vazio, tempC);
     r.pressao = pressaoArmazenamento(co2Real, residual, litros, vazio, tempC, tempArm);
     r.tempArmazenamento = tempArm;
-    r.risco = alvo >= envase.perigo ? "perigo" : alvo >= envase.atencao ? "atencao" : "ok";
+    // limites em bar: a pressão que os volumes-limite dariam nas mesmas condições
+    var limiteBar = function (vol) {
+      return pressaoArmazenamento(Math.max(co2Necessario(vol, residual, litros, vazio, tempC), 0), residual, litros, vazio, tempC, tempArm).total;
+    };
+    r.limiteAtencaoBar = limiteBar(envase.atencao);
+    r.limitePerigoBar = limiteBar(envase.perigo);
+    var bar = r.pressao.total, folga = 1e-9;
+    r.risco = bar >= r.limitePerigoBar - folga ? "perigo" : bar >= r.limiteAtencaoBar - folga ? "atencao" : "ok";
 
     if (acucar.id === "natural") {
       var dfin = num(p.densidadeFinal);
@@ -207,7 +219,7 @@
   }
 
   var api = {
-    G_POR_VOL_L: G_POR_VOL_L, PSI_POR_BAR: PSI_POR_BAR, CO2_POR_PONTO_GL: CO2_POR_PONTO_GL,
+    G_POR_VOL_L: G_POR_VOL_L, TEMP_SEGURANCA_C: TEMP_SEGURANCA_C, PSI_POR_BAR: PSI_POR_BAR, CO2_POR_PONTO_GL: CO2_POR_PONTO_GL,
     GARRAFAS_ML: GARRAFAS_ML, ACUCARES: ACUCARES, ENVASES: ENVASES, ESTILOS: ESTILOS,
     co2Residual: co2Residual, co2PelaPressao: co2PelaPressao, pressaoParaVolumes: pressaoParaVolumes,
     co2Necessario: co2Necessario, volumesEquilibrio: volumesEquilibrio, pressaoArmazenamento: pressaoArmazenamento,

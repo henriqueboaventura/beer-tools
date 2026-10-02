@@ -80,6 +80,8 @@
 @media (prefers-color-scheme: light) { :root:not([data-theme="dark"]) { --cb-ok: #15803d; --cb-atencao: #b45309; --cb-perigo: #b91c1c; } }
 
 .cb-pressao { margin-top: 24px; padding-top: 16px; border-top: 1px solid var(--bf-line-strong); }
+.cb-pressao__titulo { font-size: 18px; font-weight: 800; margin: 0; color: var(--bf-fg); }
+.cb-pressao__intro { margin: 4px 0 16px; }
 .cb-pressao__valor { font-weight: 900; font-stretch: 62%; font-size: 56px; line-height: 1; color: var(--bf-fg); margin: 0; }
 .cb-pressao__valor small { font: 500 16px/1 var(--bf-mono); }
 

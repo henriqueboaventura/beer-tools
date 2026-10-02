@@ -1,6 +1,6 @@
 # Spec 06 — Carbonatação
 
-Status: **implementada** (versão 1.14.1)
+Status: **implementada** (versão 1.14.2)
 Diretório: `/carbonatacao/` · Número: `06`
 Autor: Henrique Boaventura
 Atualizado: 2026-10-01
@@ -38,7 +38,7 @@ A calculadora do Mr Malty roda no navegador, e as fórmulas estão no código da
 | DME | −16,5% | 0,40 × 0,334 |
 
 - Nos açúcares de rendimento confirmado, a diferença é pequena e sempre para o lado de **menos açúcar** que o Brewers Friend, o lado seguro contra garrafa estourando.
-- Nos estimados (DME, mel, mascavo), as duas referências discordam entre 11% e 17%. A nota de cada um mostra o valor do Brewers Friend, e o rendimento é editável.
+- Nos estimados (DME, mel, mascavo), as duas referências discordam entre 11% e 17%. A nota de cada um mostra o valor do Brewers Friend.
 - Os números do Brewers Friend viraram testes.
 
 **Craft Beer & Brewing** ([Priming Sugar Calculator](https://www.beerandbrewing.com/tools/priming-sugar)). O código da página tem um erro: converte a temperatura para °C e aplica a fórmula do CO₂ residual feita para °F.
@@ -58,16 +58,17 @@ A calculadora do Mr Malty roda no navegador, e as fórmulas estão no código da
 
   | Fonte | Rendimento |
   |---|---|
+  | Sacarose (refinado ou cristal), o padrão | 0,514 |
   | Açúcar de milho (dextrose monoidratada) | 0,444 |
-  | Sacarose (refinado ou cristal) | 0,514 |
   | Dextrose anidra | 0,489 |
   | Mascavo | 0,500 |
   | DME claro (estimativa) | 0,40 |
   | Mel (estimativa) | 0,41 |
 
-  O rendimento é editável.
+  O rendimento aparece só como informação, não é editável.
 - **Carbonatação natural:** cada ponto de densidade aparente fermentado gera 0,989 g/L de CO₂. A ferramenta calcula a densidade em que fechar (densidade final + pontos) e a pressão da válvula de spunding que segura o alvo.
 - **Pressão na temperatura de armazenamento:** o CO₂ total se redistribui entre a cerveja e o espaço vazio, mais o ar preso, aquecido.
+- **Risco:** a pressão a 30 °C contra a pressão que os limites abaixo dariam nas mesmas condições (mesma cerveja, volume e espaço vazio). Assim conta o CO₂ que a embalagem realmente tem, inclusive cerveja que já passou do alvo sem açúcar. A tela mostra os limites em bar.
 - **Limites por embalagem** (volumes de CO₂, atenção / perigo):
 
   | Embalagem | Atenção | Perigo |
@@ -90,12 +91,12 @@ A calculadora do Mr Malty roda no navegador, e as fórmulas estão no código da
    - mostra o CO₂ que a cerveja já tem.
 3. **03 Carbonatação:** estilo (opcional, preenche o alvo) e alvo em volumes, com o equivalente em g/L.
 4. **04 Açúcar:**
-   - fonte e rendimento, com a etiqueta confirmado ou estimativa;
+   - fonte (padrão: açúcar refinado) e o rendimento como informação, marcado quando é estimativa;
    - na carbonatação natural, a densidade final.
 5. **05 Resultado:**
    - "No lote todo" ou "Por garrafa"; o barril só tem o lote todo;
    - resumo: já tem, acrescenta e alvo;
-   - pressão na temperatura de armazenamento, com o veredito pela embalagem;
+   - "Segurança da <embalagem do passo 01>": pressão dentro da embalagem num dia quente de verão (30 °C fixos, sem campo; independe da temperatura da cerveja do passo 02 e não muda o açúcar), com o veredito;
    - avisos: risco de estourar, espaço vazio do barril, levedura viva;
    - "Com outro açúcar": a mesma carbonatação em cada açúcar.
 

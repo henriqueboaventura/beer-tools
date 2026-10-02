@@ -12,6 +12,23 @@ detalhe técnico, em `ferramentas/decoccao/CHANGELOG.md`.
 invalida o cache offline antigo e faz aparecer o aviso "Nova versão
 disponível" para quem já está com o site aberto.
 
+## [1.14.2] — 2026-10-02
+
+### Alterado
+- **Carbonatação: açúcar refinado (sacarose) como padrão**, no lugar do
+  açúcar de milho.
+- **Carbonatação: rendimento só como informação.** Cada açúcar mostra
+  quanto CO₂ rende por grama (e se é estimativa), sem campo para editar.
+- **Carbonatação: segurança da embalagem separada da cerveja.**
+  - O bloco de pressão virou "Segurança da <embalagem>", com o nome da
+    embalagem escolhida no passo 01, e diz que não muda o açúcar.
+  - Sem campo de temperatura de armazenamento: a pressão é conferida
+    sempre num dia quente de verão (30 °C), o lado seguro. A temperatura
+    da cerveja do passo 02 serve só para o CO₂ que ela já tem.
+  - O veredito (ok, atenção, perigo) agora compara essa pressão com os
+    limites da embalagem convertidos para bar, mostrados na tela. Cerveja
+    que já passou do limite sem açúcar (spunding) também alerta.
+
 ## [1.14.1] — 2026-10-01
 
 ### Adicionado

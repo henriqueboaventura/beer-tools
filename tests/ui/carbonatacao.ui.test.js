@@ -10,7 +10,7 @@ const C = require("../../carbonatacao/calculo.js");
 
 const URL_FERRAMENTA = "carbonatacao/";
 const br = (n, casas) => n.toLocaleString("pt-BR", { minimumFractionDigits: casas, maximumFractionDigits: casas });
-const PADRAO = { envase: "vidro", litros: 20, tempC: 20, alvo: 2.4, acucar: "milho", inicio: "fermentada" };
+const PADRAO = { envase: "vidro", litros: 20, tempC: 20, alvo: 2.4, acucar: "sacarose", inicio: "fermentada", tempArmazenamento: C.TEMP_SEGURANCA_C };
 
 suiteUI("Carbonatação (interface)", (ctx) => {
   async function abrir() {
@@ -21,7 +21,7 @@ suiteUI("Carbonatação (interface)", (ctx) => {
   }
   const destaque = () => ctx.pag.avaliar("ui.texto('.cb-destaque__valor')");
 
-  test("abre com o exemplo: 20 L a 20 °C, 2,4 volumes, açúcar de milho no lote todo", async () => {
+  test("abre com o exemplo: 20 L a 20 °C, 2,4 volumes, açúcar refinado no lote todo", async () => {
     const { pag } = ctx;
     await abrir();
     const r = C.calcular(PADRAO);
@@ -29,6 +29,10 @@ suiteUI("Carbonatação (interface)", (ctx) => {
     assert.match(await pag.avaliar("ui.texto('#residualEco')"), /0,86 volumes/);
     assert.deepEqual(await pag.avaliar("ui.$$('#resumo dd').map(d => d.textContent)"), ["0,86 vol", "60 g de CO₂", "2,40 vol"]);
     assert.match(await pag.avaliar("ui.texto('#pressao')"), new RegExp("^" + br(r.pressao.total, 1) + " bar"));
+    assert.match(await pag.avaliar("ui.texto('#pressao')"), /dentro da garrafa de vidro a 30 °C/);
+    assert.equal(await pag.avaliar("ui.texto('#pressaoTitulo')"), "Segurança da garrafa de vidro");
+    assert.match(await pag.avaliar("ui.texto('#rendimentoEco')"), /Rende 0,514 g de CO₂ por grama\./);
+    assert.equal(await pag.avaliar("ui.$('#rendimento')"), null, "rendimento é só informação");
     assert.equal(await pag.avaliar("ui.$('#modo').hidden"), false);
     assert.deepEqual(pag.erros, []);
   });
@@ -51,9 +55,9 @@ suiteUI("Carbonatação (interface)", (ctx) => {
     assert.deepEqual(linhas, r.garrafas.map((x) => [x.ml + " mL", br(x.gramas, 2) + " g", String(x.quantas)]));
     assert.deepEqual(linhas.map((l) => parseInt(l[0], 10)), require("../../speise/calculo.js").GARRAFAS_ML);
     // trocar o açúcar mantém a visão por garrafa
-    await pag.avaliar("const s = ui.$('#acucar'); s.value = 'sacarose'; s.dispatchEvent(new Event('change', { bubbles: true }))");
+    await pag.avaliar("const s = ui.$('#acucar'); s.value = 'milho'; s.dispatchEvent(new Event('change', { bubbles: true }))");
     const g500 = await pag.avaliar("ui.$('.cb-tabela--garrafas tr[data-ml=\"500\"] td:nth-child(2)').textContent");
-    assert.equal(g500, br(C.calcular({ ...PADRAO, acucar: "sacarose" }).garrafas.find((x) => x.ml === 500).gramas, 2) + " g");
+    assert.equal(g500, br(C.calcular({ ...PADRAO, acucar: "milho" }).garrafas.find((x) => x.ml === 500).gramas, 2) + " g");
   });
 
   test("barril: sem dose por garrafa, com espaço vazio, e pede mais açúcar", async () => {
@@ -73,7 +77,6 @@ suiteUI("Carbonatação (interface)", (ctx) => {
     await abrir();
     await pag.avaliar("ui.digitar('#tempC', '4')");
     assert.match(await pag.avaliar("ui.texto('#residualEco')"), /1,48 volumes/);
-    assert.equal(await pag.avaliar("ui.$('#tempArmazenamento').value"), "4", "armazenamento acompanha até ser editado");
     await pag.avaliar("const s = ui.$('#estilo'); s.value = '3.6'; s.dispatchEvent(new Event('change', { bubbles: true }))");
     assert.equal(await pag.avaliar("ui.$('#alvo').value"), "3.6");
     assert.match(await pag.avaliar("ui.texto('#alvoEco')"), /7,1 g de CO₂ por litro/);
@@ -92,15 +95,19 @@ suiteUI("Carbonatação (interface)", (ctx) => {
     assert.ok(await pag.avaliar("!!ui.$('#pressao .cb-status--ok')"));
   });
 
-  test("armazenar mais quente sobe a pressão", async () => {
+  test("segurança: temperatura fixa de verão, sem campo, e não depende da cerveja", async () => {
     const { pag } = ctx;
     await abrir();
-    const antes = parseFloat((await pag.avaliar("ui.texto('.cb-pressao__valor')")).replace(",", "."));
-    await pag.avaliar("ui.digitar('#tempArmazenamento', '32')");
-    const depois = parseFloat((await pag.avaliar("ui.texto('.cb-pressao__valor')")).replace(",", "."));
-    assert.ok(depois > antes, `${antes} → ${depois}`);
-    await pag.avaliar("ui.digitar('#tempC', '18')");
-    assert.equal(await pag.avaliar("ui.$('#tempArmazenamento').value"), "32", "depois de editado, não acompanha mais");
+    assert.equal(C.TEMP_SEGURANCA_C, 30);
+    assert.equal(await pag.avaliar("ui.$('#tempArmazenamento')"), null, "sem campo de temperatura");
+    assert.match(await pag.avaliar("ui.texto('#pressaoBloco')"), /dia quente de verão \(30 °C\)/);
+    await pag.avaliar("ui.digitar('#tempC', '4')");
+    const r = C.calcular({ ...PADRAO, tempC: 4 });
+    assert.match(await pag.avaliar("ui.texto('#pressao')"), new RegExp("^" + br(r.pressao.total, 1) + " bar.*a 30 °C"));
+    assert.equal(await pag.avaliar("ui.texto('#limites')"),
+      "Limite da garrafa de vidro: atenção a partir de " + br(r.limiteAtencaoBar, 1) + " bar, perigo a partir de " + br(r.limitePerigoBar, 1) + " bar.");
+    await pag.avaliar("ui.clicar('[data-envase=\"lata\"]')");
+    assert.equal(await pag.avaliar("ui.texto('#pressaoTitulo')"), "Segurança da lata");
   });
 
   test("sob pressão (spunding): usa o manômetro e pede menos açúcar", async () => {
@@ -143,7 +150,7 @@ suiteUI("Carbonatação (interface)", (ctx) => {
     for (const [id, texto, atual] of linhas) {
       const o = r.outros.find((x) => x.id === id);
       assert.equal(texto, (o.gramas >= 100 ? br(o.gramas, 0) : br(o.gramas, 1)) + " g", id);
-      assert.equal(atual, id === "milho");
+      assert.equal(atual, id === "sacarose");
     }
   });
 

@@ -144,6 +144,20 @@ describe("casos especiais", () => {
     assert.equal(calc({ alvo: 3.6, envase: "vidro-reforcado" }).risco, "ok");
     assert.equal(calc({ alvo: 3.0, envase: "lata" }).risco, "atencao");
   });
+  test("risco pela pressão no armazenamento: limites em bar nas mesmas condições", () => {
+    const r = calc({ alvo: 3.0, tempArmazenamento: 30 });
+    assert.ok(r.limiteAtencaoBar < r.pressao.total && r.pressao.total < r.limitePerigoBar);
+    // no limite exato, já é atenção
+    const lim = calc({ alvo: C.ENVASES.vidro.atencao, tempArmazenamento: 30 });
+    perto(lim.pressao.total, lim.limiteAtencaoBar, 1e-9, "pressão no limite");
+    assert.equal(lim.risco, "atencao");
+  });
+  test("cerveja que já passou do limite sem açúcar: o risco conta o CO₂ real, não o alvo", () => {
+    // spunding a 3 bar e 4 °C: bem acima de 3,5 volumes, alvo baixo
+    const r = calc({ inicio: "pressao", pressaoBar: 3, tempC: 4, alvo: 2.4, tempArmazenamento: 30 });
+    assert.ok(r.semPriming && r.residual > 3.5);
+    assert.equal(r.risco, "perigo");
+  });
   test("armazenar mais quente aumenta a pressão", () => {
     assert.ok(calc({ tempArmazenamento: 30 }).pressao.total > calc({ tempArmazenamento: 20 }).pressao.total);
   });

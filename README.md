@@ -88,7 +88,7 @@ Quanto açúcar usar para carbonatar, de Henrique Boaventura. Unidades métricas
 - **Envase:** garrafa de vidro (comum ou reforçada), PET, lata ou barril. No barril, o espaço vazio entra na conta.
 - **A cerveja:** volume e a temperatura mais alta depois da fermentação, ou o manômetro, se ela já estava sob pressão.
 - **Alvo** em volumes de CO₂, com sugestões por estilo.
-- **Açúcar:** de milho, refinado/cristal, dextrose anidra, mascavo, DME ou mel, ou carbonatação natural (fechar antes do fim da fermentação).
+- **Açúcar:** refinado/cristal (padrão), de milho, dextrose anidra, mascavo, DME ou mel, ou carbonatação natural (fechar antes do fim da fermentação).
 - **Resultado:**
   - no lote todo ou por garrafa, com as mesmas garrafas da speise;
   - a pressão na temperatura de armazenamento, com o aviso de garrafa estourando.

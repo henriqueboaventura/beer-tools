@@ -8,8 +8,7 @@
     envase: "vidro",
     inicio: "fermentada",
     modo: "total",
-    acucar: "milho",
-    armazenamentoEditado: false
+    acucar: "sacarose"
   };
 
   function num(n, casas) { return n.toLocaleString("pt-BR", { minimumFractionDigits: casas, maximumFractionDigits: casas }); }
@@ -36,17 +35,22 @@
     $("rendimentoCampo").hidden = natural;
     $("naturalCampo").hidden = !natural;
     if (!natural) {
-      $("rendimento").value = a.rendimento.toFixed(3);
-      $("rendimentoTag").textContent = (a.confirmado ? "confirmado" : "estimativa") + " · g de CO₂ por g";
+      $("rendimentoEco").innerHTML = "Rende <b>" + num(a.rendimento, 3) + " g</b> de CO₂ por grama" + (a.confirmado ? "." : " (estimativa).");
       $("acucarNota").textContent = a.nota;
     } else {
       $("naturalNota").textContent = a.nota + " Use a densidade final de um teste de fermentação forçada ou a esperada da receita.";
     }
   }
 
+  // "da garrafa de vidro", "da lata", "do barril"
+  var NOME_ENVASE = {
+    "vidro": "da garrafa de vidro", "vidro-reforcado": "da garrafa reforçada", "pet": "da garrafa PET", "lata": "da lata", "barril": "do barril"
+  };
+
   function aplicarEnvase() {
     var e = C.ENVASES[state.envase];
     marcar("data-envase", state.envase);
+    $("pressaoTitulo").textContent = "Segurança " + NOME_ENVASE[state.envase];
     $("espacoVazioCampo").hidden = !e.espacoVazio;
     $("modo").hidden = !e.porGarrafa;
     if (!e.porGarrafa) state.modo = "total";
@@ -100,16 +104,18 @@
 
   function textoPressao(r) {
     var tipo = r.risco === "perigo" ? "perigo" : r.risco === "atencao" ? "atencao" : "ok";
-    var veredito = { ok: "Dentro do limite desta embalagem.", atencao: "Perto do limite desta embalagem: guarde em lugar fresco.", perigo: "Acima do limite seguro desta embalagem." }[tipo];
+    var de = NOME_ENVASE[state.envase];
+    var veredito = { ok: "Dentro do limite " + de + ".", atencao: "Perto do limite " + de + ": guarde em lugar fresco.", perigo: "Acima do limite seguro " + de + "." }[tipo];
     return '<p class="cb-pressao__valor">' + num(Math.max(r.pressao.total, 0), 1) + " <small>bar</small></p>" +
-      status(tipo, "Pressão na embalagem a " + num(r.tempArmazenamento, 0) + " °C (CO₂ e o ar que fica preso). " + veredito);
+      status(tipo, "Pressão dentro " + de + " a " + num(r.tempArmazenamento, 0) + " °C (CO₂ e o ar que fica preso). " + veredito) +
+      '<p class="cb-nota" id="limites">Limite ' + de + ": atenção a partir de " + num(r.limiteAtencaoBar, 1) + " bar, perigo a partir de " + num(r.limitePerigoBar, 1) + " bar.</p>";
   }
 
   function textoAvisos(r) {
     var e = r.envase, w = [];
     if (r.risco === "perigo") {
       w.push(status("perigo", {
-        "vidro": "<b>Risco de garrafa estourar.</b> " + num(r.alvo, 1) + " volumes passam do que a garrafa comum aguenta. Use garrafa reforçada (champanhe) ou baixe o alvo.",
+        "vidro": "<b>Risco de garrafa estourar.</b> Num dia quente, a pressão passa do que a garrafa comum aguenta. Use garrafa reforçada (champanhe) ou baixe o alvo.",
         "vidro-reforcado": "<b>Alto demais até para garrafa reforçada.</b> Baixe o alvo.",
         "pet": "<b>Muito alto para PET.</b> Ela deve inchar bastante; confira se não está dura como pedra no armazenamento.",
         "lata": "<b>Acima do que a costura da lata aguenta.</b> Baixe o alvo ou use garrafas próprias para isso.",
@@ -117,7 +123,7 @@
       }[state.envase]));
     } else if (r.risco === "atencao") {
       w.push(status("atencao", state.envase === "vidro"
-        ? "<b>Perto do limite da garrafa comum.</b> Garrafas boas guardadas em lugar fresco aguentam; se alguma for ficar no calor, use garrafa reforçada."
+        ? "<b>Perto do limite da garrafa comum.</b> Garrafas boas guardadas em lugar fresco aguentam; se alguma for ficar no calor, use garrafa reforçada ou baixe o alvo."
         : "<b>Perto do limite desta embalagem.</b> Guarde em lugar fresco e não suba mais o alvo."));
     }
     if (e.espacoVazio && r.espacoVazio > 0 && r.residual - r.semPrimingEquilibrio > 0.08) {
@@ -130,11 +136,10 @@
 
   /* ---------- ciclo ---------- */
   function calcular() {
-    if (!state.armazenamentoEditado) $("tempArmazenamento").value = $("tempC").value;
     var r = C.calcular({
       envase: state.envase, litros: campo("litros"), tempC: campo("tempC"), alvo: campo("alvo"),
-      inicio: state.inicio, pressaoBar: campo("pressaoBar"), acucar: state.acucar, rendimento: campo("rendimento"),
-      espacoVazio: campo("espacoVazio"), tempArmazenamento: campo("tempArmazenamento"), densidadeFinal: campo("densidadeFinal")
+      inicio: state.inicio, pressaoBar: campo("pressaoBar"), acucar: state.acucar,
+      espacoVazio: campo("espacoVazio"), tempArmazenamento: C.TEMP_SEGURANCA_C, densidadeFinal: campo("densidadeFinal")
     });
     var alvo = val("alvo");
     $("alvoEco").textContent = alvo > 0 ? "≈ " + num(alvo * C.G_POR_VOL_L, 1) + " g de CO₂ por litro." : "";
@@ -177,11 +182,11 @@
   });
   $("acucar").addEventListener("change", function () { state.acucar = $("acucar").value; aplicarAcucar(); calcular(); });
   $("alvo").addEventListener("input", function () { $("estilo").value = ""; calcular(); });
-  $("tempArmazenamento").addEventListener("input", function () { state.armazenamentoEditado = true; calcular(); });
-  ["litros", "tempC", "pressaoBar", "rendimento", "espacoVazio", "densidadeFinal"].forEach(function (id) {
+  ["litros", "tempC", "pressaoBar", "espacoVazio", "densidadeFinal"].forEach(function (id) {
     $(id).addEventListener("input", calcular);
   });
 
+  $("tempSeguranca").textContent = C.TEMP_SEGURANCA_C;
   BF.rodape("Ferramenta de Henrique Boaventura");
   aplicarEnvase();
   aplicarAcucar();
