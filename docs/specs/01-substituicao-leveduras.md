@@ -59,7 +59,7 @@ Vínculos da curadoria marcados como "Incerta" não se propagam para as equivale
 
 - **Nível da relação:** o medidor e o traço do título do grupo usam verde (Equivalente), âmbar (Provável) e cinza-azulado (Alternativa). O rótulo em texto aparece sempre junto.
 - **Laboratório:** cada fabricante tem uma cor, usada num ponto ao lado do nome e na barra lateral do card (e numa faixa no topo do cartão da base). Fabricantes sem cor definida ficam em cinza.
-- **Não confunda:** botões em vermelho.
+- **Não confunda:** bloco recolhível "Parecem, mas não são equivalentes (N)", fechado por padrão; dentro, botões em vermelho.
 - Paletas em `app.css`, com uma versão para cada tema.
 
 ## 6. Requisitos funcionais

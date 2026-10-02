@@ -95,6 +95,8 @@ suiteUI("Substituição de leveduras (interface)", (ctx) => {
     const { pag } = ctx;
     await abrir("?levedura=us-05");
     await pag.esperar("ui.$('#yx-base')");
+    assert.equal(await pag.avaliar("ui.$('details.yx-nao').open"), false, "'não confunda' começa fechado");
+    await pag.avaliar("ui.$('details.yx-nao').open = true");
     const nao = await pag.avaliar("ui.$('.yx-base__not button').dataset.id");
     await pag.avaliar("ui.clicar('.yx-base__not button')");
     assert.equal(await pag.avaliar("new URLSearchParams(location.search).get('levedura')"), nao);

@@ -12,6 +12,15 @@ detalhe técnico, em `ferramentas/decoccao/CHANGELOG.md`.
 invalida o cache offline antigo e faz aparecer o aviso "Nova versão
 disponível" para quem já está com o site aberto.
 
+## [1.14.4] — 2026-10-02
+
+### Alterado
+- **Leveduras: "Não confunda" fechado por padrão.** A lista de leveduras
+  que parecem equivalentes, mas não são, confundia ao aparecer aberta
+  junto da levedura escolhida. Virou um bloco recolhível, "Parecem, mas
+  não são equivalentes (N)", com uma frase explicando, na ferramenta e
+  nas páginas de cada levedura.
+
 ## [1.14.3] — 2026-10-02
 
 ### Alterado

@@ -230,8 +230,9 @@ def pagina_levedura(B, y):
             txt = f'<em lang="{lang}">{e(y[campo])}</em>' if lang else e(y[campo])
             out.append(f'\n        <p class="yx-base__info"><b>{rot}</b>{txt}</p>')
     if nao:
-        out.append('\n        <div class="yx-base__info"><b>Não confunda — não é equivalente a</b><div class="yx-base__not">' +
-                   "".join(f'<a href="../{n["id"]}/">{e(B.rotulo(n))}</a>' for n in nao) + "</div></div>")
+        out.append(f'\n        <details class="yx-base__info yx-nao"><summary>Parecem, mas não são equivalentes ({len(nao)})</summary>'
+                   '<p class="yx-nao__ajuda">Costumam ser confundidas com esta, mas as fontes dizem que não são substitutas.</p><div class="yx-base__not">' +
+                   "".join(f'<a href="../{n["id"]}/">{e(B.rotulo(n))}</a>' for n in nao) + "</div></details>")
     acoes = f'<a class="bf-btn yx-base__btn" href="../../?levedura={y["id"]}">Abrir na ferramenta</a>'
     if y.get("url"):
         acoes += f'<a class="bf-btn yx-base__btn" href="{e(y["url"])}" rel="noopener">Site do fabricante ↗</a>'

@@ -183,11 +183,12 @@
         (y.descr ? '<p class="yx-base__info"><b>Descrição do fabricante</b>' + esc(y.descr) + "</p>" : "") +
         (y.notaYm ? '<p class="yx-base__info"><b>Nota do Yeast Master</b><em lang="en">' + esc(y.notaYm) + "</em></p>" : "") +
         (y.notaBlend ? '<p class="yx-base__info"><b>Composição</b>' + esc(y.notaBlend) + "</p>" : "") +
-        (naoConf.length ? '<div class="yx-base__info"><b>Não confunda — não é equivalente a</b><div class="yx-base__not">' +
+        (naoConf.length ? '<details class="yx-base__info yx-nao"><summary>Parecem, mas não são equivalentes (' + naoConf.length + ")</summary>" +
+          '<p class="yx-nao__ajuda">Costumam ser confundidas com esta, mas as fontes dizem que não são substitutas.</p><div class="yx-base__not">' +
           naoConf.map(function (n) {
             return '<button type="button" data-id="' + n.id + '" aria-label="' + esc(fab(n) + " " + n.nome) + ', não equivalente. Ver esta levedura">' +
               esc(rotulo(n)) + "</button>";
-          }).join("") + "</div></div>" : "") +
+          }).join("") + "</div></details>" : "") +
         '<div class="yx-base__actions">' +
           '<button type="button" class="bf-btn" id="btn-link">Copiar link</button>' +
           (y.url ? '<a class="bf-btn" href="' + esc(y.url) + '" rel="noopener" style="display:inline-flex;align-items:center;text-decoration:none">Site do fabricante ↗</a>' : "") +

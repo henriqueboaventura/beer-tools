@@ -19,7 +19,7 @@ De Henrique Boaventura e Fábio Koerich. A receita pede uma levedura que você n
 - Cerca de 490 leveduras de 20 fabricantes, incluindo as nacionais: Levteck, Smartyeast e Bio4.
 - Busca por nome, código, fabricante ou origem, em qualquer ordem ("imperial l17", "us05", "chico").
 - Alternativas agrupadas por proximidade: **Equivalente**, **Provável** e **Alternativa**. Cada uma mostra a fonte e o motivo.
-- **Não confunda:** leveduras que parecem equivalentes, mas não são.
+- **Parecem, mas não são equivalentes:** leveduras que costumam ser confundidas com a escolhida, num bloco fechado por padrão.
 - Filtros por forma (seca ou líquida), só nacionais, e para esconder os vínculos ainda não revisados.
 - Link compartilhável: `?levedura=us-05`.
 
