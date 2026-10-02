@@ -32,23 +32,23 @@
     },
     {
       numero: "04",
+      slug: "carbonatacao",
+      titulo: "Carbonatação",
+      descricao: "Quanto açúcar usar para carbonatar na garrafa ou no barril: total do lote e dose por garrafa.",
+      status: "disponivel"
+    },
+    {
+      numero: "05",
       slug: "parti-gyle",
       titulo: "Parti-gyle",
       descricao: "Várias cervejas de uma mostura: divisão dos mostos, quanto malte e como misturar no dia.",
       status: "disponivel"
     },
     {
-      numero: "05",
+      numero: "06",
       slug: "taxa-de-inoculo",
       titulo: "Taxa de inóculo",
       descricao: "Quantas células de levedura a cerveja precisa e como propagar em starters, passo a passo.",
-      status: "disponivel"
-    },
-    {
-      numero: "06",
-      slug: "carbonatacao",
-      titulo: "Carbonatação",
-      descricao: "Quanto açúcar usar para carbonatar na garrafa ou no barril: total do lote e dose por garrafa.",
       status: "disponivel"
     }
   ];

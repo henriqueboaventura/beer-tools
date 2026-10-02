@@ -17,7 +17,7 @@
   <meta property="og:image:height" content="630">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="theme-color" content="#0b0b0b">
-  <link rel="manifest" href="../manifest.webmanifest?v=1.14.2">
+  <link rel="manifest" href="../manifest.webmanifest?v=1.14.3">
   <link rel="icon" href="../favicon.ico" sizes="32x32">
   <link rel="icon" href="../assets/img/favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="../assets/img/icon-180.png">
@@ -27,10 +27,10 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../assets/css/bf.css?v=1.14.2">
-  <link rel="stylesheet" href="app.css?v=1.14.2">
-  <script src="../assets/js/versao.js?v=1.14.2"></script>
-  <script src="../assets/js/shell.js?v=1.14.2"></script>
+  <link rel="stylesheet" href="../assets/css/bf.css?v=1.14.3">
+  <link rel="stylesheet" href="app.css?v=1.14.3">
+  <script src="../assets/js/versao.js?v=1.14.3"></script>
+  <script src="../assets/js/shell.js?v=1.14.3"></script>
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Calculadora de speise","url":"https://www.brassagemforte.com.br/ferramentas/speise/","applicationCategory":"UtilitiesApplication","operatingSystem":"Web","inLanguage":"pt-BR","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"BRL"},"author":[{"@type":"Person","name":"Henrique Boaventura"}],"publisher":{"@type":"Organization","name":"Brassagem Forte","url":"https://www.brassagemforte.com.br","logo":"https://www.brassagemforte.com.br/ferramentas/assets/img/icon-512.png"}}</script>
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Ferramentas","item":"https://www.brassagemforte.com.br/ferramentas/"},{"@type":"ListItem","position":2,"name":"Speise","item":"https://www.brassagemforte.com.br/ferramentas/speise/"}]}</script>
 </head>
@@ -46,7 +46,7 @@
         <summary>Como é calculado</summary>
         <div class="bf-how__body">
           <ol>
-            <li>O CO₂ que continua dissolvido na cerveja no envase é estimado pela temperatura (lei de Henry). A diferença até o alvo é o CO₂ que ainda falta produzir.</li>
+            <li>O CO₂ que continua dissolvido na cerveja é estimado pela temperatura mais alta que ela atingiu depois da fermentação (lei de Henry): resfriar depois não devolve o CO₂ que já escapou. A diferença até o alvo é o CO₂ que ainda falta produzir.</li>
             <li>A densidade original vira °Plato (extrato) e, multiplicada pela atenuação esperada, dá quanto açúcar fermentável tem cada litro de mosto reservado.</li>
             <li>A speise é quanto desse mosto gera o CO₂ que falta (cerca de 4 g de açúcar por litro para cada volume de CO₂). Como ela é parte do lote, o mosto principal a fermentar é <b>volume final − speise</b>.</li>
           </ol>
@@ -83,10 +83,11 @@
             <input type="number" id="alvo" inputmode="decimal" value="2.4" min="0" step="0.1">
           </div>
           <div class="sp-campo">
-            <label for="temperatura">Temp. no envase <span>°C</span></label>
+            <label for="temperatura">Temp. mais alta <span>°C</span></label>
             <input type="number" id="temperatura" inputmode="decimal" value="20" step="1">
           </div>
         </div>
+        <p class="sp-nota">A mais alta <b>depois que a fermentação acabou</b>, não a do envase. Se ela ficou a 20 °C e depois foi para a geladeira, use 20 °C. Serve para saber quanto CO₂ a cerveja já tem.</p>
       </section>
 
       <section class="bf-step" aria-labelledby="l-res">
@@ -119,7 +120,7 @@
 
   <footer data-bf-footer></footer>
 
-  <script src="calculo.js?v=1.14.2"></script>
-  <script src="app.js?v=1.14.2"></script>
+  <script src="calculo.js?v=1.14.3"></script>
+  <script src="app.js?v=1.14.3"></script>
 </body>
 </html>

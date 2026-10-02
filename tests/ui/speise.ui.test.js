@@ -28,6 +28,7 @@ suiteUI("Speise (interface)", (ctx) => {
     assert.equal(await pag.avaliar("ui.texto('#principal')"), br(r.principal, 2) + " L");
     assert.equal(await pag.avaliar("ui.$('#aviso').hidden"), true);
     assert.equal(await pag.avaliar("ui.$$('#garrafas tr').length"), S.GARRAFAS_ML.length);
+    assert.match(await pag.avaliar("ui.texto('label[for=\"temperatura\"]')"), /^Temp\. mais alta/, "a mais alta depois da fermentação, não a do envase");
     assert.deepEqual(pag.erros, []);
   });
 

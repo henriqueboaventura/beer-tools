@@ -61,8 +61,8 @@ suiteUI("Plataforma (interface)", (ctx) => {
     await pag.ir("");
     const links = await pag.avaliar("ui.$$('main li > a').map(a => a.getAttribute('href'))");
     assert.deepEqual([...new Set(links)], [
-      "substituicao-leveduras/", "decoccao/", "speise/", "parti-gyle/",
-      "taxa-de-inoculo/", "carbonatacao/",
+      "substituicao-leveduras/", "decoccao/", "speise/", "carbonatacao/",
+      "parti-gyle/", "taxa-de-inoculo/",
     ]);
     await pag.avaliar("setTimeout(() => ui.clicar('main a[href=\"parti-gyle/\"]')); true");
     await pag.esperar("location.pathname.endsWith('/parti-gyle/') && document.readyState === 'complete'");

@@ -3,7 +3,7 @@
  * Exportadas em window.BFSpeise (navegador) e module.exports (Node, testes).
  *
  * Matemática idêntica à calculadora original (henriqueboaventura/speise):
- * - CO₂ residual no envase pela temperatura (Henry, fórmula em °F);
+ * - CO₂ residual pela temperatura mais alta depois da fermentação (Henry, fórmula em °F);
  * - OG em °Plato (polinômio SG→°P) × atenuação = açúcar fermentável por litro;
  * - açúcar necessário ≈ 4 g/L por volume de CO₂ que falta;
  * - speise = açúcar necessário ÷ açúcar fermentável por litro de mosto;
@@ -29,7 +29,7 @@
     return sg;
   }
 
-  // volumes de CO₂ que continuam dissolvidos na cerveja nessa temperatura
+  // volumes de CO₂ que continuam dissolvidos na cerveja, pela temperatura mais alta depois da fermentação
   function co2Residual(tempC) {
     var f = tempC * 9 / 5 + 32;
     return Math.max(3.0378 - 0.050062 * f + 0.00026555 * f * f, 0);

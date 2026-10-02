@@ -45,12 +45,28 @@ Os detalhes técnicos (métodos, fontes, testes e histórico) estão em [`decocc
 Calculadora de carbonatação natural com o próprio mosto, de Henrique Boaventura.
 
 - Quanto mosto reservar como speise e quanto coletar e fermentar. A speise sai do próprio lote.
-- OG em SG ou °Plato, atenuação esperada, CO₂ alvo e temperatura no envase.
+- OG em SG ou °Plato, atenuação esperada, CO₂ alvo e a temperatura mais alta depois da fermentação.
 - Tabela avançada para dosar a speise garrafa por garrafa.
 
 O cálculo está em [`speise/calculo.js`](speise/calculo.js) e é explicado em [`docs/specs/03-speise.md`](docs/specs/03-speise.md).
 
-### 04 — Parti-gyle
+### 04 — Carbonatação
+
+`carbonatacao/`
+
+Quanto açúcar usar para carbonatar, de Henrique Boaventura. Unidades métricas e densidade em SG.
+
+- **Envase:** garrafa de vidro (comum ou reforçada), PET, lata ou barril. No barril, o espaço vazio entra na conta.
+- **A cerveja:** volume e a temperatura mais alta depois da fermentação, ou o manômetro, se ela já estava sob pressão.
+- **Alvo** em volumes de CO₂, com sugestões por estilo.
+- **Açúcar:** refinado/cristal (padrão), de milho, dextrose anidra, mascavo, DME ou mel, ou carbonatação natural (fechar antes do fim da fermentação).
+- **Resultado:**
+  - no lote todo ou por garrafa, com as mesmas garrafas da speise;
+  - a pressão na temperatura de armazenamento, com o aviso de garrafa estourando.
+
+Mesma física da calculadora de priming do Mr Malty, conferida contra o código dela: [`docs/specs/06-carbonatacao.md`](docs/specs/06-carbonatacao.md).
+
+### 05 — Parti-gyle
 
 `parti-gyle/`
 
@@ -62,7 +78,7 @@ Várias cervejas de uma mostura só, de Henrique Boaventura. É um fluxo guiado:
 
 As regras e fórmulas vêm da BYO e da Craft Beer & Brewing: [`docs/specs/04-parti-gyle.md`](docs/specs/04-parti-gyle.md).
 
-### 05 — Taxa de inóculo
+### 06 — Taxa de inóculo
 
 `taxa-de-inoculo/`
 
@@ -78,22 +94,6 @@ Modelos de crescimento:
 - **Sem agitação (Chris White):** a curva publicada, a mesma do Brewers Friend.
 
 Os dois modelos de placa agitadora discordam quando o starter tem muita ou pouca levedura por litro. A comparação com Mr Malty, Brewers Friend e Craft Beer & Brewing, e a validação passo a passo contra o Mr Malty, estão em [`docs/specs/05-taxa-de-inoculo.md`](docs/specs/05-taxa-de-inoculo.md).
-
-### 06 — Carbonatação
-
-`carbonatacao/`
-
-Quanto açúcar usar para carbonatar, de Henrique Boaventura. Unidades métricas e densidade em SG.
-
-- **Envase:** garrafa de vidro (comum ou reforçada), PET, lata ou barril. No barril, o espaço vazio entra na conta.
-- **A cerveja:** volume e a temperatura mais alta depois da fermentação, ou o manômetro, se ela já estava sob pressão.
-- **Alvo** em volumes de CO₂, com sugestões por estilo.
-- **Açúcar:** refinado/cristal (padrão), de milho, dextrose anidra, mascavo, DME ou mel, ou carbonatação natural (fechar antes do fim da fermentação).
-- **Resultado:**
-  - no lote todo ou por garrafa, com as mesmas garrafas da speise;
-  - a pressão na temperatura de armazenamento, com o aviso de garrafa estourando.
-
-Mesma física da calculadora de priming do Mr Malty, conferida contra o código dela: [`docs/specs/06-carbonatacao.md`](docs/specs/06-carbonatacao.md).
 
 ## Rodar localmente
 

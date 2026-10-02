@@ -40,6 +40,8 @@
 .sp-unidade { grid-auto-columns: 52px; }
 .sp-unidade .bf-chip { min-height: 36px; padding: 0 10px; }
 
+.sp-nota { font-size: 13px; color: var(--bf-mute); margin: -8px 0 0; }
+.sp-nota b { color: var(--bf-fg); }
 .sp-linha { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 
 /* Aviso (cor como informação: âmbar = atenção) */

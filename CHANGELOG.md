@@ -12,6 +12,21 @@ detalhe técnico, em `ferramentas/decoccao/CHANGELOG.md`.
 invalida o cache offline antigo e faz aparecer o aviso "Nova versão
 disponível" para quem já está com o site aberto.
 
+## [1.14.3] — 2026-10-02
+
+### Alterado
+- **Carbonatação logo depois da speise.** As duas carbonatam a cerveja,
+  então ficam lado a lado na página inicial e no menu: Carbonatação passa
+  a ser a 04, Parti-gyle a 05 e Taxa de inóculo a 06.
+
+### Corrigido
+- **Speise: temperatura mais alta depois da fermentação, não a do envase.**
+  O CO₂ que a cerveja guarda vem da temperatura mais quente depois da
+  fermentação; resfriar depois (cold crash) não devolve o CO₂ que escapou.
+  Com a temperatura do envase, quem fazia cold crash recebia speise de
+  menos. A conta é a mesma; mudam o rótulo do campo e a explicação, iguais
+  aos da carbonatação.
+
 ## [1.14.2] — 2026-10-02
 
 ### Alterado

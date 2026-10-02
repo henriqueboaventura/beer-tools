@@ -17,7 +17,7 @@ Carbonatar a cerveja sem açúcar de priming: reservar parte do próprio mosto (
 | Densidade original (OG) | SG ou °Plato (alternável) | 1.050 |
 | Atenuação aparente esperada | % (40–90) | 75 |
 | CO₂ alvo | vol | 2,4 |
-| Temperatura no envase | °C | 20 |
+| Temperatura mais alta depois da fermentação (não a do envase: resfriar não devolve o CO₂ que escapou) | °C | 20 |
 
 ## 3. Cálculo (`calculo.js`)
 
