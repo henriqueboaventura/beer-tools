@@ -99,8 +99,16 @@ class Navegador {
     const id = ++this.id;
     const msg = { id, method, params };
     if (sessionId) msg.sessionId = sessionId;
+    // sem resposta do Chrome em 30 s, falha em vez de travar a suíte (e o deploy) para sempre
     return new Promise((ok, falha) => {
-      this.pendentes.set(id, { ok, falha });
+      const relogio = setTimeout(() => {
+        this.pendentes.delete(id);
+        falha(new Error(`Chrome não respondeu a ${method} em 30 s`));
+      }, 30000);
+      this.pendentes.set(id, {
+        ok: (v) => { clearTimeout(relogio); ok(v); },
+        falha: (e) => { clearTimeout(relogio); falha(e); },
+      });
       this.proc.stdio[3].write(JSON.stringify(msg) + "\0");
     });
   }
