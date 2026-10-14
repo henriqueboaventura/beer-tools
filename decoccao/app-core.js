@@ -175,6 +175,40 @@ function nextAlarmState(alarmState, opts) {
   return { fire: true, alarmState: { index: activeIndex, count: current.count + 1, lastAtMin: nowMin } };
 }
 
+// Passo a passo em texto puro, para colar na receita. Usa o plano (não o
+// cronograma deslocado pelo cronômetro): é o programa, não o registro de
+// uma brassagem. Mesmas informações da escada: duração, mostura, panela
+// de fervura (só enquanto há decocção na panela) e o que puxar/devolver/
+// adicionar, com o horário em que cada etapa termina.
+function scheduleText(rows, { methodName, totalMin, mashVolumeL, fervuraTemp }) {
+  const linhas = annotateDisplayBoil(rows.map((r) => ({ ...r })), fervuraTemp);
+  const graus = (t) => `${fmtNum(t)} °C`;
+  const out = [`Programa de mostura — ${methodName}`];
+  const resumo = [`Tempo total: ${fmtHM(totalMin)}`];
+  if (mashVolumeL !== undefined && mashVolumeL !== null) resumo.push(`Volume da mostura: ${fmtNum(mashVolumeL)} L`);
+  out.push(resumo.join(" · "), "");
+  linhas.forEach((r, i) => {
+    const partes = [];
+    if (r.duration > 0) partes.push(`${fmtNum(r.duration)} min`);
+    if (r.mash !== null && r.mash !== undefined) partes.push(`mostura ${graus(r.mash)}`);
+    if (r.displayBoil !== null && r.displayBoil !== undefined) partes.push(`panela de fervura ${graus(r.displayBoil)}`);
+    if (r.decoctionVolumeL !== undefined) {
+      partes.push(`puxar ≈${fmtNum(r.decoctionVolumeL)} L (${fmtNum(r.decoctionFraction * 100, 0)}% do volume)`);
+    } else if (r.returnVolumeL !== undefined) {
+      partes.push(`devolver ≈${fmtNum(r.returnVolumeL)} L`);
+    } else if (r.pseudoParcelaW1 !== undefined) {
+      partes.push(`1ª parcela: ${fmtNum(r.pseudoParcelaG1)} kg de malte + ${fmtNum(r.pseudoParcelaW1)} L de água`);
+    } else if (r.pseudoWaterAddL !== undefined) {
+      partes.push(`adicionar ${fmtNum(r.pseudoWaterAddL)} L de água a ${graus(r.pseudoWaterAddTemp)}`);
+    } else if (r.pseudoMaltAddKg !== undefined) {
+      partes.push(`adicionar ${fmtNum(r.pseudoMaltAddKg)} kg de malte seco`);
+    }
+    const quando = r.totalMin > 1e-9 ? `até ${fmtHM(r.totalMin)}` : "início";
+    out.push(`${i + 1}. ${r.label} — ${partes.join(" · ")} (${quando})`);
+  });
+  return out.join("\n");
+}
+
 const DecoccaoCoreExports = {
   ALARM_MAX_REPEATS,
   ALARM_REPEAT_EVERY_MIN,
@@ -191,6 +225,7 @@ const DecoccaoCoreExports = {
   computeIsTimerFinished,
   computeEffectiveRows,
   nextAlarmState,
+  scheduleText,
 };
 if (typeof window !== "undefined") window.DecoccaoCore = DecoccaoCoreExports;
 if (typeof module !== "undefined" && module.exports) module.exports = DecoccaoCoreExports;

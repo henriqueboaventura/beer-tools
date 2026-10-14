@@ -12,6 +12,14 @@ detalhe técnico, em `ferramentas/decoccao/CHANGELOG.md`.
 invalida o cache offline antigo e faz aparecer o aviso "Nova versão
 disponível" para quem já está com o site aberto.
 
+## [1.16.0] — 2026-10-14
+
+### Adicionado
+- **Decocção: passo a passo em texto, para colar na receita.** No fim da
+  lista de etapas, um bloco "Passo a passo em texto" (fechado por padrão)
+  com o programa em texto puro e o botão "Copiar texto". Detalhes em
+  `decoccao/CHANGELOG.md` (calculadora 1.16.0).
+
 ## [1.15.0] — 2026-10-02
 
 ### Adicionado

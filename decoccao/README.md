@@ -25,6 +25,8 @@ de brassagem por evento.
   **Carga térmica** — índice comparativo próprio do app (fração puxada ×
   minutos de fervura plena, somado por puxada) que mostra o eixo em que
   os sete métodos de decocção real de fato diferem.
+- **Passo a passo em texto** no fim da escada, com botão "Copiar texto",
+  para colar o programa na receita.
 - Página separada **"Por que decocção?"** (`sobre.html`, link no rodapé)
   com origem, motivo e trade-offs do método, pra quem não conhece.
 - Cronômetro de brassagem por evento: iniciar/pausar/resetar e confirmar

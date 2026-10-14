@@ -24,6 +24,8 @@
     srAnnouncer: document.getElementById("srAnnouncer"),
     form: document.getElementById("paramsForm"),
     ladder: document.getElementById("ladder"),
+    recipeText: document.getElementById("recipeText"),
+    copyRecipeTextBtn: document.getElementById("copyRecipeTextBtn"),
     chart: document.getElementById("chart"),
     totalTime: document.getElementById("totalTime"),
     stepCount: document.getElementById("stepCount"),
@@ -765,6 +767,7 @@
         : rows.filter((r) => r.pullsDecoction).reduce((sum, r) => sum + (r.evaporatedL || 0), 0);
       const mashVolumeL = grossMashVolumeL - evaporatedL;
       el.mashVolume.textContent = `${fmtNum(mashVolumeL)} L`;
+      state.mashVolumeL = mashVolumeL;
       if (pseudoParcelaRow) {
         ensureHint(el.mashVolumeWrap,
           `Volume final estimado da mostura já combinada (depois da fervura da 1ª parcela): ${fmtNum(state.params.waterVolume)}L de água ` +
@@ -910,6 +913,12 @@
         : `${fmtHM(displayTotal)} <span>tempo total de processo</span>`;
       renderLadder(displayRows, activeIndex);
       renderChart(displayRows, state.params, nowMin);
+      // Texto para a receita: o PLANO (rows), não o cronograma deslocado
+      // pelo cronômetro.
+      el.recipeText.value = window.DecoccaoCore.scheduleText(rows, {
+        methodName: method.name, totalMin: state.total, mashVolumeL: state.mashVolumeL,
+        fervuraTemp: state.params.fervuraTemp,
+      });
     }
 
     renderTimerUI(displayRows, activeIndex, finished);
@@ -1544,6 +1553,13 @@
       el.presetSelect.appendChild(opt);
     }
   }
+
+  el.copyRecipeTextBtn.addEventListener("click", () => {
+    const texto = el.recipeText.value;
+    (navigator.clipboard ? navigator.clipboard.writeText(texto) : Promise.reject()).then(
+      () => toast("Passo a passo copiado."),
+      () => { el.recipeText.focus(); el.recipeText.select(); toast("Não deu para copiar sozinho: o texto ficou selecionado, copie com Ctrl+C."); });
+  });
 
   el.loadPresetBtn.addEventListener("click", () => {
     const name = el.presetSelect.value;

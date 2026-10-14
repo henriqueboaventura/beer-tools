@@ -477,6 +477,21 @@ body.is-brewing .method-source { display: none; }
   border-bottom: 1px solid var(--bf-line-strong);
 }
 .ladder { display: flex; flex-direction: column; }
+/* passo a passo em texto, para colar na receita */
+.recipe-text { border-top: 1px solid var(--bf-line-strong); padding: 0 16px; }
+.recipe-text summary {
+  list-style: none; cursor: pointer; min-height: 48px; display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  font: 500 12px/1.3 var(--bf-mono); letter-spacing: .12em; text-transform: uppercase; color: var(--bf-fg);
+}
+.recipe-text summary::-webkit-details-marker { display: none; }
+.recipe-text summary::after { content: "+"; font-size: 18px; }
+.recipe-text[open] summary::after { content: "−"; }
+.recipe-text textarea {
+  display: block; width: 100%; box-sizing: border-box; resize: vertical;
+  font: 400 13px/1.5 var(--bf-mono); color: var(--bf-fg); background: var(--bf-raised);
+  border: 1px solid var(--bf-line); padding: 10px; white-space: pre-wrap;
+}
+.recipe-text .btn { margin: 10px 0 16px; }
 .ladder-row {
   display: grid;
   grid-template-columns: 1.6rem 1fr auto auto auto;
@@ -625,7 +640,7 @@ dialog.modal::backdrop { background: rgba(0, 0, 0, .6); }
 /* Impressão: só o passo a passo interessa no papel (achado Y15). */
 @media print {
   .bf-header, .bf-menu, .bf-footer, .bf-lead, .dc-methods, .params-panel, .toolbar, .chart-panel,
-  .timer-panel, .summary-bar, .toast, dialog, .skip-link, .results-panel > .bf-step__label {
+  .timer-panel, .summary-bar, .toast, dialog, .skip-link, .results-panel > .bf-step__label, .recipe-text {
     display: none !important;
   }
   body, .layout { display: block; background: #fff; color: #000; }

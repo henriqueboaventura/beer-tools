@@ -6,6 +6,21 @@ Formato baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/),
 versionamento segue [SemVer](https://semver.org/lang/pt-BR/) (`MAJOR.MINOR.PATCH`).
 A versão atual fica em `version.js` e aparece no rodapé do app.
 
+## [1.16.0] — 2026-10-14
+
+### Adicionado
+- **Passo a passo em texto, para colar na receita.** No fim da escada, um
+  bloco recolhível (fechado por padrão) com o programa em texto puro e um
+  botão "Copiar texto": título com o método, tempo total e volume da
+  mostura, e uma linha numerada por etapa com duração, temperatura da
+  mostura, temperatura da panela de fervura (enquanto há decocção nela),
+  o que puxar, devolver ou adicionar, e o horário em que a etapa termina.
+  - Usa o plano, não o cronograma deslocado pelo cronômetro.
+  - Gerado por `scheduleText()` em `app-core.js`, com testes.
+  - Sem permissão de área de transferência, o texto fica selecionado para
+    copiar à mão.
+  - Fora da impressão, que já tem a escada.
+
 ## [1.15.0] — 2026-09-22
 
 ### Alterado

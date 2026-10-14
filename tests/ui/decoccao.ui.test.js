@@ -39,6 +39,26 @@ suiteUI("Decocção (interface)", (ctx) => {
     assert.deepEqual(ctx.pag.erros, []);
   });
 
+  test("passo a passo em texto: uma linha por etapa, segue o método e copia", async () => {
+    const { pag } = ctx;
+    await abrirLimpo();
+    assert.equal(await pag.avaliar("ui.$('#recipeTextBlock').open"), false, "começa fechado");
+    const texto = await pag.avaliar("ui.$('#recipeText').value");
+    const linhas = texto.split("\n");
+    assert.equal(linhas[0], "Programa de mostura — Simples");
+    assert.match(linhas[1], /^Tempo total: .* · Volume da mostura: .* L$/);
+    const etapas = linhas.filter((l) => /^\d+\. /.test(l));
+    assert.equal(etapas.length, await pag.avaliar("ui.$$('.ladder-row').length"));
+    assert.match(texto, /puxar ≈[\d,]+ L/);
+    // trocar o método troca o texto
+    await pag.avaliar("const s = ui.$('#methodSelect'); s.value = 'pseudo-decoccao'; s.dispatchEvent(new Event('change', { bubbles: true }))");
+    await pag.esperar("ui.$('#recipeText').value.startsWith('Programa de mostura — Pseudo-decocção')");
+    // copiar: com ou sem permissão de área de transferência, sem erro
+    await pag.avaliar("ui.$('#recipeTextBlock').open = true; ui.clicar('#copyRecipeTextBtn')");
+    await pag.esperar("ui.texto('#toastText').length > 0");
+    assert.deepEqual(pag.erros, []);
+  });
+
   test("trocar o método (seletor do celular) recalcula e fica salvo", async () => {
     const { pag } = ctx;
     await abrirLimpo();

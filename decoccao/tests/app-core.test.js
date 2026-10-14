@@ -318,3 +318,38 @@ describe('nextAlarmState — repetição e teto do alarme (achado N1, 4ª leitur
     assert.equal(result.fire, true, 'sem activeDuration no opts, a guarda nova não deveria interferir');
   });
 });
+
+describe('scheduleText — passo a passo em texto para a receita', () => {
+  const texto = (id) => {
+    const m = D.getMethod(id);
+    const p = D.defaultParams(m);
+    const rows = D.computeSchedule(m, p);
+    return { rows, t: C.scheduleText(rows, { methodName: m.name, totalMin: rows[rows.length - 1].totalMin, mashVolumeL: 23.4, fervuraTemp: p.fervuraTemp }) };
+  };
+  test('cabeçalho com método, tempo total e volume; uma linha numerada por etapa', () => {
+    const { rows, t } = texto('dupla-tradicional');
+    const linhas = t.split('\n');
+    assert.equal(linhas[0], 'Programa de mostura — Dupla Tradicional');
+    assert.equal(linhas[1], `Tempo total: ${C.fmtHM(rows[rows.length - 1].totalMin)} · Volume da mostura: 23,4 L`);
+    assert.equal(linhas[2], '');
+    assert.equal(linhas.length - 3, rows.length);
+    assert.equal(linhas[3], '1. Mash In — mostura 52 °C (início)');
+  });
+  test('puxada com volume e fração; panela de fervura só com decocção na panela', () => {
+    const { t } = texto('dupla-tradicional');
+    assert.match(t, /^3\. Transferência Mostura → Fervura — 5 min · mostura 52 °C · panela de fervura 52 °C · puxar ≈6,3 L \(27% do volume\) \(até 15min\)$/m);
+    assert.match(t, /^7\. Primeira decocção — 30 min · mostura 52 °C · panela de fervura 100 °C \(até 1h19min\)$/m);
+    assert.doesNotMatch(t.split('\n').pop(), /panela/, 'Mash Out sem panela');
+  });
+  test('devolução parcial (Dupla Aprimorada) e adições da pseudo-decocção', () => {
+    assert.match(texto('dupla-aprimorada').t, /1ª adição \(Fervura → Mostura\) — .*devolver ≈4,3 L/);
+    const pseudo = texto('pseudo-decoccao').t;
+    assert.match(pseudo, /1ª parcela: 2,5 kg de malte \+ 6,9 L de água/);
+    assert.match(pseudo, /adicionar 13,1 L de água a 25 °C/);
+    assert.match(pseudo, /adicionar 2,5 kg de malte seco/);
+  });
+  test('não altera as linhas recebidas (a escada usa as mesmas)', () => {
+    const { rows } = texto('dupla-tradicional');
+    assert.ok(rows.every((r) => !('displayBoil' in r)));
+  });
+});
