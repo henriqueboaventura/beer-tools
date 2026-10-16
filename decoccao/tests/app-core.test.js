@@ -326,27 +326,46 @@ describe('scheduleText — passo a passo em texto para a receita', () => {
     const rows = D.computeSchedule(m, p);
     return { rows, t: C.scheduleText(rows, { methodName: m.name, totalMin: rows[rows.length - 1].totalMin, mashVolumeL: 23.4, fervuraTemp: p.fervuraTemp }) };
   };
-  test('cabeçalho com método, tempo total e volume; uma linha numerada por etapa', () => {
+  const etapa = (t, n) => t.split('\n\n').find((b) => b.startsWith(`${n}. `));
+  test('cabeçalho com método, tempo total e volume; um bloco numerado por etapa', () => {
     const { rows, t } = texto('dupla-tradicional');
-    const linhas = t.split('\n');
-    assert.equal(linhas[0], 'Programa de mostura — Dupla Tradicional');
-    assert.equal(linhas[1], `Tempo total: ${C.fmtHM(rows[rows.length - 1].totalMin)} · Volume da mostura: 23,4 L`);
-    assert.equal(linhas[2], '');
-    assert.equal(linhas.length - 3, rows.length);
-    assert.equal(linhas[3], '1. Mash In — mostura 52 °C (início)');
+    const blocos = t.split('\n\n');
+    assert.equal(blocos[0], `Programa de mostura — Dupla Tradicional\nTempo total: ${C.fmtHM(rows[rows.length - 1].totalMin)} · Volume da mostura: 23,4 L`);
+    assert.equal(blocos.length - 1, rows.length);
+    assert.equal(etapa(t, 1), '1. Mash In\n   Tina de mostura: empastar a 52 °C');
   });
-  test('puxada com volume e fração; panela de fervura só com decocção na panela', () => {
+  test('por tina: puxar, ferver e devolver; o tempo fica com a tina da etapa', () => {
     const { t } = texto('dupla-tradicional');
-    assert.match(t, /^3\. Transferência Mostura → Fervura — 5 min · mostura 52 °C · panela de fervura 52 °C · puxar ≈6,3 L \(27% do volume\) \(até 15min\)$/m);
-    assert.match(t, /^7\. Primeira decocção — 30 min · mostura 52 °C · panela de fervura 100 °C \(até 1h19min\)$/m);
-    assert.doesNotMatch(t.split('\n').pop(), /panela/, 'Mash Out sem panela');
+    assert.equal(etapa(t, 2), '2. Rampa de protease\n   Tina de mostura: 52 °C · 10 min');
+    assert.equal(etapa(t, 3), '3. Transferência Mostura → Fervura\n   Tina de mostura: 52 °C\n   Tina de fervura: puxar 6,3 L da mostura (27% do volume) · 5 min');
+    assert.equal(etapa(t, 6), '6. Aquecimento da 1ª decocção (até a fervura)\n   Tina de mostura: 52 °C\n   Tina de fervura: 6,3 L · aquecer até 100 °C · 15 min');
+    assert.equal(etapa(t, 7), '7. Primeira decocção\n   Tina de mostura: 52 °C\n   Tina de fervura: 6,3 L · 100 °C · 30 min');
+    assert.equal(etapa(t, 8), '8. Transferência Fervura → Mostura\n   Tina de mostura: chega a 65 °C\n   Tina de fervura: devolver 6,3 L para a mostura · 5 min');
+    assert.equal(etapa(t, 16), '16. Mash Out\n   Tina de mostura: 75 °C · 10 min');
   });
-  test('devolução parcial (Dupla Aprimorada) e adições da pseudo-decocção', () => {
-    assert.match(texto('dupla-aprimorada').t, /1ª adição \(Fervura → Mostura\) — .*devolver ≈4,3 L/);
-    const pseudo = texto('pseudo-decoccao').t;
-    assert.match(pseudo, /1ª parcela: 2,5 kg de malte \+ 6,9 L de água/);
-    assert.match(pseudo, /adicionar 13,1 L de água a 25 °C/);
-    assert.match(pseudo, /adicionar 2,5 kg de malte seco/);
+  test('sem o horário de fim de cada etapa', () => {
+    assert.doesNotMatch(texto('dupla-tradicional').t, /\(até \d|\(início\)/);
+  });
+  test('devolução em partes: o que sobra espera fervendo e o tempo é da mostura', () => {
+    const { t } = texto('dupla-aprimorada');
+    assert.equal(etapa(t, 8), '8. 1ª adição (Fervura → Mostura)\n   Tina de mostura: chega a 52 °C\n   Tina de fervura: devolver 4,3 L para a mostura · 5 min');
+    assert.equal(etapa(t, 9), '9. Rampa de proteína\n   Tina de mostura: 52 °C · 18 min\n   Tina de fervura: 6,8 L · manter 100 °C');
+    assert.match(etapa(t, 10), /devolver 6,8 L para a mostura/);
+  });
+  test('pseudo-decocção: uma tina só, com as adições', () => {
+    const { t } = texto('pseudo-decoccao');
+    assert.doesNotMatch(t, /Tina de fervura/);
+    assert.equal(etapa(t, 1), '1. Empastar a 1ª parcela\n   Tina de mostura: empastar 2,5 kg de malte em 6,9 L de água a 25 °C');
+    assert.match(t, /adicionar 13,1 L de água a 25 °C · fica em 53,3 °C · 2 min/);
+    assert.match(t, /adicionar 2,5 kg de malte seco · fica em 52 °C · 2 min/);
+  });
+  test('todos os métodos geram texto sem valor faltando', () => {
+    for (const m of D.METHODS) {
+      const p = D.defaultParams(m);
+      const rows = D.computeSchedule(m, p);
+      const t = C.scheduleText(rows, { methodName: m.name, totalMin: 1, mashVolumeL: 1, fervuraTemp: p.fervuraTemp });
+      assert.doesNotMatch(t, /NaN|undefined|null/, m.id);
+    }
   });
   test('não altera as linhas recebidas (a escada usa as mesmas)', () => {
     const { rows } = texto('dupla-tradicional');

@@ -12,6 +12,13 @@ detalhe técnico, em `ferramentas/decoccao/CHANGELOG.md`.
 invalida o cache offline antigo e faz aparecer o aviso "Nova versão
 disponível" para quem já está com o site aberto.
 
+## [1.16.1] — 2026-10-16
+
+### Alterado
+- **Decocção: passo a passo em texto organizado por tina.** Para cada
+  etapa, o que fazer na tina de mostura (temperatura) e na de fervura
+  (volume, temperatura e tempo), sem o horário em que a etapa termina.
+
 ## [1.16.0] — 2026-10-14
 
 ### Adicionado

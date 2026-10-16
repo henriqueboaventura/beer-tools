@@ -6,6 +6,18 @@ Formato baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/),
 versionamento segue [SemVer](https://semver.org/lang/pt-BR/) (`MAJOR.MINOR.PATCH`).
 A versão atual fica em `version.js` e aparece no rodapé do app.
 
+## [1.16.1] — 2026-10-16
+
+### Alterado
+- **Passo a passo em texto organizado por tina.** Cada etapa diz o que
+  fazer em cada tina e por quanto tempo, sem o horário em que ela termina
+  (isso é do cronômetro, não da receita):
+  - Tina de mostura: temperatura ("empastar a", "aquecer até", "chega a",
+    "fica em" depois de uma adição) e o tempo, quando a etapa é dela.
+  - Tina de fervura: volume, temperatura e tempo; "puxar X L da mostura"
+    e "devolver X L para a mostura" nas transferências; "manter 100 °C"
+    quando a decocção só espera fervendo durante um descanso da mostura.
+
 ## [1.16.0] — 2026-10-14
 
 ### Adicionado

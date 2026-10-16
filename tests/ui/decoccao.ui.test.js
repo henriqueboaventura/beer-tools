@@ -49,7 +49,8 @@ suiteUI("Decocção (interface)", (ctx) => {
     assert.match(linhas[1], /^Tempo total: .* · Volume da mostura: .* L$/);
     const etapas = linhas.filter((l) => /^\d+\. /.test(l));
     assert.equal(etapas.length, await pag.avaliar("ui.$$('.ladder-row').length"));
-    assert.match(texto, /puxar ≈[\d,]+ L/);
+    assert.match(texto, /Tina de fervura: puxar [\d,]+ L da mostura/);
+    assert.doesNotMatch(texto, /\(até \d/, "sem o horário de fim de cada etapa");
     // trocar o método troca o texto
     await pag.avaliar("const s = ui.$('#methodSelect'); s.value = 'pseudo-decoccao'; s.dispatchEvent(new Event('change', { bubbles: true }))");
     await pag.esperar("ui.$('#recipeText').value.startsWith('Programa de mostura — Pseudo-decocção')");

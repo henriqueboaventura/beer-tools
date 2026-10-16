@@ -177,34 +177,55 @@ function nextAlarmState(alarmState, opts) {
 
 // Passo a passo em texto puro, para colar na receita. Usa o plano (não o
 // cronograma deslocado pelo cronômetro): é o programa, não o registro de
-// uma brassagem. Mesmas informações da escada: duração, mostura, panela
-// de fervura (só enquanto há decocção na panela) e o que puxar/devolver/
-// adicionar, com o horário em que cada etapa termina.
+// uma brassagem. Organizado por tina — o que fazer em cada uma e por
+// quanto tempo; o horário em que cada etapa termina fica de fora (é o que
+// o cronômetro resolve, não o que se anota na receita).
+//   Tina de mostura: temperatura (e o tempo, quando a etapa é dela)
+//   Tina de fervura: volume, temperatura e tempo, enquanto há decocção nela
 function scheduleText(rows, { methodName, totalMin, mashVolumeL, fervuraTemp }) {
   const linhas = annotateDisplayBoil(rows.map((r) => ({ ...r })), fervuraTemp);
   const graus = (t) => `${fmtNum(t)} °C`;
+  const litros = (l) => `${fmtNum(l)} L`;
+  const minutos = (r) => (r.duration > 1e-9 ? [`${fmtNum(r.duration)} min`] : []);
+  const aquece = (r) => /aquecimento/i.test(r.label);
   const out = [`Programa de mostura — ${methodName}`];
   const resumo = [`Tempo total: ${fmtHM(totalMin)}`];
-  if (mashVolumeL !== undefined && mashVolumeL !== null) resumo.push(`Volume da mostura: ${fmtNum(mashVolumeL)} L`);
-  out.push(resumo.join(" · "), "");
+  if (mashVolumeL !== undefined && mashVolumeL !== null) resumo.push(`Volume da mostura: ${litros(mashVolumeL)}`);
+  out.push(resumo.join(" · "));
+  let naFervura = 0; // litros de decocção na tina de fervura agora
   linhas.forEach((r, i) => {
-    const partes = [];
-    if (r.duration > 0) partes.push(`${fmtNum(r.duration)} min`);
-    if (r.mash !== null && r.mash !== undefined) partes.push(`mostura ${graus(r.mash)}`);
-    if (r.displayBoil !== null && r.displayBoil !== undefined) partes.push(`panela de fervura ${graus(r.displayBoil)}`);
+    const mostura = [];
+    const fervura = [];
+    const temFervura = r.displayBoil !== null && r.displayBoil !== undefined;
     if (r.decoctionVolumeL !== undefined) {
-      partes.push(`puxar ≈${fmtNum(r.decoctionVolumeL)} L (${fmtNum(r.decoctionFraction * 100, 0)}% do volume)`);
-    } else if (r.returnVolumeL !== undefined) {
-      partes.push(`devolver ≈${fmtNum(r.returnVolumeL)} L`);
-    } else if (r.pseudoParcelaW1 !== undefined) {
-      partes.push(`1ª parcela: ${fmtNum(r.pseudoParcelaG1)} kg de malte + ${fmtNum(r.pseudoParcelaW1)} L de água`);
-    } else if (r.pseudoWaterAddL !== undefined) {
-      partes.push(`adicionar ${fmtNum(r.pseudoWaterAddL)} L de água a ${graus(r.pseudoWaterAddTemp)}`);
-    } else if (r.pseudoMaltAddKg !== undefined) {
-      partes.push(`adicionar ${fmtNum(r.pseudoMaltAddKg)} kg de malte seco`);
+      naFervura = r.decoctionVolumeL;
+      fervura.push(`puxar ${litros(r.decoctionVolumeL)} da mostura (${fmtNum(r.decoctionFraction * 100, 0)}% do volume)`, ...minutos(r));
+    } else if (r.returnsDecoction) {
+      const volta = r.returnVolumeL !== undefined ? r.returnVolumeL : naFervura - (linhas[r.pullIndex].evaporatedL || 0);
+      fervura.push(`devolver ${litros(volta)} para a mostura`, ...minutos(r));
+      naFervura = r.isFinalReturn ? 0 : naFervura - volta;
+    } else if (temFervura && r.boil !== r.displayBoil) {
+      // decocção parada fervendo enquanto a mostura descansa (devolução em
+      // partes, Dupla Aprimorada): a etapa é da mostura
+      fervura.push(litros(naFervura), `manter ${graus(r.displayBoil)}`);
+    } else if (temFervura) {
+      fervura.push(litros(naFervura), (aquece(r) ? "aquecer até " : "") + graus(r.displayBoil), ...minutos(r));
     }
-    const quando = r.totalMin > 1e-9 ? `até ${fmtHM(r.totalMin)}` : "início";
-    out.push(`${i + 1}. ${r.label} — ${partes.join(" · ")} (${quando})`);
+    const tempoNaFervura = fervura.length && !/^manter/.test(fervura[fervura.length - 1]);
+    if (r.mash !== null && r.mash !== undefined) {
+      const t = graus(r.mash);
+      if (r.pseudoParcelaW1 !== undefined) mostura.push(`empastar ${fmtNum(r.pseudoParcelaG1)} kg de malte em ${litros(r.pseudoParcelaW1)} de água a ${t}`);
+      else if (r.pseudoWaterAddL !== undefined) mostura.push(`adicionar ${litros(r.pseudoWaterAddL)} de água a ${graus(r.pseudoWaterAddTemp)}`, `fica em ${t}`);
+      else if (r.pseudoMaltAddKg !== undefined) mostura.push(`adicionar ${fmtNum(r.pseudoMaltAddKg)} kg de malte seco`, `fica em ${t}`);
+      else if (i === 0) mostura.push(`empastar a ${t}`);
+      else if (r.returnsDecoction) mostura.push(`chega a ${t}`);
+      else mostura.push((aquece(r) && !fervura.length ? "aquecer até " : "") + t);
+      // o tempo fica com a tina onde a etapa acontece
+      if (!tempoNaFervura) mostura.push(...minutos(r));
+    }
+    out.push("", `${i + 1}. ${r.label}`);
+    if (mostura.length) out.push(`   Tina de mostura: ${mostura.join(" · ")}`);
+    if (fervura.length) out.push(`   Tina de fervura: ${fervura.join(" · ")}`);
   });
   return out.join("\n");
 }
