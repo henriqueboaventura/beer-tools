@@ -70,17 +70,13 @@ Mesma física da calculadora de priming do Mr Malty, conferida contra o código 
 
 `spunding/`
 
-Plano para fermentar sob pressão com válvula de spunding, de Henrique Boaventura. Bar, °C e densidade em SG.
+Em que densidade fechar a válvula de spunding para a fermentação chegar sozinha a uma pressão ou carbonatação, de Henrique Boaventura. Bar, °C e densidade em SG.
 
-- **Estilo:** 9 grupos (lager fermentada quente, ales limpas, lupuladas, maltadas, escuras, fortes, inglesas, belgas e de trigo), cada um com a pressão de cada fase e a carbonatação típica.
-- **Fermentador:** Fermzilla/PET (2,4 bar), barril corny (4 bar), inox ou outro, com a capacidade (o espaço vazio entra na conta) e a pressão máxima.
-- **Plano:**
-  - em que densidade fechar a válvula (pontos de densidade para encher a cerveja e o espaço vazio, com 1 ponto de folga);
-  - quanto a cerveja carbonata no quente e a pressão de CO₂ depois do cold crash;
-  - as fases, da inoculação à carbonatação, com o que esperar para passar à próxima;
-  - a segurança do fermentador, avisos, tabela de carbonatação e "meu fermentador agora" (temperatura + manômetro → volumes).
+- **Entradas:** pressão (bar) ou carbonatação (volumes), temperatura da fermentação, volume de cerveja, capacidade do fermentador (o espaço vazio entra na conta) e densidade final.
+- **Resultado:** a densidade em que fechar (pontos de densidade para encher a cerveja e o espaço vazio, com 1 ponto de folga, no mínimo 2) e os volumes de CO₂ que a cerveja fica.
+- A válvula fica aberta até fechar. A pressão depois do cold crash fica na calculadora de carbonatação.
 
-A física é a da carbonatação (usa o mesmo `carbonatacao/calculo.js`). Pressões por estilo da Bräu Supply e faixas de carbonatação da BYO: [`docs/specs/07-spunding.md`](docs/specs/07-spunding.md).
+A física é a da carbonatação (usa o mesmo `carbonatacao/calculo.js`): [`docs/specs/07-spunding.md`](docs/specs/07-spunding.md).
 
 ### 06 — Parti-gyle
 
@@ -147,7 +143,7 @@ Os testes usam só o runner nativo do Node (`node:test`). Eles cobrem:
 - **Speise** (`speise/tests/`): o cálculo, com valores conferidos à mão.
 - **Parti-gyle** (`parti-gyle/tests/`): os exemplos numéricos publicados nas fontes.
 - **Carbonatação** (`carbonatacao/tests/`): oito cenários conferidos contra o código da calculadora do Mr Malty, e a consistência com a speise.
-- **Spunding** (`spunding/tests/`): a mesma física da carbonatação, a tabela da Bräu Supply (igual no frio, até 5% de diferença no quente), os pontos para fechar a válvula, a segurança e os avisos.
+- **Spunding** (`spunding/tests/`): a mesma física da carbonatação, os pontos para fechar a válvula (com e sem espaço vazio, folga e mínimo), bar × volumes e entradas inválidas.
 - **Taxa de inóculo** (`taxa-de-inoculo/tests/`): o exemplo do Brewers Friend (viabilidade, crescimento sem agitação e DME), o modelo da Braukaiser, as 166 simulações e os passos coletados da calculadora do Mr Malty, e invariantes da sugestão de passos.
 
 - **Interface** (`tests/ui/`): abre o site num Chrome sem janela (headless), em tela de celular, e usa cada ferramenta como uma pessoa usaria: clica, digita e confere o que aparece. Também confere, em todas as páginas, que não há erro de JavaScript nem rolagem lateral, e que menu, tema e service worker funcionam.
@@ -257,6 +253,6 @@ Na decocção, mudanças na calculadora também sobem a versão dela (`decoccao/
 - **Substituição de leveduras:** Henrique Boaventura e Fábio Koerich. Fontes dos dados: Yeast Master (David M. Taylor), AEB Brewing Yeast Substitution Guide, Imperial Yeast Strain Cross Reference Guide, tabelas da Levteck e curadoria da Brassagem Forte.
 - **Decocção:** Henrique Boaventura e Fábio Koerich. As fontes da literatura estão no README da ferramenta.
 - **Speise:** Henrique Boaventura.
-- **Spunding:** Henrique Boaventura. Baseada no Mr Malty (física), na Bräu Supply (Pressure Fermentation Calculator: pressões por estilo e fases) e na BYO (carbonatação por estilo).
+- **Spunding:** Henrique Boaventura. Baseada no Mr Malty (física) e na Bräu Supply (Pressure Fermentation Calculator: folga de 1 ponto).
 - **Parti-gyle:** Henrique Boaventura. Baseada em BYO ("Introduction to Parti-Gyle Brewing", "Parti-Gyle Brewing Techniques") e Craft Beer & Brewing ("Practical Parti-Gyle Brewing").
 - Um projeto da [Brassagem Forte](https://www.brassagemforte.com.br).

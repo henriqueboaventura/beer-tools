@@ -41,7 +41,7 @@
       numero: "05",
       slug: "spunding",
       titulo: "Spunding",
-      descricao: "Plano de fermentação sob pressão por estilo: pressão da válvula em cada fase, quando subir e o CO₂ depois do cold crash.",
+      descricao: "Em que densidade fechar a válvula para a fermentação chegar sozinha à pressão ou à carbonatação que você quer.",
       status: "disponivel"
     },
     {

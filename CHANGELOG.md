@@ -12,6 +12,20 @@ detalhe técnico, em `ferramentas/decoccao/CHANGELOG.md`.
 invalida o cache offline antigo e faz aparecer o aviso "Nova versão
 disponível" para quem já está com o site aberto.
 
+## [1.18.0] — 2026-10-20
+
+### Alterado
+- **Spunding simplificada:** a ferramenta agora responde só em que
+  densidade fechar a válvula. Entradas: pressão (bar) ou carbonatação
+  (volumes), temperatura, volume, capacidade do fermentador e densidade
+  final. A válvula fica aberta até fechar.
+
+### Removido
+- **Spunding:** grupos de estilo, plano por fases, fermentadores e
+  segurança, cold crash, avisos, tabela de carbonatação e "meu
+  fermentador agora". A pressão depois do cold crash continua na
+  calculadora de carbonatação.
+
 ## [1.17.1] — 2026-10-20
 
 ### Alterado
