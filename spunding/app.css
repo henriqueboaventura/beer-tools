@@ -1,0 +1,99 @@
+/* Estilos específicos da ferramenta 05 — Spunding */
+
+.spd-campo { margin-bottom: 16px; min-width: 0; }
+.spd-campo label {
+  display: flex; justify-content: space-between; align-items: baseline; gap: 8px;
+  font-size: 15px; color: var(--bf-soft); margin-bottom: 8px;
+}
+.spd-campo label span { font: 500 12px/1 var(--bf-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--bf-mute); text-align: right; }
+.spd-campo input, .spd-campo select {
+  width: 100%;
+  appearance: none;
+  background: var(--bf-raised);
+  border: 0;
+  border-bottom: 2px solid var(--bf-fg);
+  border-radius: 0;
+  color: var(--bf-fg);
+  /* 16px+ evita o zoom automático do Safari iOS */
+  font: 500 20px/1 var(--bf-mono);
+  padding: 12px;
+  min-height: 50px;
+  -moz-appearance: textfield;
+}
+.spd-campo select { font: 500 17px/1.2 var(--bf-font); cursor: pointer; }
+.spd-campo input:focus-visible, .spd-campo select:focus-visible { outline: none; background: var(--bf-raised-2); }
+
+.spd-linha { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.spd-nota { font-size: 13px; color: var(--bf-mute); margin: 8px 0 0; }
+.spd-nota b { color: var(--bf-fg); }
+.spd-nota--campo { margin: -8px 0 16px; }
+.spd-eco { font-size: 15px; color: var(--bf-soft); margin: 10px 0 0; }
+.spd-eco b { color: var(--bf-fg); font-family: var(--bf-mono); font-weight: 500; }
+
+/* fermentadores: grade 2 colunas no celular, 4 no desktop */
+.spd-fermentadores { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 4px; }
+.spd-fermentadores .bf-chip { padding: 6px 10px; min-height: 48px; line-height: 1.15; }
+@media (min-width: 620px) { .spd-fermentadores { grid-template-columns: repeat(4, 1fr); } }
+
+/* Resultado em destaque (bloco invertido, como na carbonatação) */
+.spd-destaque { background: var(--bf-fg); color: var(--bf-bg); padding: 18px 16px 16px; text-align: center; }
+.spd-destaque p { margin: 0; }
+.spd-destaque__rotulo { font: 500 12px/1.3 var(--bf-mono); letter-spacing: .1em; text-transform: uppercase; opacity: .8; }
+.spd-destaque__valor { font-weight: 900; font-stretch: 62%; font-size: 72px; line-height: .95; margin: 10px 0 4px !important; }
+.spd-destaque__valor small { font: 500 22px/1 var(--bf-mono); }
+.spd-destaque__sub { font: 400 13px/1.4 var(--bf-mono); opacity: .8; }
+
+/* Resumo: no quente · depois do crash · alvo */
+.spd-resumo { display: grid; grid-template-columns: repeat(3, 1fr); margin: 16px 0 0; border-top: 1px solid var(--bf-line-strong); }
+.spd-resumo div { padding: 10px 0 0; min-width: 0; }
+.spd-resumo div + div { padding-left: 10px; border-left: 1px solid var(--bf-line); }
+.spd-resumo dt { font: 500 10px/1.2 var(--bf-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--bf-mute); }
+.spd-resumo dd { margin: 4px 0 0; font: 500 20px/1.2 var(--bf-mono); color: var(--bf-fg); }
+.spd-resumo dd small { font-size: 11px; color: var(--bf-mute); }
+
+/* Fases do plano */
+.spd-fases { list-style: none; counter-reset: fase; margin: 24px 0 0; padding: 0; border-top: 1px solid var(--bf-line-strong); }
+.spd-fases li { counter-increment: fase; padding: 12px 0 12px 36px; border-bottom: 1px solid var(--bf-line); position: relative; }
+.spd-fases li::before { content: counter(fase, decimal-leading-zero); position: absolute; left: 0; top: 13px; font: 500 13px/1 var(--bf-mono); color: var(--bf-mute); }
+.spd-fases strong { display: block; font-size: 16px; color: var(--bf-fg); }
+.spd-fase__meta { display: block; font: 500 15px/1.4 var(--bf-mono); color: var(--bf-fg); margin-top: 2px; }
+.spd-fases p { margin: 4px 0 0; font-size: 14px; color: var(--bf-soft); }
+
+/* Segurança e avisos (cores de informação: verde ok, âmbar atenção, vermelho perigo) */
+:root { --spd-ok: #4ade80; --spd-atencao: #fbbf24; --spd-perigo: #f87171; }
+:root[data-theme="light"] { --spd-ok: #15803d; --spd-atencao: #b45309; --spd-perigo: #b91c1c; }
+@media (prefers-color-scheme: light) { :root:not([data-theme="dark"]) { --spd-ok: #15803d; --spd-atencao: #b45309; --spd-perigo: #b91c1c; } }
+
+.spd-seguranca { margin-top: 24px; padding-top: 16px; border-top: 1px solid var(--bf-line-strong); }
+.spd-seguranca__titulo { font-size: 18px; font-weight: 800; margin: 0 0 8px; color: var(--bf-fg); }
+.spd-seguranca__valor { font-weight: 900; font-stretch: 62%; font-size: 56px; line-height: 1; color: var(--bf-fg); margin: 0; }
+.spd-seguranca__valor small { font: 500 16px/1 var(--bf-mono); }
+
+.spd-status { margin: 10px 0 0; padding: 8px 10px; border-left: 4px solid var(--spd-cor); background: color-mix(in srgb, var(--spd-cor) 10%, transparent); font-size: 14px; line-height: 1.45; color: var(--bf-soft); }
+.spd-status b { color: var(--bf-fg); }
+.spd-status--ok { --spd-cor: var(--spd-ok); }
+.spd-status--atencao { --spd-cor: var(--spd-atencao); }
+.spd-status--perigo { --spd-cor: var(--spd-perigo); }
+.spd-status--info { --spd-cor: var(--bf-line-strong); }
+#avisos { margin-top: 16px; }
+
+/* Tabela de carbonatação */
+.spd-tabela { width: 100%; border-collapse: collapse; font-size: 15px; }
+.spd-tabela th, .spd-tabela td { text-align: left; padding: 8px 6px 8px 0; border-bottom: 1px solid var(--bf-line); }
+.spd-tabela thead th { font: 500 11px/1.2 var(--bf-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--bf-mute); border-bottom-color: var(--bf-line-strong); }
+.spd-tabela thead th + th, .spd-tabela td { text-align: right; }
+.spd-tabela td { font: 500 17px/1.2 var(--bf-mono); color: var(--bf-fg); white-space: nowrap; }
+.spd-tabela tbody th { font-weight: 400; color: var(--bf-soft); }
+.spd-tabela small { color: var(--bf-mute); font-size: 12px; }
+.spd-atual th, .spd-atual td { color: var(--bf-fg) !important; font-weight: 700; }
+
+.spd-mais, .spd-fontes { margin-top: 24px; }
+.spd-mais + .spd-mais { margin-top: 12px; }
+.spd-mais p { margin: 0 0 10px; }
+.spd-mais li, .spd-fontes li { font-size: 14px; }
+#numeros { margin: 0; padding-left: 18px; }
+#numeros li + li { margin-top: 6px; }
+
+@media (min-width: 720px) {
+  .spd-destaque__valor { font-size: 96px; }
+}

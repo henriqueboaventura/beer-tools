@@ -18,6 +18,7 @@ const PAGINAS = [
   "parti-gyle/",
   "taxa-de-inoculo/",
   "carbonatacao/",
+  "spunding/",
 ];
 
 suiteUI("Plataforma (interface)", (ctx) => {
@@ -56,13 +57,13 @@ suiteUI("Plataforma (interface)", (ctx) => {
     await pag.fechar();
   });
 
-  test("início lista as 6 ferramentas com links que abrem", async () => {
+  test("início lista as 7 ferramentas com links que abrem", async () => {
     const { pag } = ctx;
     await pag.ir("");
     const links = await pag.avaliar("ui.$$('main li > a').map(a => a.getAttribute('href'))");
     assert.deepEqual([...new Set(links)], [
       "substituicao-leveduras/", "decoccao/", "speise/", "carbonatacao/",
-      "parti-gyle/", "taxa-de-inoculo/",
+      "spunding/", "parti-gyle/", "taxa-de-inoculo/",
     ]);
     await pag.avaliar("setTimeout(() => ui.clicar('main a[href=\"parti-gyle/\"]')); true");
     await pag.esperar("location.pathname.endsWith('/parti-gyle/') && document.readyState === 'complete'");
@@ -84,7 +85,7 @@ suiteUI("Plataforma (interface)", (ctx) => {
     ]);
     assert.equal(await pag.avaliar("ui.$$('#bf-menu li > span').length"), 0, "nenhum item desabilitado");
     // um link no menu para cada ferramenta do registro, no endereço dela
-    assert.equal(await pag.avaliar("BF.ferramentas.filter(f => ui.$$('#bf-menu a').some(a => a.href === BF.urlFerramenta(f))).length"), 6);
+    assert.equal(await pag.avaliar("BF.ferramentas.filter(f => ui.$$('#bf-menu a').some(a => a.href === BF.urlFerramenta(f))).length"), 7);
     await pag.avaliar("document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' }))");
     assert.equal(await pag.avaliar("ui.$('#bf-menu').hidden"), true);
     assert.equal(await pag.avaliar("ui.texto('.bf-menu-btn__text')"), "Menu");

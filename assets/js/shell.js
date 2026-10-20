@@ -39,13 +39,20 @@
     },
     {
       numero: "05",
+      slug: "spunding",
+      titulo: "Spunding",
+      descricao: "Plano de fermentação sob pressão por estilo: pressão da válvula em cada fase, quando subir e o CO₂ depois do cold crash.",
+      status: "disponivel"
+    },
+    {
+      numero: "06",
       slug: "parti-gyle",
       titulo: "Parti-gyle",
       descricao: "Várias cervejas de uma mostura: divisão dos mostos, quanto malte e como misturar no dia.",
       status: "disponivel"
     },
     {
-      numero: "06",
+      numero: "07",
       slug: "taxa-de-inoculo",
       titulo: "Taxa de inóculo",
       descricao: "Quantas células de levedura a cerveja precisa e como propagar em starters, passo a passo.",

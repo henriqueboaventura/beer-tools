@@ -12,6 +12,26 @@ detalhe técnico, em `ferramentas/decoccao/CHANGELOG.md`.
 invalida o cache offline antigo e faz aparecer o aviso "Nova versão
 disponível" para quem já está com o site aberto.
 
+## [1.17.0] — 2026-10-20
+
+### Adicionado
+- **Ferramenta 05: Spunding.** Plano para fermentar sob pressão com
+  válvula de spunding:
+  - 9 grupos de estilo, com a pressão de cada fase (Bräu Supply) e a
+    carbonatação típica (BYO);
+  - Fermzilla/PET (2,4 bar), barril corny (4 bar), inox ou outro, com o
+    espaço vazio na conta;
+  - em que densidade subir a válvula, quanto a cerveja carbonata no
+    quente e a pressão de CO₂ depois do cold crash;
+  - fases da inoculação à carbonatação, segurança do fermentador,
+    avisos, tabela de carbonatação e "meu fermentador agora".
+  - Mesma física da carbonatação (usa o mesmo `calculo.js`).
+- **Carbonatação:** a opção "Carbonatação natural" aponta para a
+  calculadora de spunding.
+
+### Alterado
+- Parti-gyle passa a ser a ferramenta 06 e taxa de inóculo a 07.
+
 ## [1.16.1] — 2026-10-16
 
 ### Alterado

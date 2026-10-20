@@ -222,7 +222,7 @@
     G_POR_VOL_L: G_POR_VOL_L, TEMP_SEGURANCA_C: TEMP_SEGURANCA_C, PSI_POR_BAR: PSI_POR_BAR, CO2_POR_PONTO_GL: CO2_POR_PONTO_GL,
     GARRAFAS_ML: GARRAFAS_ML, ACUCARES: ACUCARES, ENVASES: ENVASES, ESTILOS: ESTILOS,
     co2Residual: co2Residual, co2PelaPressao: co2PelaPressao, pressaoParaVolumes: pressaoParaVolumes,
-    co2Necessario: co2Necessario, volumesEquilibrio: volumesEquilibrio, pressaoArmazenamento: pressaoArmazenamento,
+    co2Necessario: co2Necessario, volumesEquilibrio: volumesEquilibrio, pressaoArmazenamento: pressaoArmazenamento, hEspaco: hEspaco,
     acucarPorId: acucarPorId, calcular: calcular
   };
   if (typeof module !== "undefined" && module.exports) module.exports = api;

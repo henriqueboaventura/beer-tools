@@ -69,6 +69,11 @@ const PRECACHE = [
   "carbonatacao/app.css",
   "carbonatacao/app.js",
   "carbonatacao/calculo.js",
+  "spunding/",
+  "spunding/index.html",
+  "spunding/app.css",
+  "spunding/app.js",
+  "spunding/calculo.js",
 ];
 
 self.addEventListener("install", (event) => {

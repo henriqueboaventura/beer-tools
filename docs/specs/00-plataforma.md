@@ -21,9 +21,10 @@ Relativo à raiz do site (produção: `https://www.brassagemforte.com.br/ferrame
 /substituicao-leveduras/   → Ferramenta 01
 /decoccao/                 → Ferramenta 02
 /speise/                   → Ferramenta 03
-/parti-gyle/               → Ferramenta 04
-/taxa-de-inoculo/          → Ferramenta 05
-/carbonatacao/             → Ferramenta 06
+/carbonatacao/             → Ferramenta 04
+/spunding/                 → Ferramenta 05
+/parti-gyle/               → Ferramenta 06
+/taxa-de-inoculo/          → Ferramenta 07
 /<slug>/                   → Ferramentas futuras
 ```
 
@@ -108,9 +109,10 @@ Tema: segue o sistema por padrão, e o botão do header alterna e guarda a escol
 │   └── data/leveduras.json            # GERADO — não editar à mão
 ├── decoccao/                          # ferramenta 02 (motor e testes próprios)
 ├── speise/                            # ferramenta 03 (calculo.js + testes)
-├── parti-gyle/                        # ferramenta 04 (calculo.js + testes)
-├── taxa-de-inoculo/                   # ferramenta 05 (calculo.js + testes)
-├── carbonatacao/                      # ferramenta 06 (calculo.js + testes)
+├── carbonatacao/                      # ferramenta 04 (calculo.js + testes)
+├── spunding/                          # ferramenta 05 (calculo.js + testes; usa o calculo.js da carbonatação)
+├── parti-gyle/                        # ferramenta 06 (calculo.js + testes)
+├── taxa-de-inoculo/                   # ferramenta 07 (calculo.js + testes)
 ├── .htaccess                          # produção: 301 dos endereços antigos e 404 do site
 ├── dados/leveduras/                   # fontes transcritas/curadas (editáveis)
 ├── scripts/gerar_leveduras.py         # gera o JSON da ferramenta 01

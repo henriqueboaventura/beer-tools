@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Calculadora de spunding: fermentar e carbonatar sob pressão | Brassagem Forte</title>
+  <meta name="description" content="Fermentação sob pressão por estilo: pressão da válvula de spunding em cada fase, em que densidade subir e o CO₂ depois do cold crash.">
+  <link rel="canonical" href="https://www.brassagemforte.com.br/ferramentas/spunding/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Ferramentas Brassagem Forte">
+  <meta property="og:locale" content="pt_BR">
+  <meta property="og:title" content="Calculadora de spunding: fermentar e carbonatar sob pressão | Brassagem Forte">
+  <meta property="og:description" content="Fermentação sob pressão por estilo: pressão da válvula de spunding em cada fase, em que densidade subir e o CO₂ depois do cold crash.">
+  <meta property="og:url" content="https://www.brassagemforte.com.br/ferramentas/spunding/">
+  <meta property="og:image" content="https://www.brassagemforte.com.br/ferramentas/assets/img/og-spunding.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="theme-color" content="#0b0b0b">
+  <link rel="manifest" href="../manifest.webmanifest?v=1.17.0">
+  <link rel="icon" href="../favicon.ico" sizes="32x32">
+  <link rel="icon" href="../assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="../assets/img/icon-180.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-title" content="Brassagem Forte">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/bf.css?v=1.17.0">
+  <link rel="stylesheet" href="app.css?v=1.17.0">
+  <script src="../assets/js/versao.js?v=1.17.0"></script>
+  <script src="../assets/js/shell.js?v=1.17.0"></script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Calculadora de spunding","url":"https://www.brassagemforte.com.br/ferramentas/spunding/","applicationCategory":"UtilitiesApplication","operatingSystem":"Web","inLanguage":"pt-BR","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"BRL"},"author":[{"@type":"Person","name":"Henrique Boaventura"}],"publisher":{"@type":"Organization","name":"Brassagem Forte","url":"https://www.brassagemforte.com.br","logo":"https://www.brassagemforte.com.br/ferramentas/assets/img/icon-512.png"}}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Ferramentas","item":"https://www.brassagemforte.com.br/ferramentas/"},{"@type":"ListItem","position":2,"name":"Spunding","item":"https://www.brassagemforte.com.br/ferramentas/spunding/"}]}</script>
+</head>
+<body>
+  <header data-bf-header></header>
+
+  <main>
+    <div class="wrap">
+      <p class="bf-crumb"><a href="../">Ferramentas</a> / 05</p>
+      <h1 class="bf-title">Spunding</h1>
+      <p class="bf-lead">Fermentar sob pressão: a pressão da válvula de spunding em cada fase, em que densidade subir, quanto a cerveja carbonata no fermentador e quanto CO₂ colocar depois do cold crash.</p>
+      <details class="bf-how">
+        <summary>Como funciona</summary>
+        <div class="bf-how__body">
+          <ol>
+            <li><b>A válvula de spunding segura a pressão</b> e solta o excesso. O CO₂ da própria fermentação fica na cerveja, e a pressão segura ésteres e álcoois superiores: dá para fermentar uma lager a 18 °C e ela sair limpa.</li>
+            <li><b>Cada estilo pede uma pressão em cada fase.</b> Estilos limpos vão para pressão depois do primeiro ou segundo dia; os que vivem de ésteres (inglesas, belgas, weizen) ficam abertos até quase o fim.</li>
+            <li><b>Para subir a válvula, a fermentação precisa ter o que fazer.</b> Cada ponto de densidade fermentado gera cerca de 0,5 volume de CO₂, que precisa encher a cerveja e o espaço vazio do fermentador até a nova pressão. A ferramenta diz em que densidade subir, com 1 ponto de folga: subir cedo não estraga, a válvula solta o resto.</li>
+            <li><b>No quente, a cerveja quase nunca chega no alvo.</b> A 20 °C, 2,5 volumes pedem 2 bar. O normal é segurar o que o estilo pede, fazer o cold crash com CO₂ ligado e completar a carbonatação no frio, com bem menos pressão.</li>
+          </ol>
+          <p>Mesma física da <a href="../carbonatacao/">calculadora de carbonatação</a> (Mr Malty), em bar e °C, ao nível do mar.</p>
+        </div>
+      </details>
+
+      <!-- 01 Estilo -->
+      <section class="bf-step" aria-labelledby="l-estilo">
+        <h2 class="bf-step__label" id="l-estilo"><b>01</b> Estilo</h2>
+        <div class="spd-campo">
+          <label for="grupo">Grupo de estilo</label>
+          <select id="grupo"></select>
+        </div>
+        <p class="spd-nota" id="grupoExemplos"></p>
+        <p class="spd-eco" id="grupoPorque"></p>
+      </section>
+
+      <!-- 02 Fermentador -->
+      <section class="bf-step" aria-labelledby="l-fermentador">
+        <h2 class="bf-step__label" id="l-fermentador"><b>02</b> Fermentador</h2>
+        <div class="spd-fermentadores" role="group" aria-label="Fermentador">
+          <button type="button" class="bf-chip" data-fermentador="pet" aria-pressed="true">Fermzilla / PET</button>
+          <button type="button" class="bf-chip" data-fermentador="corny" aria-pressed="false">Barril corny</button>
+          <button type="button" class="bf-chip" data-fermentador="inox" aria-pressed="false">Inox (unitank)</button>
+          <button type="button" class="bf-chip" data-fermentador="outro" aria-pressed="false">Outro</button>
+        </div>
+        <p class="spd-nota" id="fermentadorNota"></p>
+        <div class="spd-linha">
+          <div class="spd-campo">
+            <label for="capacidade">Capacidade <span>L</span></label>
+            <input type="number" id="capacidade" inputmode="decimal" value="30" min="0" step="1">
+          </div>
+          <div class="spd-campo">
+            <label for="maxBar">Pressão máxima <span>bar</span></label>
+            <input type="number" id="maxBar" inputmode="decimal" value="2.4" min="0" step="0.1">
+          </div>
+        </div>
+        <p class="spd-nota spd-nota--campo">A capacidade total, com o espaço vazio. A pressão máxima é a de trabalho, da placa ou do manual do fermentador.</p>
+      </section>
+
+      <!-- 03 A cerveja -->
+      <section class="bf-step" aria-labelledby="l-cerveja">
+        <h2 class="bf-step__label" id="l-cerveja"><b>03</b> A cerveja</h2>
+        <div class="spd-linha">
+          <div class="spd-campo">
+            <label for="litros">Volume <span>L</span></label>
+            <input type="number" id="litros" inputmode="decimal" value="20" min="0" step="0.5">
+          </div>
+          <div class="spd-campo">
+            <label for="tempC">Fermentação <span>°C</span></label>
+            <input type="number" id="tempC" inputmode="decimal" value="18" step="1">
+          </div>
+        </div>
+        <div class="spd-linha">
+          <div class="spd-campo">
+            <label for="og">Dens. inicial <span>SG</span></label>
+            <input type="number" id="og" inputmode="decimal" value="1.048" min="1" step="0.001">
+          </div>
+          <div class="spd-campo">
+            <label for="fg">Dens. final <span>SG</span></label>
+            <input type="number" id="fg" inputmode="decimal" value="1.010" min="0.990" step="0.001">
+          </div>
+        </div>
+        <p class="spd-nota spd-nota--campo">A densidade final esperada, da receita ou da levedura.</p>
+        <p class="spd-eco" id="espacoEco"></p>
+      </section>
+
+      <!-- 04 Pressão e carbonatação -->
+      <section class="bf-step" aria-labelledby="l-pressao">
+        <h2 class="bf-step__label" id="l-pressao"><b>04</b> Pressão e carbonatação</h2>
+        <div class="spd-linha">
+          <div class="spd-campo">
+            <label for="pressaoFinal">Válvula no fim <span>bar</span></label>
+            <input type="number" id="pressaoFinal" inputmode="decimal" value="1" min="0" step="0.05">
+          </div>
+          <div class="spd-campo">
+            <label for="alvo">Alvo <span>vol</span></label>
+            <input type="number" id="alvo" inputmode="decimal" value="2.6" min="0.5" max="5.5" step="0.1">
+          </div>
+        </div>
+        <p class="spd-nota spd-nota--campo" id="pressaoDica"></p>
+        <div class="spd-campo">
+          <label for="tempFria">Cold crash <span>°C</span></label>
+          <input type="number" id="tempFria" inputmode="decimal" value="2" step="1">
+        </div>
+      </section>
+
+      <!-- 05 Plano -->
+      <section class="bf-step" aria-labelledby="l-plano">
+        <h2 class="bf-step__label" id="l-plano"><b>05</b> Plano</h2>
+        <div id="resultado" aria-live="polite"></div>
+        <div id="resumo"></div>
+        <ol class="spd-fases" id="fases"></ol>
+
+        <div class="spd-seguranca" id="segurancaBloco">
+          <h3 class="spd-seguranca__titulo" id="segurancaTitulo">Segurança do fermentador</h3>
+          <div id="seguranca" aria-live="polite"></div>
+        </div>
+
+        <div id="avisos"></div>
+
+        <details class="bf-how spd-mais" id="numerosBloco">
+          <summary>Os números do plano</summary>
+          <div class="bf-how__body"><ul id="numeros"></ul></div>
+        </details>
+
+        <details class="bf-how spd-mais" id="tabelaBloco">
+          <summary id="tabelaTitulo">Tabela de carbonatação</summary>
+          <div class="bf-how__body">
+            <p>Pressão no manômetro para manter o alvo em cada temperatura da cerveja.</p>
+            <table class="spd-tabela">
+              <thead><tr><th scope="col">Cerveja</th><th scope="col">Pressão</th></tr></thead>
+              <tbody id="tabela"></tbody>
+            </table>
+          </div>
+        </details>
+
+        <details class="bf-how spd-mais" id="agoraBloco">
+          <summary>Meu fermentador agora</summary>
+          <div class="bf-how__body">
+            <p>Quanto CO₂ a cerveja já tem, pela temperatura e pelo manômetro. Só vale depois de um dia parada nessa temperatura e pressão: logo depois de uma mudança, o manômetro anda na frente da cerveja.</p>
+            <div class="spd-linha">
+              <div class="spd-campo">
+                <label for="agoraTemp">Cerveja <span>°C</span></label>
+                <input type="number" id="agoraTemp" inputmode="decimal" step="1">
+              </div>
+              <div class="spd-campo">
+                <label for="agoraBar">Manômetro <span>bar</span></label>
+                <input type="number" id="agoraBar" inputmode="decimal" min="0" step="0.05">
+              </div>
+            </div>
+            <div id="agora" aria-live="polite"></div>
+          </div>
+        </details>
+      </section>
+
+      <details class="bf-how spd-fontes">
+        <summary>Fontes</summary>
+        <div class="bf-how__body">
+          <ul>
+            <li><a href="https://mrmalty.com/priming-sugar-calculator.html" rel="noopener">Mr Malty — Priming Sugar Calculator</a>: solubilidade do CO₂ sob pressão, espaço vazio e CO₂ por ponto de densidade, as mesmas contas da <a href="../carbonatacao/">calculadora de carbonatação</a>.</li>
+            <li><a href="https://brausupply.com/pages/pressure-fermentation-calculator" rel="noopener">Bräu Supply — Pressure Fermentation Calculator</a>: pressão de cada fase por estilo, as fases do plano e a folga de 1 ponto para subir a válvula. As faixas por estilo são sugestões, não física: ajuste ao seu gosto.</li>
+            <li>BYO (Brew Your Own): faixa de carbonatação típica de cada grupo de estilo.</li>
+          </ul>
+        </div>
+      </details>
+    </div>
+  </main>
+
+  <footer data-bf-footer></footer>
+
+  <script src="../carbonatacao/calculo.js?v=1.17.0"></script>
+  <script src="calculo.js?v=1.17.0"></script>
+  <script src="app.js?v=1.17.0"></script>
+</body>
+</html>
