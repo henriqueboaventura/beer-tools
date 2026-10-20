@@ -75,7 +75,7 @@ Plano para fermentar sob pressão com válvula de spunding, de Henrique Boaventu
 - **Estilo:** 9 grupos (lager fermentada quente, ales limpas, lupuladas, maltadas, escuras, fortes, inglesas, belgas e de trigo), cada um com a pressão de cada fase e a carbonatação típica.
 - **Fermentador:** Fermzilla/PET (2,4 bar), barril corny (4 bar), inox ou outro, com a capacidade (o espaço vazio entra na conta) e a pressão máxima.
 - **Plano:**
-  - em que densidade subir a válvula (pontos de densidade para encher a cerveja e o espaço vazio, com 1 ponto de folga);
+  - em que densidade fechar a válvula (pontos de densidade para encher a cerveja e o espaço vazio, com 1 ponto de folga);
   - quanto a cerveja carbonata no quente e a pressão de CO₂ depois do cold crash;
   - as fases, da inoculação à carbonatação, com o que esperar para passar à próxima;
   - a segurança do fermentador, avisos, tabela de carbonatação e "meu fermentador agora" (temperatura + manômetro → volumes).
@@ -147,7 +147,7 @@ Os testes usam só o runner nativo do Node (`node:test`). Eles cobrem:
 - **Speise** (`speise/tests/`): o cálculo, com valores conferidos à mão.
 - **Parti-gyle** (`parti-gyle/tests/`): os exemplos numéricos publicados nas fontes.
 - **Carbonatação** (`carbonatacao/tests/`): oito cenários conferidos contra o código da calculadora do Mr Malty, e a consistência com a speise.
-- **Spunding** (`spunding/tests/`): a mesma física da carbonatação, a tabela da Bräu Supply (igual no frio, até 5% de diferença no quente), os pontos para subir a válvula, a segurança e os avisos.
+- **Spunding** (`spunding/tests/`): a mesma física da carbonatação, a tabela da Bräu Supply (igual no frio, até 5% de diferença no quente), os pontos para fechar a válvula, a segurança e os avisos.
 - **Taxa de inóculo** (`taxa-de-inoculo/tests/`): o exemplo do Brewers Friend (viabilidade, crescimento sem agitação e DME), o modelo da Braukaiser, as 166 simulações e os passos coletados da calculadora do Mr Malty, e invariantes da sugestão de passos.
 
 - **Interface** (`tests/ui/`): abre o site num Chrome sem janela (headless), em tela de celular, e usa cada ferramenta como uma pessoa usaria: clica, digita e confere o que aparece. Também confere, em todas as páginas, que não há erro de JavaScript nem rolagem lateral, e que menu, tema e service worker funcionam.

@@ -12,6 +12,12 @@ detalhe técnico, em `ferramentas/decoccao/CHANGELOG.md`.
 invalida o cache offline antigo e faz aparecer o aviso "Nova versão
 disponível" para quem já está com o site aberto.
 
+## [1.17.1] — 2026-10-20
+
+### Alterado
+- **Spunding:** "subir a válvula" virou "fechar a válvula" em todos os
+  textos (destaque "Feche a válvula em", fase "Feche para carbonatar").
+
 ## [1.17.0] — 2026-10-20
 
 ### Adicionado

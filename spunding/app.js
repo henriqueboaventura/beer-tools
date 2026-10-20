@@ -61,9 +61,9 @@
       return '<div class="spd-destaque"><p class="spd-destaque__rotulo">Válvula em</p><p class="spd-destaque__valor">' + num(r.pressaoFinal, 2) + " <small>bar</small></p>" +
         '<p class="spd-destaque__sub">desde a fermentação ativa, sem mudar no fim</p></div>';
     }
-    if (r.subirNaInoculacao) sub = "desde o começo: a fermentação não tem pontos sobrando para subir depois";
+    if (r.subirNaInoculacao) sub = "desde o começo: a fermentação não tem pontos sobrando para fechar depois";
     else sub = "em " + sg(r.densidadeSubir) + " SG (" + r.pontosSubir + " pontos acima da final)";
-    return '<div class="spd-destaque"><p class="spd-destaque__rotulo">' + (g.uso === "fim" ? "Fermente aberto e feche em" : "Suba a válvula para") + "</p>" +
+    return '<div class="spd-destaque"><p class="spd-destaque__rotulo">' + (g.uso === "fim" ? "Fermente aberto e feche em" : "Feche a válvula em") + "</p>" +
       '<p class="spd-destaque__valor">' + num(r.pressaoFinal, 2) + " <small>bar</small></p>" +
       '<p class="spd-destaque__sub">' + sub + "</p></div>";
   }
@@ -87,8 +87,8 @@
       (r.sobe && !r.subirNaInoculacao ? "Até a densidade chegar em " + sg(r.densidadeSubir) + "." : "Até a densidade chegar na final, " + sg(r.fg) + ".") +
       (g.lupulo ? " Faça o dry hop enquanto ainda faltam alguns pontos, para a levedura consumir o oxigênio." : "")]);
     if (r.sobe) {
-      lista.push([g.uso === "fim" ? "Feche perto do fim" : "Suba para carbonatar", t, bar(r.pressaoFinal),
-        "Até a densidade ficar 2 dias parada na final, " + sg(r.fg) + "." + (g.lupulo ? " Suba a válvula depois do último dry hop." : "")]);
+      lista.push([g.uso === "fim" ? "Feche perto do fim" : "Feche para carbonatar", t, bar(r.pressaoFinal),
+        "Até a densidade ficar 2 dias parada na final, " + sg(r.fg) + "." + (g.lupulo ? " Feche a válvula depois do último dry hop." : "")]);
     }
     lista.push(["Descanso de diacetil", r.tempC >= 16 ? t : "17–18 °C", "mantenha " + bar(r.pressaoFinal),
       "2 a 3 dias depois da densidade final, até uma amostra aquecida não ter gosto de manteiga."]);
@@ -113,7 +113,7 @@
     var limite = " (máximo " + bar(r.maxBar) + ")";
     return h + status(r.risco, msg + {
       ok: ": dentro do limite " + de + limite + ".",
-      atencao: ": perto do limite " + de + limite + ". Confira a válvula de alívio e não suba mais.",
+      atencao: ": perto do limite " + de + limite + ". Confira a válvula de alívio e não aumente mais a pressão.",
       perigo: ": <b>acima do limite " + de + "</b>" + limite + ". Baixe a válvula e complete a carbonatação no frio, ou use um fermentador que aguente."
     }[r.risco]);
   }
@@ -138,7 +138,7 @@
     if (r.sobe) {
       l.push("Ir de " + bar(r.pressaoAtiva) + " para " + bar(r.pressaoFinal) + " pede cerca de <b>" + num(r.pontos, 1) + " pontos</b> de densidade" +
         (r.espacoVazio > 0 ? ", contando encher os " + num(r.espacoVazio, 1) + " L de espaço vazio" : "") +
-        ". Por segurança, suba em <b>" + (r.subirNaInoculacao ? "qualquer momento" : sg(r.densidadeSubir)) + "</b>: depois de chegar em " + bar(r.pressaoFinal) + ", a válvula solta o resto.");
+        ". Por segurança, feche em <b>" + (r.subirNaInoculacao ? "qualquer momento" : sg(r.densidadeSubir)) + "</b>: depois de chegar em " + bar(r.pressaoFinal) + ", a válvula solta o resto.");
     }
     l.push("A " + graus(r.tempC) + " e " + bar(r.pressaoFinal) + ", a cerveja segura <b>" + num(r.volumesQuente, 2) + " volumes</b> de CO₂.");
     l.push("Para ter " + num(r.alvo, 1) + " volumes no quente seriam <b>" + bar(r.pressaoAlvoQuente) + "</b>" +

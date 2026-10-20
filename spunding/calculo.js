@@ -9,7 +9,7 @@
  *
  * - grupos de estilo com a pressão de cada fase (Bräu Supply, Pressure Fermentation
  *   Calculator) e a faixa de carbonatação (BYO), com o alvo padrão do Mr Malty;
- * - quando subir a válvula: o CO₂ para ir da pressão da fase ativa até a final, na
+ * - quando fechar a válvula: o CO₂ para ir da pressão da fase ativa até a final, na
  *   cerveja e no espaço vazio, em pontos de densidade, com 1 ponto de folga;
  * - quanto a cerveja carbonata no quente e a pressão de CO₂ depois do cold crash;
  * - segurança contra a pressão máxima do fermentador.
@@ -46,7 +46,7 @@
       porque: "Pressão moderada no meio da fermentação mantém o aroma do lúpulo na cerveja em vez de ele sair com o CO₂. Pressão demais atrapalha a biotransformação: fique perto de 0,35–0,55 bar até o último dry hop." },
     { id: "maltada", nome: "Amber, brown, red e scottish ale", exemplos: "Ales com o malte em destaque",
       tempC: 19, fases: [[0, 0.05], [0.15, 0.3], [0.35, 0.55]], faixa: [2.2, 2.7], alvo: 2.3, uso: "leve",
-      porque: "Aceitam bem pressão leve. Mantenha baixa enquanto a levedura trabalha mais e suba perto do fim." },
+      porque: "Aceitam bem pressão leve. Mantenha baixa enquanto a levedura trabalha mais e feche perto do fim." },
     { id: "escura", nome: "Stout e porter", exemplos: "Dry stout, oatmeal stout, robust porter",
       tempC: 19, fases: [[0, 0.05], [0.3, 0.4], [0.4, 0.55]], faixa: [1.5, 2.3], alvo: 2.1, uso: "moderada",
       porque: "Pressão moderada combina com cervejas escuras e pode suavizar o torrado áspero." },
@@ -144,7 +144,7 @@
     r.volumesAtiva = volumes(pm, tempC);
     r.volumesQuente = volumes(ps, tempC);
 
-    // quando subir a válvula: arredonda para cima, +1 de folga, no mínimo 2, sem passar da OG
+    // quando fechar a válvula: arredonda para cima, +1 de folga, no mínimo 2, sem passar da OG
     r.pontos = sobe ? pontosParaSubir(pm, ps, litros, vazio, tempC) : 0;
     var subir = Math.max(Math.ceil(r.pontos - 1e-9) + 1, 2);
     if (subir > pontosDisponiveis) subir = Math.floor(pontosDisponiveis);

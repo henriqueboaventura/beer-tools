@@ -15,7 +15,7 @@ Spunding é fermentar com o fermentador fechado e uma válvula de alívio (válv
 O cervejeiro precisa saber:
 
 1. **que pressão usar em cada fase**, de acordo com o estilo;
-2. **quando subir a válvula** (fechar), ou seja, quantos pontos de densidade ainda precisam faltar para o resto da fermentação encher o fermentador até a pressão final;
+2. **quando fechar a válvula**, ou seja, quantos pontos de densidade ainda precisam faltar para o resto da fermentação encher o fermentador até a pressão final;
 3. **quanto a cerveja carbonata** na temperatura da fermentação com essa pressão. Quase nunca chega no alvo: a 20 °C, 2,5 vol pedem 2,0 bar, mais do que muito fermentador aguenta;
 4. **que pressão de CO₂ colocar depois do cold crash** para completar a carbonatação;
 5. **se o fermentador aguenta.**
@@ -48,7 +48,7 @@ O cálculo roda no navegador (`bs-calc.js`). O que ela faz:
   | Weizen e witbier | 0 | 0 | 0,05–0,2 | 3,0+ | Só no fim |
 
   As faixas por estilo são recomendação de uma loja, não física. Henrique aprovou usar como sugestão editável (2026-10-20), e a tela diz que são sugestões.
-- **Quando subir a válvula:** CO₂ para ir da pressão da fase ativa até a final (diferença de volumes dissolvidos) + CO₂ para encher o espaço vazio, dividido por 0,49 vol por ponto. Arredonda para cima e soma **1 ponto de folga** (mínimo 2). Fechar cedo não estraga cerveja limpa: a válvula solta o excesso.
+- **Quando fechar a válvula:** CO₂ para ir da pressão da fase ativa até a final (diferença de volumes dissolvidos) + CO₂ para encher o espaço vazio, dividido por 0,49 vol por ponto. Arredonda para cima e soma **1 ponto de folga** (mínimo 2). Fechar cedo não estraga cerveja limpa: a válvula solta o excesso.
 - **Carbonatação no quente × no frio:** mostra quantos volumes a cerveja tem com a pressão final na temperatura da fermentação e, se não chegou no alvo, a pressão de CO₂ depois do cold crash.
 - **Cold crash:** a pressão cai ao resfriar (a cerveja fria absorve mais CO₂ e o gás do espaço vazio contrai). Sem CO₂ ligado, o fermentador pode ficar em vácuo e puxar ar (oxigênio). Ligue o CO₂ antes de começar a resfriar.
 - **"Meu fermentador agora":** temperatura + manômetro → volumes dissolvidos, com o aviso de que só vale depois de um dia parado naquela condição.
@@ -79,11 +79,11 @@ Uso na ferramenta:
 A física é a mesma da carbonatação. A ferramenta carrega `../carbonatacao/calculo.js` em vez de copiar as fórmulas, então uma correção vale para as duas. O que é novo fica em `spunding/calculo.js`.
 
 - **Volumes com a válvula:** `co2PelaPressao(bar, tempFerm)`.
-- **Pontos para subir a válvula:**
+- **Pontos para fechar a válvula:**
   - CO₂ (g) = (vol na pressão final − vol na pressão da fase ativa) × 1,964 × litros + CO₂ que o espaço vazio precisa para ir de uma pressão à outra (lei dos gases, `hEspaco`);
   - pontos = CO₂ ÷ (`CO2_POR_PONTO_GL` × litros);
-  - subir em FG + arredondado para cima + 1 (folga), no mínimo 2, e nunca acima da OG.
-  - Exemplo: 20 L a 20 °C, de aberto até 2,0 bar, sem espaço vazio ≈ 3,3 pontos → subir em FG + 5 pontos. Com 10 L de espaço vazio ≈ 6,0 pontos.
+  - fechar em FG + arredondado para cima + 1 (folga), no mínimo 2, e nunca acima da OG.
+  - Exemplo: 20 L a 20 °C, de aberto até 2,0 bar, sem espaço vazio ≈ 3,3 pontos → fechar em FG + 5 pontos. Com 10 L de espaço vazio ≈ 6,0 pontos.
 - **Pressão para o alvo no quente:** `pressaoParaVolumes(alvo, tempFerm)`. Se passar da pressão máxima do fermentador, a ferramenta explica que o resto vem no frio.
 - **Depois do cold crash:** `pressaoParaVolumes(alvo, tempFria)` é a pressão de CO₂ para completar. Se a cerveja já tem o alvo, só manter. Exemplo: 2,5 vol a 2 °C ≈ 0,7 bar.
 - **Durante o cold crash:** CO₂ ligado na menor entre a pressão da válvula e a do alvo no frio, para o fermentador não puxar ar.
@@ -106,7 +106,7 @@ A física é a mesma da carbonatação. A ferramenta carrega `../carbonatacao/ca
 3. **03 A cerveja:** volume (o espaço vazio aparece como informação), OG e FG esperada, temperatura da fermentação.
 4. **04 Pressão e carbonatação:** pressão final da válvula, alvo em volumes e temperatura do cold crash (padrão 2 °C).
 5. **05 Plano:**
-   - destaque: "Suba a válvula para X bar em Y SG" (ou "Fermente aberto e feche no fim", nos estilos de ésteres);
+   - destaque: "Feche a válvula em X bar, em Y SG" (ou "Fermente aberto e feche no fim", nos estilos de ésteres);
    - "No quente a cerveja fica com X vol" e "Depois do cold crash, CO₂ em Y bar" (ou "Já está carbonatada");
    - fase a fase: nome, temperatura, pressão e "passe para a próxima quando…";
    - "Segurança do <fermentador>", com o veredito;
@@ -124,7 +124,7 @@ Em telas pequenas, os passos ficam um embaixo do outro, como nas outras calculad
 
 - **`spunding/tests/calculo.test.js`:**
   - volumes e pressão iguais aos da carbonatação nos mesmos cenários;
-  - pontos para subir a válvula sem e com espaço vazio, folga, mínimo de 2 e teto na OG;
+  - pontos para fechar a válvula sem e com espaço vazio, folga, mínimo de 2 e teto na OG;
   - cenários da Bräu Supply (convertidos), aceitando a diferença conhecida da fórmula no quente;
   - pressão depois do cold crash e "já está carbonatada";
   - "meu fermentador agora";
@@ -134,7 +134,7 @@ Em telas pequenas, os passos ficam um embaixo do outro, como nas outras calculad
 ## 7. Fora de escopo
 
 - Altitude (a Bräu Supply corrige; nós não, como na carbonatação).
-- Curva de fermentação ao longo do tempo (prever o dia de subir a válvula).
+- Curva de fermentação ao longo do tempo (prever o dia de fechar a válvula).
 - Carbonatação forçada com pedra (tempo × pressão).
 - Balanceamento da linha de chope.
 - Unidades imperiais.

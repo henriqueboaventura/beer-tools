@@ -21,17 +21,17 @@ suiteUI("Spunding (interface)", (ctx) => {
   }
   const escolher = (id, valor) => ctx.pag.avaliar(`const s = ui.$('#${id}'); s.value = '${valor}'; s.dispatchEvent(new Event('change', { bubbles: true }))`);
 
-  test("abre com a lager no Fermzilla: válvula, densidade para subir e o plano", async () => {
+  test("abre com a lager no Fermzilla: válvula, densidade para fechar e o plano", async () => {
     const { pag } = ctx;
     await abrir();
     const r = S.calcular(PADRAO);
-    assert.equal(await pag.avaliar("ui.texto('.spd-destaque__rotulo')"), "Suba a válvula para");
+    assert.equal(await pag.avaliar("ui.texto('.spd-destaque__rotulo')"), "Feche a válvula em");
     assert.equal(await pag.avaliar("ui.texto('.spd-destaque__valor')"), "1,00 bar");
     assert.match(await pag.avaliar("ui.texto('.spd-destaque__sub')"), new RegExp("em " + r.densidadeSubir.toFixed(3).replace(".", "\\.") + " SG"));
     assert.deepEqual(await pag.avaliar("ui.$$('#resumo dd').map(d => d.textContent)"),
       [br(r.volumesQuente, 1) + " vol", br(r.pressaoFria, 2) + " bar", "2,6 vol"]);
     const fases = await pag.avaliar("ui.$$('#fases > li > strong').map(s => s.textContent)");
-    assert.deepEqual(fases, ["Inoculação, primeiros 1–2 dias", "Fermentação ativa", "Suba para carbonatar", "Descanso de diacetil", "Cold crash", "Carbonatar"]);
+    assert.deepEqual(fases, ["Inoculação, primeiros 1–2 dias", "Fermentação ativa", "Feche para carbonatar", "Descanso de diacetil", "Cold crash", "Carbonatar"]);
     assert.match(await pag.avaliar("ui.texto('#fases li:nth-child(5)')"), /Ligue o CO₂ antes de começar a resfriar/);
     assert.equal(await pag.avaliar("ui.texto('#segurancaTitulo')"), "Segurança do Fermzilla / PET");
     assert.match(await pag.avaliar("ui.texto('#seguranca')"), /dentro do limite do Fermzilla \/ PET \(máximo 2,40 bar\)/);
