@@ -41,6 +41,13 @@
 .spd-destaque__valor small { font: 500 22px/1 var(--bf-mono); }
 .spd-destaque__sub { font: 400 13px/1.4 var(--bf-mono); opacity: .8; }
 
+/* aviso fixo de pressão máxima do equipamento */
+:root { --spd-atencao: #fbbf24; }
+:root[data-theme="light"] { --spd-atencao: #b45309; }
+@media (prefers-color-scheme: light) { :root:not([data-theme="dark"]) { --spd-atencao: #b45309; } }
+.spd-aviso { margin: 16px 0 0; padding: 10px 12px; border-left: 4px solid var(--spd-atencao); background: color-mix(in srgb, var(--spd-atencao) 10%, transparent); font-size: 14px; line-height: 1.45; color: var(--bf-soft); }
+.spd-aviso b { color: var(--bf-fg); }
+
 .spd-fontes { margin-top: 24px; }
 .spd-fontes li { font-size: 14px; }
 

@@ -38,6 +38,8 @@ A ferramenta carrega `../carbonatacao/calculo.js` em vez de copiar as fórmulas.
 2. **02 A cerveja:** volume, capacidade do fermentador e densidade final esperada.
 3. **03 Quando fechar:** destaque "Feche a válvula em 1,014 SG", com "N pontos antes da final, com a válvula regulada em X bar", e uma linha com os volumes de CO₂, os pontos sem folga e o espaço vazio.
 
+Abaixo do resultado, um aviso fixo: regular a válvula abaixo da pressão máxima de trabalho do fermentador, das conexões e da válvula, com válvula de alívio; balde e bombona comuns não são para pressão.
+
 Padrão: 1 bar, 18 °C, 20 L num fermentador de 30 L, FG 1,010. Ao trocar para volumes, o valor vira 2,5.
 
 ## 5. Outras ferramentas
@@ -55,5 +57,5 @@ Padrão: 1 bar, 18 °C, 20 L num fermentador de 30 L, FG 1,010. Ao trocar para v
 - Pressão por estilo e plano por fases (eram da 1.17).
 - Pressão durante a fermentação ativa antes de fechar.
 - Cold crash e carbonatação no frio (calculadora de carbonatação).
-- Segurança do fermentador.
+- Conferir a pressão contra o fermentador (só o aviso fixo).
 - Altitude e unidades imperiais.

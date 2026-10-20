@@ -29,6 +29,7 @@ suiteUI("Spunding (interface)", (ctx) => {
     const det = await pag.avaliar("ui.texto('#detalhe')");
     assert.match(det, new RegExp(br(r.volumes, 2) + " volumes"));
     assert.match(det, /10,0 L de espaço vazio/);
+    assert.match(await pag.avaliar("ui.texto('#avisoPressao')"), /pressão que o seu equipamento aguenta/);
     assert.deepEqual(pag.erros, []);
   });
 

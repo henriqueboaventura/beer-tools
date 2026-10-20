@@ -12,6 +12,12 @@ detalhe técnico, em `ferramentas/decoccao/CHANGELOG.md`.
 invalida o cache offline antigo e faz aparecer o aviso "Nova versão
 disponível" para quem já está com o site aberto.
 
+## [1.18.1] — 2026-10-20
+
+### Adicionado
+- **Spunding:** aviso para regular a válvula abaixo da pressão máxima de
+  trabalho do fermentador, das conexões e da válvula.
+
 ## [1.18.0] — 2026-10-20
 
 ### Alterado
