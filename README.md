@@ -237,7 +237,10 @@ Todo recurso novo passa primeiro pelo teste:
    ```sh
    scripts/deploy-producao.sh --simular   # mostra o que mudaria, sem enviar
    scripts/deploy-producao.sh             # publica
+   scripts/deploy-producao.sh --sem-testes  # publica sem rodar os testes locais
    ```
+
+   Use `--sem-testes` só quando os testes locais travarem (o Chrome dos testes de interface às vezes não responde) e o CI do commit tiver passado no GitHub.
 
    O script só publica a partir de `main` já enviada ao GitHub, roda os testes, exige uma versão que ainda não foi para produção, envia só os arquivos do site para `public_html/ferramentas/` (não toca em mais nada do servidor), confere a produção no ar e cria a tag `producao-vX.Y.Z`.
 

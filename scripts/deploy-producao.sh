@@ -21,13 +21,24 @@
 # Uso:
 #   scripts/deploy-producao.sh            # publica
 #   scripts/deploy-producao.sh --simular  # mostra o que seria enviado, sem enviar
+#   scripts/deploy-producao.sh --sem-testes  # pula os testes locais (ex.: o Chrome
+#                                            # dos testes de interface travou); o
+#                                            # commit continua tendo que ser o de
+#                                            # origin/main, que já rodou no CI
 #
 # Credenciais: .env.deploy na raiz (gitignored). Modelo em .env.deploy.example.
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
 SIMULAR=0
-[ "${1:-}" = "--simular" ] && SIMULAR=1
+SEM_TESTES=0
+for arg in "$@"; do
+  case "$arg" in
+    --simular) SIMULAR=1 ;;
+    --sem-testes) SEM_TESTES=1 ;;
+    *) printf 'ERRO: opção desconhecida: %s\n' "$arg" >&2; exit 1 ;;
+  esac
+done
 
 URL_PRODUCAO="https://www.brassagemforte.com.br/ferramentas/"
 passo() { printf '\n==> %s\n' "$1"; }
@@ -51,8 +62,12 @@ fi
 echo "versão $VERSAO, commit $(git rev-parse --short HEAD)"
 
 passo "Testes"
-npm test --silent >/dev/null 2>&1 || { npm test; erro "testes falharam."; }
-echo "ok"
+if [ "$SEM_TESTES" = 1 ]; then
+  echo "pulados (--sem-testes): confira se o CI deste commit passou"
+else
+  npm test --silent >/dev/null 2>&1 || { npm test; erro "testes falharam (se foi o Chrome travando, rode de novo ou use --sem-testes)."; }
+  echo "ok"
+fi
 python3 scripts/gerar_seo.py >/dev/null
 git diff --quiet -- sitemap.xml substituicao-leveduras/levedura || \
   erro "páginas geradas desatualizadas: rode python3 scripts/gerar_seo.py e faça commit."
