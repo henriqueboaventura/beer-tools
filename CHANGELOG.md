@@ -12,6 +12,13 @@ detalhe técnico, em `ferramentas/decoccao/CHANGELOG.md`.
 invalida o cache offline antigo e faz aparecer o aviso "Nova versão
 disponível" para quem já está com o site aberto.
 
+## [1.19.2] — 2026-10-29
+
+### Corrigido
+- **Decocção (calculadora 1.17.2):** os passos enviados ao Brewfather
+  seguem o Brew Tracker dele: patamar só até a puxada, decocção com o
+  tempo de fervura e o descanso depois da devolução como passo próprio.
+
 ## [1.19.1] — 2026-10-29
 
 ### Corrigido

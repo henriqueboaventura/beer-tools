@@ -6,6 +6,19 @@ Formato baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/),
 versionamento segue [SemVer](https://semver.org/lang/pt-BR/) (`MAJOR.MINOR.PATCH`).
 A versão atual fica em `version.js` e aparece no rodapé do app.
 
+## [1.17.2] — 2026-10-29
+
+### Corrigido
+- **Brewfather: passos no formato do Brew Tracker.** O Brew Tracker lê um
+  passo Decoction como "puxe, descanse a decocção, ferva por stepTime e
+  devolva", com a mostura parada, logo depois do passo anterior. Antes o
+  patamar contava o tempo da decocção (79 min de protease em vez de 10) e
+  o Decoction levava o tempo do patamar seguinte como fervura. Agora:
+  - o patamar onde se puxa só conta o tempo até a puxada;
+  - o passo Decoction leva a fervura como tempo, o volume e o descanso;
+  - o descanso depois da devolução é um passo Temperature na mesma
+    temperatura.
+
 ## [1.17.1] — 2026-10-29
 
 ### Corrigido

@@ -156,8 +156,8 @@ suiteUI("Decocção (interface)", (ctx) => {
     await pag.avaliar("ui.$('#bfUserId').value = 'u1'; ui.$('#bfApiKey').value = 'k1'; ui.clicar('#bfCarregar')");
     await pag.esperar("!ui.$('#bfReceitaCampo').hidden");
     assert.deepEqual(await pag.avaliar("ui.$$('#bfReceita option').map(o => o.textContent)"), ["Bock", "Pilsner"], "por nome");
-    assert.equal(await pag.avaliar("ui.$$('#bfPassos li').length"), 3);
-    assert.match(await pag.avaliar("ui.texto('#bfPassos')"), /66 °C · 50 min.*decocção de 6,5 L/);
+    assert.equal(await pag.avaliar("ui.$$('#bfPassos li').length"), 4);
+    assert.match(await pag.avaliar("ui.texto('#bfPassos')"), /66 °C · 15 min.*Decocção \(fervura\) · 6,5 L.*66 °C · 50 min/);
     await pag.avaliar("const s = ui.$('#bfReceita'); s.value = 'r1'; s.dispatchEvent(new Event('change'))");
     // insumos da receita × os da calculadora (20 L, 5 kg)
     await pag.esperar("!ui.$('#bfInsumos').hidden");
@@ -167,7 +167,7 @@ suiteUI("Decocção (interface)", (ctx) => {
     assert.match(await pag.avaliar("ui.texto('#bfInsumosTexto')"), /está com os insumos da receita/);
     assert.equal(await pag.avaliar("ui.$('#bfUsarInsumos').hidden"), true);
     assert.ok(await pag.avaliar("!!ui.$('.advanced-settings .brewfather')"), "o painel continua lá depois de refazer o formulário");
-    const litros = await pag.avaliar("parseFloat(ui.texto('#bfPassos li:nth-child(2)').match(/decocção de ([\\d,]+) L/)[1].replace(',', '.'))");
+    const litros = await pag.avaliar("parseFloat(ui.texto('#bfPassos li:nth-child(2)').match(/· ([\\d,]+) L/)[1].replace(',', '.'))");
     assert.ok(litros > 6.5, `puxada maior com mais água: ${litros}`);
     await pag.avaliar("ui.clicar('#bfEnviar')");
     await pag.esperar("/atualizada/.test(ui.texto('#bfStatus'))");
@@ -176,7 +176,7 @@ suiteUI("Decocção (interface)", (ctx) => {
     const mash = JSON.parse(patch.corpo).mash;
     assert.equal(mash.name, "Decocção Simples (Brassagem Forte)");
     assert.equal(mash.spargeTemp, 76, "mantém o resto da mostura");
-    assert.deepEqual(mash.steps.map((x) => x.stepTemp), [53, 66, 75]);
+    assert.deepEqual(mash.steps.map((x) => x.stepTemp), [53, 66, 66, 75]);
     assert.deepEqual([mash.steps[1].decoctionAmountMode, mash.steps[1].decoctionAmount], ["volume", litros]);
     assert.equal(patch.auth, "Basic " + Buffer.from("u1:k1").toString("base64"));
     assert.equal(await pag.avaliar("localStorage.getItem('decoccao:v1:brewfather')"), null, "só lembra se marcar");

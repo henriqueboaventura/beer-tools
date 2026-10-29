@@ -66,67 +66,88 @@ function passosBrewfather(rows) {
   });
 
   // Decocção: a puxada acontece num patamar e a devolução abre o próximo.
-  // No Brewfather o passo "Decoction" é o que a decocção alcança, então o
-  // volume e a fervura vão para ele.
+  // É assim que o Brew Tracker do Brewfather lê um passo "Decoction":
+  // depois do passo anterior, "puxe X L, descanse a decocção, ferva por
+  // <stepTime> min e devolva", com a mostura principal parada esperando.
+  // Então:
+  // - o patamar onde se puxa só conta o tempo até a puxada (puxar, aquecer e
+  //   ferver são do passo Decoction);
+  // - o passo Decoction leva o tempo de FERVURA como stepTime, o volume e o
+  //   descanso da decocção;
+  // - o descanso da mostura depois da devolução é outro passo, Temperature,
+  //   na mesma temperatura (o Decoction não tem descanso depois).
   let pendente = null;
   for (const g of grupos) {
     if (pendente && g.rows[0].returnsDecoction) { g.decoccao = pendente; pendente = null; }
-    const puxada = g.rows.find((r) => r.decoctionVolumeL !== undefined);
-    if (puxada) {
-      const fervura = g.rows
-        .filter((r) => r.boil !== null && r.boil !== undefined && r.boil >= 95 && !/aquecimento/i.test(r.label))
-        .reduce((s, r) => s + r.duration, 0);
+    const iPuxada = g.rows.findIndex((r) => r.decoctionVolumeL !== undefined);
+    g.antes = iPuxada >= 0 ? g.rows.slice(0, iPuxada) : g.rows;
+    if (iPuxada >= 0) {
+      const ferve = g.rows.filter((r) => r.boil !== null && r.boil !== undefined && r.boil >= 95 && !/aquecimento/i.test(r.label));
       // descanso de sacarificação da decocção, antes de ferver (nem todo
       // método tem: a 2ª do Hochkurz vai direto à fervura)
       const descanso = g.rows.find((r) => /sacarifica/i.test(r.label) && !/aquecimento/i.test(r.label) && r.boil !== null && r.boil !== undefined && r.boil > g.temp + BF_TOLERANCIA_C);
-      pendente = { litros: puxada.decoctionVolumeL, fervura, descanso };
+      pendente = {
+        litros: g.rows[iPuxada].decoctionVolumeL,
+        fervura: ferve.reduce((soma, r) => soma + r.duration, 0),
+        nome: ferve.length ? ferve[ferve.length - 1].label : "Decocção",
+        descanso,
+      };
     }
   }
 
-  return grupos.map((g) => {
+  const passos = [];
+  for (const g of grupos) {
+    const temp = bfArred(g.temp, 1);
+    if (g.decoccao) {
+      const d = g.decoccao.descanso;
+      passos.push({
+        name: `${g.decoccao.nome} · ${bfNum(g.decoccao.litros)} L`,
+        type: "Decoction",
+        stepTemp: temp,
+        displayStepTemp: temp,
+        stepTime: Math.min(Math.round(g.decoccao.fervura), 360),
+        rampTime: null,
+        // "volume": o Brewfather usa o volume puxado daqui em vez de
+        // calcular o dele ("calculated", que parte dos insumos da receita).
+        // A API só aceita calculated, volume e percent; outro valor vira
+        // calculated.
+        decoctionAmountMode: "volume",
+        decoctionAmount: bfArred(g.decoccao.litros, 1),
+        decoctionRestTemp: d ? bfArred(d.boil, 1) : null,
+        displayDecoctionRestTemp: d ? bfArred(d.boil, 1) : null,
+        decoctionRestTime: d ? Math.round(d.duration) : null,
+      });
+    }
     let rampa = 0;
     let tempo = 0;
     let iniciando = true;
-    for (const r of g.rows) {
+    for (const r of g.antes) {
       if (iniciando && bfEhRampa(r)) { rampa += r.duration; continue; }
       iniciando = false;
       tempo += r.duration;
     }
-    const descansos = g.rows.filter((r) => !bfEhAuxiliar(r, g.temp));
+    // patamar alcançado pela decocção sem nenhum descanso antes da próxima
+    // puxada: o passo Decoction já diz tudo
+    if (g.decoccao && Math.round(tempo) === 0) continue;
+    const descansos = g.antes.filter((r) => !bfEhAuxiliar(r, g.temp));
     const principal = descansos.length
       ? descansos.reduce((a, b) => (b.duration > a.duration ? b : a))
       : g.rows[0];
     let nome = principal.label;
-    if (g.decoccao) {
-      nome += ` · decocção de ${bfNum(g.decoccao.litros)} L` + (g.decoccao.fervura > 0 ? `, fervura ${bfNum(g.decoccao.fervura)} min` : "");
-    }
     // Devolução do resto de uma decocção já contada (devolução em partes,
     // Dupla Aprimorada): o Brewfather não tem como dizer isso num passo
     // Decoction (ele puxaria de novo), então fica Temperature.
-    const decoccao = !!g.decoccao;
-    if (!decoccao && g.rows[0].returnsDecoction) nome += " · devolver o resto da decocção";
-    const temp = bfArred(g.temp, 1);
-    const passo = {
+    if (!g.decoccao && g.rows[0].returnsDecoction) nome += " · devolver o resto da decocção";
+    passos.push({
       name: nome,
-      type: decoccao ? "Decoction" : "Temperature",
+      type: "Temperature",
       stepTemp: temp,
       displayStepTemp: temp,
       stepTime: Math.min(Math.round(tempo), 360),
       rampTime: rampa > 0 ? Math.min(Math.round(rampa), 60) : null,
-    };
-    if (decoccao) {
-      // "volume": o Brewfather usa o volume puxado daqui em vez de calcular
-      // o dele ("calculated", que parte dos insumos da receita). A API só
-      // aceita calculated, volume e percent; outro valor vira calculated.
-      passo.decoctionAmountMode = "volume";
-      passo.decoctionAmount = bfArred(g.decoccao.litros, 1);
-      const d = g.decoccao.descanso;
-      passo.decoctionRestTemp = d ? bfArred(d.boil, 1) : null;
-      passo.displayDecoctionRestTemp = passo.decoctionRestTemp;
-      passo.decoctionRestTime = d ? Math.round(d.duration) : null;
-    }
-    return passo;
-  });
+    });
+  }
+  return passos;
 }
 
 // Água e malte da mostura da receita, como o Brewfather calcula

@@ -31,10 +31,11 @@ de brassagem por evento.
   API key (escopos recipes.read e recipes.write), "Carregar receitas",
   escolher a receita, "Usar os insumos da receita" (água e malte da
   mostura dela, para os volumes baterem), conferir os passos e
-  "Atualizar mostura no Brewfather". Um passo por temperatura da mostura principal: o tempo da
-  decocção conta no patamar em que a mostura espera, o passo alcançado
-  pela devolução é do tipo Decoction e leva o volume e a fervura no nome,
-  o aquecimento da própria mostura vira rampa. PH, sparge e notas da
+  "Atualizar mostura no Brewfather". Os passos seguem o Brew Tracker do Brewfather: o patamar
+  onde se puxa conta só o tempo até a puxada; cada decocção é um passo
+  Decoction (fervura como tempo, volume puxado e descanso da decocção),
+  seguido do descanso da mostura num passo Temperature na mesma
+  temperatura; o aquecimento da própria mostura vira rampa. PH, sparge e notas da
   receita ficam. A API libera CORS: tudo roda no navegador, e as
   credenciais só vão para api.brewfather.app (e para o localStorage, se
   marcar "Lembrar neste navegador").
