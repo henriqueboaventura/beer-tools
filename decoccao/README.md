@@ -27,6 +27,17 @@ de brassagem por evento.
   os sete métodos de decocção real de fato diferem.
 - **Passo a passo em texto** no fim da escada, com botão "Copiar texto",
   para colar o programa na receita.
+- **Brewfather (experimental)**, em "Configurações avançadas": User ID +
+  API key (escopos recipes.read e recipes.write), "Carregar receitas",
+  escolher a receita, "Usar os insumos da receita" (água e malte da
+  mostura dela, para os volumes baterem), conferir os passos e
+  "Atualizar mostura no Brewfather". Um passo por temperatura da mostura principal: o tempo da
+  decocção conta no patamar em que a mostura espera, o passo alcançado
+  pela devolução é do tipo Decoction e leva o volume e a fervura no nome,
+  o aquecimento da própria mostura vira rampa. PH, sparge e notas da
+  receita ficam. A API libera CORS: tudo roda no navegador, e as
+  credenciais só vão para api.brewfather.app (e para o localStorage, se
+  marcar "Lembrar neste navegador").
 - Página separada **"Por que decocção?"** (`sobre.html`, link no rodapé)
   com origem, motivo e trade-offs do método, pra quem não conhece.
 - Cronômetro de brassagem por evento: iniciar/pausar/resetar e confirmar
@@ -141,6 +152,8 @@ bate com o código" não pega regressão nenhuma.
 - `sobre.html` — página "Por que decocção?".
 - `app-core.js` — lógica do cronômetro/interface sem DOM, exportada em
   `window.DecoccaoCore` e testável no Node.
+- `brewfather.js` — integração com o Brewfather: conversão do programa em passos
+  (`passosBrewfather`, testável no Node), cliente da API e o painel.
 - `methods.js` — motor de cálculo (schema de parâmetros + fórmulas de cada
   método), exportado em `window.Decoccao` e via `module.exports`.
 - `tests/` — suíte `node:test`, zero dependências.

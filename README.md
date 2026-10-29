@@ -35,6 +35,7 @@ Calculadora de programas de mostura por decocção, de Henrique Boaventura e Fá
 - Quanto puxar em cada decocção (balanço de energia), cronograma completo e gráfico de temperatura com as faixas de enzima.
 - Cronômetro para o dia da brassagem. Ele se ajusta ao seu ritmo real ("Cheguei"), tem alarme e mantém a tela acesa.
 - Predefinições salvas no aparelho, com exportação e importação em JSON.
+- **Brewfather (experimental):** em "Configurações avançadas", com o User ID e a API key, escolhe uma receita, puxa a água e o malte dela e troca a mostura pelo programa calculado.
 
 Os detalhes técnicos (métodos, fontes, testes e histórico) estão em [`decoccao/README.md`](decoccao/README.md). O "Por que decocção?" está na própria ferramenta.
 

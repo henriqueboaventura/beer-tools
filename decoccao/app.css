@@ -647,3 +647,33 @@ dialog.modal::backdrop { background: rgba(0, 0, 0, .6); }
   .panel, .schedule-panel { border: 1px solid #999; background: #fff; color: #000; }
   .ladder-row.is-active { background: none; box-shadow: none; }
 }
+
+/* ---------- Brewfather (experimental, brewfather.js) ---------- */
+.brewfather .field { flex-direction: column; align-items: stretch; gap: 6px; }
+.brewfather .field__control { flex: 1 1 auto; }
+.brewfather input[type="text"], .brewfather input[type="password"], .brewfather select {
+  width: 100%; min-width: 0; box-sizing: border-box;
+  background: var(--bf-raised); border: 0; border-bottom: 1px solid var(--bf-line-strong); border-radius: 0;
+  padding: 8px; min-height: 40px; font: 500 16px/1.2 var(--bf-mono); color: var(--bf-fg);
+}
+.brewfather input:focus-visible, .brewfather select:focus-visible { outline: none; border-bottom-color: var(--bf-fg); background: var(--bf-raised-2); }
+.brewfather__nota { font-size: 13px; line-height: 1.45; color: var(--bf-mute); margin: 8px 0 4px; }
+.brewfather__lembrar { display: flex; align-items: center; gap: 8px; font-size: 14px; color: var(--bf-soft); min-height: 44px; }
+.brewfather .btn { margin: 4px 0 8px; }
+.brewfather__insumos { margin: 8px 0; padding: 10px 12px; border-left: 3px solid var(--bf-line-strong); background: var(--bf-raised); }
+.brewfather__insumos p { margin: 0; font-size: 14px; line-height: 1.45; color: var(--bf-soft); }
+.brewfather__insumos b { color: var(--bf-fg); font-family: var(--bf-mono); font-weight: 500; }
+.brewfather__insumos .btn { margin: 10px 0 0; }
+.brewfather__passos { margin: 8px 0; padding-left: 20px; font-size: 14px; line-height: 1.4; color: var(--bf-soft); }
+.brewfather__passos li + li { margin-top: 6px; }
+.brewfather__passos b { color: var(--bf-fg); font-family: var(--bf-mono); font-weight: 500; }
+.brewfather__passos span { color: var(--bf-mute); }
+.brewfather__status { font-size: 14px; line-height: 1.45; color: var(--bf-soft); margin: 4px 0 0; }
+.brewfather__status[data-tipo="erro"] { color: #f87171; }
+.brewfather__status[data-tipo="ok"] { color: #4ade80; }
+:root[data-theme="light"] .brewfather__status[data-tipo="erro"] { color: #b91c1c; }
+:root[data-theme="light"] .brewfather__status[data-tipo="ok"] { color: #15803d; }
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) .brewfather__status[data-tipo="erro"] { color: #b91c1c; }
+  :root:not([data-theme="dark"]) .brewfather__status[data-tipo="ok"] { color: #15803d; }
+}

@@ -567,6 +567,23 @@
   // quer rodar a receita padrão do método nunca precisa ver temperatura
   // de rampa, taxa de aquecimento etc.
   const ADVANCED_OPEN_KEY = `${STORAGE_PREFIX}:advancedOpen`;
+  // Brewfather (experimental, brewfather.js): criado uma vez e reanexado a
+  // cada renderForm, para não perder o que foi digitado ao trocar de método.
+  // `bfAtual` é o programa na tela, ou null quando ele não fecha.
+  let bfAtual = null;
+  const bfPainel = window.DecoccaoBrewfather
+    ? window.DecoccaoBrewfather.montarPainel({
+      atual: () => bfAtual,
+      // "Usar os insumos da receita": como digitar nos dois campos
+      usarInsumos: (insumos) => {
+        state.params = sanitizeParams(getMethod(state.methodId), { ...state.params, ...insumos });
+        persistCurrentParams();
+        flashAutosave();
+        renderForm();
+        renderResults();
+      },
+    })
+    : null;
   const ALWAYS_VISIBLE_GROUP = "Insumos";
 
   function buildParamGroup(g) {
@@ -652,6 +669,7 @@
       summary.textContent = "Configurações avançadas";
       details.appendChild(summary);
       for (const g of advancedGroups) details.appendChild(buildParamGroup(g));
+      if (bfPainel) details.appendChild(bfPainel.elemento);
       el.form.appendChild(details);
     }
   }
@@ -678,6 +696,8 @@
     // (achado Q1, crítico).
     el.pseudoUnreachable.hidden = !unreachable;
     el.resultsNormal.hidden = !!unreachable;
+    bfAtual = unreachable ? null : { rows, methodName: method.name, params: state.params };
+    if (bfPainel) bfPainel.atualizar();
     if (unreachable) {
       const u = unreachable;
       if (u.stepLabel !== undefined) {

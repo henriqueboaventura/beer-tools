@@ -12,6 +12,14 @@ detalhe técnico, em `ferramentas/decoccao/CHANGELOG.md`.
 invalida o cache offline antigo e faz aparecer o aviso "Nova versão
 disponível" para quem já está com o site aberto.
 
+## [1.19.0] — 2026-10-29
+
+### Adicionado
+- **Decocção (calculadora 1.17.0): integração experimental com o
+  Brewfather.** Em "Configurações avançadas", com o User ID e a API key,
+  escolhe uma receita do Brewfather e troca a mostura dela pelo programa
+  calculado. Detalhes em `decoccao/CHANGELOG.md`.
+
 ## [1.18.1] — 2026-10-20
 
 ### Adicionado

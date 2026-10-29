@@ -140,6 +140,49 @@ suiteUI("Decocção (interface)", (ctx) => {
     assert.ok(Math.abs(topo.painel - topo.header) <= 2, `painel logo abaixo do cabeçalho (${topo.painel} × ${topo.header})`);
   });
 
+  test("Brewfather: carrega as receitas e troca a mostura (API falsa)", async () => {
+    const { pag } = ctx;
+    await abrirLimpo();
+    assert.ok(await pag.avaliar("!!ui.$('.advanced-settings .brewfather')"), "painel dentro das configurações avançadas");
+    // fetch falso: nada sai para o Brewfather de verdade
+    await pag.avaliar(`window.__bf = []; window.fetch = async (url, op = {}) => {
+      window.__bf.push({ url, metodo: op.method || 'GET', corpo: op.body, auth: op.headers.authorization });
+      const corpo = /recipes\\?/.test(url) ? JSON.stringify([{ _id: 'r2', name: 'Pilsner' }, { _id: 'r1', name: 'Bock' }])
+        : op.method === 'PATCH' ? 'Updated' : JSON.stringify({ _id: 'r1', mash: { _id: 'm', name: 'Velha', spargeTemp: 76, steps: [] }, data: { mashWaterAmount: 30.84, mashFermentablesAmount: 5 } });
+      return { ok: true, status: 200, text: async () => corpo };
+    }; true`);
+    await pag.avaliar("ui.clicar('#bfCarregar')");
+    assert.match(await pag.avaliar("ui.texto('#bfStatus')"), /Preencha/);
+    await pag.avaliar("ui.$('#bfUserId').value = 'u1'; ui.$('#bfApiKey').value = 'k1'; ui.clicar('#bfCarregar')");
+    await pag.esperar("!ui.$('#bfReceitaCampo').hidden");
+    assert.deepEqual(await pag.avaliar("ui.$$('#bfReceita option').map(o => o.textContent)"), ["Bock", "Pilsner"], "por nome");
+    assert.equal(await pag.avaliar("ui.$$('#bfPassos li').length"), 3);
+    assert.match(await pag.avaliar("ui.texto('#bfPassos')"), /66 °C · 50 min.*decocção de 6,5 L/);
+    await pag.avaliar("const s = ui.$('#bfReceita'); s.value = 'r1'; s.dispatchEvent(new Event('change'))");
+    // insumos da receita × os da calculadora (20 L, 5 kg)
+    await pag.esperar("!ui.$('#bfInsumos').hidden");
+    assert.match(await pag.avaliar("ui.texto('#bfInsumosTexto')"), /A receita usa 30,84 L de água e 5 kg de malte.*20 L e 5 kg/);
+    await pag.avaliar("ui.clicar('#bfUsarInsumos')");
+    assert.equal(await pag.avaliar("ui.$('#p_waterVolume').value"), "30.84");
+    assert.match(await pag.avaliar("ui.texto('#bfInsumosTexto')"), /está com os insumos da receita/);
+    assert.equal(await pag.avaliar("ui.$('#bfUsarInsumos').hidden"), true);
+    assert.ok(await pag.avaliar("!!ui.$('.advanced-settings .brewfather')"), "o painel continua lá depois de refazer o formulário");
+    const litros = await pag.avaliar("parseFloat(ui.texto('#bfPassos li:nth-child(2)').match(/decocção de ([\\d,]+) L/)[1].replace(',', '.'))");
+    assert.ok(litros > 6.5, `puxada maior com mais água: ${litros}`);
+    await pag.avaliar("ui.clicar('#bfEnviar')");
+    await pag.esperar("/atualizada/.test(ui.texto('#bfStatus'))");
+    const patch = await pag.avaliar("window.__bf.find(c => c.metodo === 'PATCH')");
+    assert.match(patch.url, /\/recipes\/r1$/);
+    const mash = JSON.parse(patch.corpo).mash;
+    assert.equal(mash.name, "Decocção Simples (Brassagem Forte)");
+    assert.equal(mash.spargeTemp, 76, "mantém o resto da mostura");
+    assert.deepEqual(mash.steps.map((x) => x.stepTemp), [53, 66, 75]);
+    assert.deepEqual([mash.steps[1].decoctionAmountMode, mash.steps[1].decoctionAmount], ["volume", litros]);
+    assert.equal(patch.auth, "Basic " + Buffer.from("u1:k1").toString("base64"));
+    assert.equal(await pag.avaliar("localStorage.getItem('decoccao:v1:brewfather')"), null, "só lembra se marcar");
+    assert.deepEqual(pag.erros, []);
+  });
+
   test("no computador, as abas substituem o seletor", async () => {
     const pag = await ctx.nav.pagina({ largura: 1280 });
     await pag.ir(URL_FERRAMENTA);

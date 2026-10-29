@@ -47,6 +47,7 @@ const PRECACHE = [
   "decoccao/app.css",
   "decoccao/app.js",
   "decoccao/app-core.js",
+  "decoccao/brewfather.js",
   "decoccao/methods.js",
   "decoccao/version.js",
   "speise/",

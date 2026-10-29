@@ -6,6 +6,31 @@ Formato baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/),
 versionamento segue [SemVer](https://semver.org/lang/pt-BR/) (`MAJOR.MINOR.PATCH`).
 A versão atual fica em `version.js` e aparece no rodapé do app.
 
+## [1.17.0] — 2026-10-29
+
+### Adicionado
+- **Brewfather (experimental).** Em "Configurações avançadas", User ID e
+  API key do Brewfather, "Carregar receitas", escolher a receita e
+  "Atualizar mostura no Brewfather": troca o perfil de mostura da receita
+  (PATCH /v2/recipes/:id) pelo programa calculado.
+  - Um passo por temperatura da mostura principal. Puxar, aquecer e ferver
+    a decocção contam no patamar em que a mostura espera; o passo
+    alcançado pela devolução é do tipo Decoction, com o volume e a fervura
+    no nome; o aquecimento da mostura vira rampa.
+  - O passo Decoction vai com o volume puxado daqui
+    (`decoctionAmountMode: "volume"`) e o descanso de sacarificação da
+    decocção: sem isso o Brewfather calcula a puxada dele, a partir dos
+    insumos da receita. Na devolução em partes (Dupla Aprimorada), a
+    devolução do resto fica Temperature, para não virar outra puxada.
+  - Mantém o resto da mostura da receita (pH, sparge, notas); o perfil
+    passa a se chamar "Decocção <método> (Brassagem Forte)".
+  - Ao escolher a receita, mostra a água e o malte da mostura dela
+    (recipe.data) contra os da calculadora, com "Usar os insumos da
+    receita" para os volumes das decocções baterem. Conferido na receita
+    de teste: 9,5 L daqui × 9,46 L que o próprio Brewfather calcula.
+  - Prévia dos passos antes de enviar; credenciais só ficam no navegador
+    se marcar "Lembrar neste navegador".
+
 ## [1.16.1] — 2026-10-16
 
 ### Alterado
