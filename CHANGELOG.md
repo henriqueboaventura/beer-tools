@@ -12,6 +12,12 @@ detalhe técnico, em `ferramentas/decoccao/CHANGELOG.md`.
 invalida o cache offline antigo e faz aparecer o aviso "Nova versão
 disponível" para quem já está com o site aberto.
 
+## [1.19.1] — 2026-10-29
+
+### Corrigido
+- **Decocção (calculadora 1.17.1):** a integração com o Brewfather
+  criava passos demais com a perda térmica em espera ligada.
+
 ## [1.19.0] — 2026-10-29
 
 ### Adicionado

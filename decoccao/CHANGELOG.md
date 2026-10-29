@@ -6,6 +6,15 @@ Formato baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/),
 versionamento segue [SemVer](https://semver.org/lang/pt-BR/) (`MAJOR.MINOR.PATCH`).
 A versão atual fica em `version.js` e aparece no rodapé do app.
 
+## [1.17.1] — 2026-10-29
+
+### Corrigido
+- **Brewfather com perda térmica em espera ligada.** A mostura esfriando
+  abria um passo novo a cada grau perdido (aquecimento e fervura da
+  decocção viravam passos), e a sacarificação podia perder o nome para
+  "Transferência". Agora só uma subida (devolução, aquecimento ou adição)
+  abre passo novo; o resfriamento é o mesmo patamar.
+
 ## [1.17.0] — 2026-10-29
 
 ### Adicionado

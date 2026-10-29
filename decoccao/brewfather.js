@@ -34,10 +34,13 @@ function bfEhRampa(r) {
   return /aquecimento/i.test(r.label) && (r.boil === null || r.boil === undefined);
 }
 
-// etapa da tina de fervura ou transferência: não dá nome ao passo
-function bfEhAuxiliar(r) {
+// etapa da tina de fervura ou transferência: não dá nome ao passo. A
+// decocção na fervura está acima da temperatura do patamar; compara com
+// ela, não com a mostura da linha (que é a do fim da etapa e cai com a
+// perda térmica em espera).
+function bfEhAuxiliar(r, tempPatamar) {
   return /transfer|aquecimento|adição/i.test(r.label) ||
-    (r.boil !== null && r.boil !== undefined && Math.abs(r.boil - r.mash) > 0.05);
+    (r.boil !== null && r.boil !== undefined && r.boil > tempPatamar + BF_TOLERANCIA_C);
 }
 
 function passosBrewfather(rows) {
@@ -48,10 +51,17 @@ function passosBrewfather(rows) {
     // a adição de água da pseudo-decocção é o começo do patamar seguinte
     // (a mistura ainda não chegou na temperatura dele)
     const temp = r.pseudoWaterAddL !== undefined && comMostura[i + 1] ? comMostura[i + 1].mash : r.mash;
-    if (!atual || Math.abs(temp - atual.temp) > BF_TOLERANCIA_C) {
+    // Passo novo só quando alguém muda a temperatura da mostura: devolução
+    // de decocção, aquecimento, adição (pseudo) — ou uma subida. A queda
+    // da perda térmica em espera (mashCoolingRate) é o mesmo patamar
+    // esfriando, não um passo.
+    const evento = r.returnsDecoction || bfEhRampa(r) || r.pseudoWaterAddL !== undefined || r.pseudoMaltAddKg !== undefined;
+    const muda = atual && Math.abs(temp - atual.temp) > BF_TOLERANCIA_C && (evento || temp > atual.ultima + BF_TOLERANCIA_C);
+    if (!atual || muda) {
       atual = { temp, rows: [] };
       grupos.push(atual);
     }
+    atual.ultima = r.mash;
     atual.rows.push(r);
   });
 
@@ -68,7 +78,7 @@ function passosBrewfather(rows) {
         .reduce((s, r) => s + r.duration, 0);
       // descanso de sacarificação da decocção, antes de ferver (nem todo
       // método tem: a 2ª do Hochkurz vai direto à fervura)
-      const descanso = g.rows.find((r) => /sacarifica/i.test(r.label) && !/aquecimento/i.test(r.label) && r.boil !== null && r.boil !== undefined && Math.abs(r.boil - r.mash) > 0.05);
+      const descanso = g.rows.find((r) => /sacarifica/i.test(r.label) && !/aquecimento/i.test(r.label) && r.boil !== null && r.boil !== undefined && r.boil > g.temp + BF_TOLERANCIA_C);
       pendente = { litros: puxada.decoctionVolumeL, fervura, descanso };
     }
   }
@@ -82,7 +92,7 @@ function passosBrewfather(rows) {
       iniciando = false;
       tempo += r.duration;
     }
-    const descansos = g.rows.filter((r) => !bfEhAuxiliar(r));
+    const descansos = g.rows.filter((r) => !bfEhAuxiliar(r, g.temp));
     const principal = descansos.length
       ? descansos.reduce((a, b) => (b.duration > a.duration ? b : a))
       : g.rows[0];

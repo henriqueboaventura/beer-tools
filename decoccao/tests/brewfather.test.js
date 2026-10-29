@@ -73,6 +73,16 @@ describe("passos do Brewfather", () => {
     }
   });
 
+  test("perda térmica em espera não abre passos novos", () => {
+    for (const m of M.METHODS) {
+      if (!m.paramSchema.some((p) => p.key === "mashCoolingRate")) continue;
+      const sem = B.passosBrewfather(programa(m.id));
+      const com = B.passosBrewfather(M.computeSchedule(m, M.sanitizeParams(m, { ...M.defaultParams(m), mashCoolingRate: 0.05 })));
+      assert.deepEqual(com.map((x) => [x.type, x.stepTemp, x.stepTime]), sem.map((x) => [x.type, x.stepTemp, x.stepTime]), m.id);
+      assert.deepEqual(com.map((x) => x.name.split(" · ")[0]), sem.map((x) => x.name.split(" · ")[0]), m.id);
+    }
+  });
+
   test("pseudo-decocção: a adição de água entra no patamar seguinte", () => {
     const p = B.passosBrewfather(programa("pseudo-decoccao"));
     assert.ok(!p.some((x) => /Adição/.test(x.name)));
