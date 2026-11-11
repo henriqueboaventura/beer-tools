@@ -91,6 +91,12 @@ function passosBrewfather(rows) {
         fervura: ferve.reduce((soma, r) => soma + r.duration, 0),
         nome: ferve.length ? ferve[ferve.length - 1].label : "Decocção",
         descanso,
+        // Tempo do lado da decocção que acontece ENQUANTO a mostura base
+        // espera no patamar, antes da devolução: puxar, aquecer a decocção,
+        // descanso dela e a própria fervura. Vira o rampTime do passo
+        // Decoction (a transição até a nova temperatura É a decocção), para o
+        // total bater com o dia real SEM atrasar o início da decocção.
+        processo: g.rows.slice(iPuxada).reduce((s, r) => s + (r.duration || 0), 0),
       };
     }
   }
@@ -98,15 +104,33 @@ function passosBrewfather(rows) {
   const passos = [];
   for (const g of grupos) {
     const temp = bfArred(g.temp, 1);
+    // tempo da devolução (transferência decocção → mostura): entra no rampTime
+    // do passo Decoction, não no descanso do patamar de destino.
+    const retDur = (g.decoccao && g.rows[0] && g.rows[0].returnsDecoction) ? (g.rows[0].duration || 0) : 0;
     if (g.decoccao) {
       const d = g.decoccao.descanso;
+      // Como o Brew Tracker do Brewfather expande um passo Decoction (e SOMA os
+      // três no total da mostura):
+      //   rampTime          -> "Main mash holds at <temp anterior> (X min)"
+      //   decoctionRestTime -> "Rest pulled portion at <temp> - Y min"
+      //   stepTime          -> "Boil pulled portion - Z min"
+      // Então: stepTime = fervura REAL; decoctionRestTime = descanso da
+      // decocção; rampTime = o RESTO do ciclo (puxar + aquecer + devolver),
+      // sem a fervura e sem o descanso (que o Brewfather já conta à parte).
+      // Assim os três somam o ciclo real e nada é contado duas vezes.
+      const descansoDur = d ? Math.round(d.duration) : 0;
+      const fervura = Math.round(g.decoccao.fervura);
+      const espera = Math.round((g.decoccao.processo + retDur) - g.decoccao.fervura - (d ? d.duration : 0));
       passos.push({
         name: `${g.decoccao.nome} · ${bfNum(g.decoccao.litros)} L`,
         type: "Decoction",
         stepTemp: temp,
         displayStepTemp: temp,
-        stepTime: Math.min(Math.round(g.decoccao.fervura), 360),
-        rampTime: null,
+        // fervura real ("Boil pulled portion")
+        stepTime: Math.min(fervura, 360),
+        // o Brewfather trava rampTime em 60; a espera (puxar+aquecer+devolver)
+        // fica bem abaixo disso nos métodos, mas garantimos o teto.
+        rampTime: Math.min(Math.max(espera, 0), 60),
         // "volume": o Brewfather usa o volume puxado daqui em vez de
         // calcular o dele ("calculated", que parte dos insumos da receita).
         // A API só aceita calculated, volume e percent; outro valor vira
@@ -126,6 +150,8 @@ function passosBrewfather(rows) {
       iniciando = false;
       tempo += r.duration;
     }
+    // a devolução foi para o rampTime do passo Decoction
+    tempo -= retDur;
     // patamar alcançado pela decocção sem nenhum descanso antes da próxima
     // puxada: o passo Decoction já diz tudo
     if (g.decoccao && Math.round(tempo) === 0) continue;

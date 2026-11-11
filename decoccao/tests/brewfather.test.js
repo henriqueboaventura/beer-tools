@@ -15,34 +15,43 @@ describe("passos do Brewfather", () => {
   // passo anterior, puxar, descansar a decocção, ferver por stepTime e
   // devolver, com a mostura parada. O descanso depois da devolução é outro
   // passo (Temperature, mesma temperatura).
-  test("Simples: proteína até a puxada, decocção com a fervura, sacarificação e mash out", () => {
+  test("Simples: Decoction com fervura no stepTime e a espera no rampTime", () => {
     const p = B.passosBrewfather(programa("simples"));
+    // O Brewfather expande o Decoction em "Main mash holds (rampTime)" +
+    // "Rest pulled (decoctionRestTime)" + "Boil pulled (stepTime)", e SOMA os
+    // três. Então stepTime = fervura real (15), rampTime = o resto do ciclo
+    // (puxar+aquecer+devolver = 34), e a proteína descansa só até a puxada (20).
     assert.deepEqual(p.map((x) => [x.type, x.stepTemp, x.stepTime, x.name]), [
       ["Temperature", 53, 20, "Rampa de proteína"],
       ["Decoction", 66, 15, "Decocção (fervura) · 6,5 L"],
-      ["Temperature", 66, 50, "Rampa de sacarificação"],
+      ["Temperature", 66, 45, "Rampa de sacarificação"],
       ["Temperature", 75, 10, "Mash Out"],
     ]);
+    assert.equal(p[1].rampTime, 34, "espera da decocção (fora fervura e descanso)");
     assert.equal(p[3].rampTime, 5, "o aquecimento do mash out vira rampa");
     for (const x of p) assert.equal(x.displayStepTemp, x.stepTemp);
   });
 
-  test("Dupla Tradicional: o patamar não conta o tempo da decocção", () => {
+  test("Dupla Tradicional: cada Decoction leva a sua fervura e a sua espera", () => {
     const p = B.passosBrewfather(programa("dupla-tradicional"));
-    assert.deepEqual(p.map((x) => [x.type, x.stepTemp, x.stepTime]), [
-      ["Temperature", 52, 10], ["Decoction", 65, 30], ["Temperature", 65, 5], ["Decoction", 75, 15], ["Temperature", 75, 15],
+    // Sem descanso a 65 °C (a 2ª decocção é puxada assim que a 1ª volta), então
+    // não há passo Temperature a 65: os dois Decoction se seguem, cada um com a
+    // sua fervura (stepTime) e a sua espera (rampTime).
+    assert.deepEqual(p.map((x) => [x.type, x.stepTemp, x.stepTime, x.rampTime]), [
+      ["Temperature", 52, 10, null], ["Decoction", 65, 30, 34], ["Decoction", 75, 15, 28], ["Temperature", 75, 10, null],
     ]);
   });
 
-  test("o passo Decoction leva o nosso volume e o descanso da decocção", () => {
+  test("o passo Decoction leva o nosso volume, a fervura e o descanso da decocção", () => {
     const sacc = B.passosBrewfather(programa("simples"))[1];
     assert.equal(sacc.decoctionAmountMode, "volume", "senão o Brewfather calcula o volume dele");
     assert.equal(sacc.decoctionAmount, 6.5);
     assert.equal(sacc.decoctionRestTemp, 68);
     assert.equal(sacc.decoctionRestTime, 10);
-    // a 2ª do Hochkurz vai direto à fervura, sem descanso
+    assert.equal(sacc.stepTime, 15, "stepTime = fervura real (Boil pulled portion)");
+    // a 2ª do Hochkurz vai direto à fervura, sem descanso da decocção
     const h = B.passosBrewfather(programa("hochkurz")).filter((x) => x.type === "Decoction");
-    assert.deepEqual(h.map((x) => [x.decoctionAmount, x.decoctionRestTemp, x.decoctionRestTime, x.stepTime]), [[5.5, 71, 10, 8], [4, null, null, 8]]);
+    assert.deepEqual(h.map((x) => [x.decoctionAmount, x.decoctionRestTemp, x.decoctionRestTime, x.rampTime, x.stepTime]), [[5.5, 71, 10, 29, 8], [4, null, null, 25, 8]]);
     for (const x of B.passosBrewfather(programa("simples")).filter((y) => y.type !== "Decoction")) assert.equal(x.decoctionAmountMode, undefined);
   });
 
@@ -53,7 +62,7 @@ describe("passos do Brewfather", () => {
     assert.equal(resto.stepTemp, 66);
   });
 
-  test("um Decoction por puxada, com a fervura como tempo, seguido do descanso", () => {
+  test("um Decoction por puxada, como rampa até o patamar", () => {
     for (const m of M.METHODS) {
       const rows = programa(m.id);
       const puxadas = rows.filter((r) => r.decoctionVolumeL !== undefined);
@@ -73,9 +82,11 @@ describe("passos do Brewfather", () => {
       const p = B.passosBrewfather(programa(m.id));
       for (const x of p) {
         assert.ok(x.stepTime >= 0 && x.stepTime <= 360, m.id);
+        // o Brewfather TRAVA rampTime em 60; o excedente da decocção vai no stepTime
         assert.ok(x.rampTime === null || (x.rampTime > 0 && x.rampTime <= 60), m.id);
         assert.ok(["Temperature", "Decoction"].includes(x.type), m.id);
-        if (x.type === "Decoction") assert.ok(x.decoctionAmount > 0 && x.stepTime > 0, m.id);
+        // o passo Decoction carrega a decocção no rampTime (não no stepTime)
+        if (x.type === "Decoction") assert.ok(x.decoctionAmount > 0 && x.rampTime > 0, m.id);
       }
       if (m.id === "pseudo-decoccao") continue;
       for (let i = 1; i < p.length; i++) {

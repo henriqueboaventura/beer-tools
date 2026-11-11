@@ -12,6 +12,14 @@ detalhe técnico, em `ferramentas/decoccao/CHANGELOG.md`.
 invalida o cache offline antigo e faz aparecer o aviso "Nova versão
 disponível" para quem já está com o site aberto.
 
+## [1.19.4] — 2026-11-11
+
+### Corrigido
+- **Decocção (calculadora 1.17.3):** o tempo da decocção agora entra certo
+  no total da mostura no Brewfather. A fervura vai no "Boil pulled portion",
+  o resto do ciclo no "Main mash holds" e o descanso no "Rest pulled
+  portion" — o total passa a bater com o dia real.
+
 ## [1.19.3] — 2026-11-11
 
 ### Adicionado

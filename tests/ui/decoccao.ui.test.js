@@ -157,7 +157,7 @@ suiteUI("Decocção (interface)", (ctx) => {
     await pag.esperar("!ui.$('#bfReceitaCampo').hidden");
     assert.deepEqual(await pag.avaliar("ui.$$('#bfReceita option').map(o => o.textContent)"), ["Bock", "Pilsner"], "por nome");
     assert.equal(await pag.avaliar("ui.$$('#bfPassos li').length"), 4);
-    assert.match(await pag.avaliar("ui.texto('#bfPassos')"), /66 °C · 15 min.*Decocção \(fervura\) · 6,5 L.*66 °C · 50 min/);
+    assert.match(await pag.avaliar("ui.texto('#bfPassos')"), /66 °C · 15 min.*Decocção \(fervura\) · 6,5 L.*66 °C · 45 min/);
     await pag.avaliar("const s = ui.$('#bfReceita'); s.value = 'r1'; s.dispatchEvent(new Event('change'))");
     // insumos da receita × os da calculadora (20 L, 5 kg)
     await pag.esperar("!ui.$('#bfInsumos').hidden");

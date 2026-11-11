@@ -6,6 +6,18 @@ Formato baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/),
 versionamento segue [SemVer](https://semver.org/lang/pt-BR/) (`MAJOR.MINOR.PATCH`).
 A versão atual fica em `version.js` e aparece no rodapé do app.
 
+## [1.17.3] — 2026-11-11
+
+### Corrigido
+- **Brewfather: tempo da decocção no total da mostura.** O Brew Tracker
+  expande o passo Decoction em "Main mash holds (`rampTime`)" + "Rest pulled
+  portion (`decoctionRestTime`)" + "Boil pulled portion (`stepTime`)" e **soma
+  os três**. Agora `stepTime` leva a fervura real, `rampTime` leva o resto do
+  ciclo (puxar + aquecer + devolver) e o descanso da decocção fica em
+  `decoctionRestTime` — sem contar nada duas vezes. Antes a fervura sumia
+  (ia para 0) e o total da mostura saía curto ou errado. A puxada cai no
+  início do ciclo (não depois de uma espera).
+
 ## [1.17.2] — 2026-10-29
 
 ### Corrigido
