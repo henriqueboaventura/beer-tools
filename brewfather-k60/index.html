@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Brewfather → K60 (interno)</title>
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="description" content="Ferramenta interna: envia a receita do Brewfather para a controladora EZBrew/K60.">
+  <meta name="theme-color" content="#0b0b0b">
+  <link rel="icon" href="../favicon.ico" sizes="32x32">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/bf.css?v=1.19.2">
+  <link rel="stylesheet" href="app.css?v=1.19.2">
+  <script src="../assets/js/versao.js?v=1.19.2"></script>
+  <script src="../assets/js/shell.js?v=1.19.2"></script>
+</head>
+<body>
+  <header data-bf-header></header>
+
+  <main>
+    <div class="wrap">
+      <p class="bf-crumb"><a href="../">Ferramentas</a> / interno</p>
+      <h1 class="bf-title">Brewfather → K60</h1>
+      <p class="bf-lead">Lê uma receita do Brewfather e cria a receita na controladora EZBrew/K60 (firmware v9.0). Ferramenta interna, fora do menu. Só <b>cria</b> a receita — não mexe em execução.</p>
+
+      <details class="bf-how">
+        <summary>Como as etapas são mapeadas</summary>
+        <div class="bf-how__body">
+          <ul>
+            <li><b>Mostura</b> → etapa <i>Mostura</i>, sub-tipo pela temperatura (Infusao…Mash Out).</li>
+            <li><b>Decocção</b> → vira mostura base + <b>aviso</b> para puxar o volume para a outra panela. A K60 não faz decocção.</li>
+            <li><b>Fervura</b> → uma etapa <i>Fervura</i> com as adições de lúpulo (e aditivos) em <i>adicoes</i>, cada uma com o tempo (minutos restantes).</li>
+            <li><b>First Wort Hop</b> e <b>Hop Stand/Whirlpool</b> → etapas próprias (aroma vira adição no Hop Stand).</li>
+            <li><b>Resfriamento</b> → etapa <i>Resfriamento</i> na temperatura de inóculo da receita.</li>
+            <li>Dry hop e aditivos sem etapa na K60 entram só como aviso.</li>
+          </ul>
+        </div>
+      </details>
+
+      <!-- 01 Controladora -->
+      <section class="bf-step">
+        <h2 class="bf-step__label"><b>01</b> Controladora</h2>
+        <div class="field">
+          <div class="field__label"><label for="base">Endereço da K60</label></div>
+          <div class="field__control"><input type="text" id="base" value="http://ezbrew.local" autocomplete="off" spellcheck="false"></div>
+        </div>
+        <p class="bf-nota">Na rede local costuma ser <code>http://ezbrew.local</code> ou o IP (ex.: <code>http://192.168.0.50</code>). Para testar sem a panela, suba o mock e use <code>http://localhost:8099</code>.</p>
+        <button class="btn" type="button" id="btnStatus">Testar conexão</button>
+        <p class="bf-status" id="statusConexao" role="status" aria-live="polite"></p>
+      </section>
+
+      <!-- 02 Receita -->
+      <section class="bf-step">
+        <h2 class="bf-step__label"><b>02</b> Receita</h2>
+        <div class="bf-segmented" role="group" aria-label="Origem da receita">
+          <button type="button" class="bf-chip" data-origem="brewfather" aria-pressed="true">Do Brewfather</button>
+          <button type="button" class="bf-chip" data-origem="json" aria-pressed="false">Colar JSON</button>
+        </div>
+
+        <div id="origemBrewfather">
+          <div class="field"><div class="field__label"><label for="bfUserId">User ID</label></div>
+            <div class="field__control"><input type="text" id="bfUserId" autocomplete="off" spellcheck="false"></div></div>
+          <div class="field"><div class="field__label"><label for="bfApiKey">API key</label></div>
+            <div class="field__control"><input type="password" id="bfApiKey" autocomplete="off" spellcheck="false"></div></div>
+          <label class="bf-check"><input type="checkbox" id="bfLembrar"> Lembrar neste navegador</label>
+          <button class="btn" type="button" id="btnCarregar">Carregar receitas</button>
+          <div class="field" id="bfReceitaCampo" hidden><div class="field__label"><label for="bfReceita">Receita</label></div>
+            <div class="field__control"><select id="bfReceita"></select></div></div>
+        </div>
+
+        <div id="origemJson" hidden>
+          <div class="field"><div class="field__label"><label for="jsonReceita">JSON da receita do Brewfather</label></div>
+            <div class="field__control"><textarea id="jsonReceita" rows="8" spellcheck="false" placeholder='{ "name": "...", "mash": { "steps": [...] }, "boilTime": 60, "hops": [...] }'></textarea></div></div>
+          <button class="btn" type="button" id="btnJson">Usar este JSON</button>
+        </div>
+      </section>
+
+      <!-- 03 Opções -->
+      <section class="bf-step">
+        <h2 class="bf-step__label"><b>03</b> Opções</h2>
+        <div class="field"><div class="field__label"><label for="optDecoccao">Alerta de decocção na mostura</label></div>
+          <div class="field__control"><select id="optDecoccao">
+            <option value="">Nenhum (só aviso)</option>
+            <option value="Outros">Outros</option>
+            <option value="Mexer Cama Malte">Mexer Cama Malte</option>
+          </select></div></div>
+        <p class="bf-nota">Como a K60 não tem adição "Decocção", este alerta cronometrado (no início do patamar) só faz a panela apitar na hora de puxar — o nome mostrado é o escolhido acima.</p>
+        <div class="field"><div class="field__label"><label for="optPitch">Temp. de resfriamento <span>°C (opcional)</span></label></div>
+          <div class="field__control"><input type="number" id="optPitch" inputmode="decimal" step="1" placeholder="da receita"></div></div>
+      </section>
+
+      <!-- 04 Prévia -->
+      <section class="bf-step">
+        <h2 class="bf-step__label"><b>04</b> Prévia</h2>
+        <p class="bf-nota" id="previaVazia">Carregue ou cole uma receita para ver as etapas.</p>
+        <div id="previa" hidden>
+          <div class="field">
+            <div class="field__label"><label for="nomeK60">Nome na K60 <span>máx. 18 — <span id="nomeContador">0</span>/18</span></label></div>
+            <div class="field__control"><input type="text" id="nomeK60" maxlength="18" autocomplete="off" spellcheck="false"></div>
+          </div>
+          <p class="bf-nota">Sugerido a partir do nome no Brewfather (abreviado p/ caber no limite de 18 da K60). Pode editar antes de enviar.</p>
+          <p class="k60-nomereceita" id="previaNome"></p>
+          <div class="k60-tabela-wrap"><table class="k60-tabela">
+            <thead><tr><th>#</th><th>Tipo</th><th>Nome</th><th>T °C</th><th>t min</th><th>Dos.</th><th>P/B/A</th></tr></thead>
+            <tbody id="previaEtapas"></tbody>
+          </table></div>
+          <div id="previaAvisos"></div>
+          <details class="bf-how"><summary>Ver o JSON do POST /receita</summary>
+            <div class="bf-how__body"><pre class="k60-json" id="previaJson"></pre></div></details>
+          <details class="bf-how"><summary>Ver como curl</summary>
+            <div class="bf-how__body"><pre class="k60-json" id="previaCurl"></pre></div></details>
+        </div>
+      </section>
+
+      <!-- 05 Enviar -->
+      <section class="bf-step">
+        <h2 class="bf-step__label"><b>05</b> Enviar</h2>
+        <button class="btn btn--primary" type="button" id="btnEnviar" disabled>Criar receita na K60</button>
+        <p class="bf-status" id="statusEnvio" role="status" aria-live="polite"></p>
+      </section>
+    </div>
+  </main>
+
+  <footer data-bf-footer></footer>
+
+  <script src="mapa.js?v=1.19.2"></script>
+  <script src="brewfather.js?v=1.19.2"></script>
+  <script src="k60.js?v=1.19.2"></script>
+  <script src="app.js?v=1.19.2"></script>
+</body>
+</html>

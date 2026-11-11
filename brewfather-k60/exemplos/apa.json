@@ -1,0 +1,17 @@
+{
+  "name": "American Pale Ale",
+  "boilTime": 60,
+  "mash": {
+    "steps": [
+      { "type": "Temperature", "stepTemp": 67, "stepTime": 60 },
+      { "type": "Temperature", "stepTemp": 76, "stepTime": 5 }
+    ]
+  },
+  "hops": [
+    { "name": "Magnum", "use": "Boil", "time": 60 },
+    { "name": "Cascade", "use": "Boil", "time": 15 },
+    { "name": "Centennial", "use": "Boil", "time": 5 },
+    { "name": "Citra", "use": "Aroma", "time": 20, "temp": 80 }
+  ],
+  "fermentation": { "steps": [ { "stepTemp": 18 } ] }
+}
