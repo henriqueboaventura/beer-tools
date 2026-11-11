@@ -12,6 +12,12 @@ detalhe técnico, em `ferramentas/decoccao/CHANGELOG.md`.
 invalida o cache offline antigo e faz aparecer o aviso "Nova versão
 disponível" para quem já está com o site aberto.
 
+## [1.19.3] — 2026-11-11
+
+### Adicionado
+- Nova ferramenta experimental, acessível por URL (fora do menu), e
+  ajustes internos.
+
 ## [1.19.2] — 2026-10-29
 
 ### Corrigido

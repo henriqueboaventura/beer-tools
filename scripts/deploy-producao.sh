@@ -106,7 +106,8 @@ git archive HEAD | tar -x -C "$PACOTE"
 FERRAMENTAS=$(sed -nE 's/^ *slug: "([^"]+)".*/\1/p' assets/js/shell.js)
 [ -n "$FERRAMENTAS" ] || erro "não achei as ferramentas no registro (assets/js/shell.js)."
 ( cd "$PACOTE" && rm -rf .github docs dados scripts tests examples package.json .gitignore .nojekyll .env.deploy.example \
-    $(for f in $FERRAMENTAS; do echo "$f/tests"; done) decoccao/scripts && find . -name '*.md' -delete )
+    $(for f in $FERRAMENTAS; do echo "$f/tests"; done) decoccao/scripts \
+    brewfather-k60/tests brewfather-k60/scripts brewfather-k60/.gitignore && find . -name '*.md' -delete )
 find "$PACOTE" -type d -exec chmod 755 {} +
 find "$PACOTE" -type f -exec chmod 644 {} +
 echo "$(find "$PACOTE" -type f | wc -l | tr -d ' ') arquivos, $(du -sh "$PACOTE" | cut -f1)"

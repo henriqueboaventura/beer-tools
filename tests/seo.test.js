@@ -12,7 +12,8 @@ const LEV = "substituicao-leveduras/levedura";
 const DB = JSON.parse(ler("substituicao-leveduras/data/leveduras.json"));
 
 function todasPaginas(dir = "") {
-  const ignorar = new Set([".git", "node_modules", "examples", "docs", "tests", "dados", "scripts", ".github"]);
+  // "brewfather-k60" é ferramenta interna (fora do menu, sem SEO) — fora da auditoria.
+  const ignorar = new Set([".git", "node_modules", "examples", "docs", "tests", "dados", "scripts", ".github", "brewfather-k60"]);
   let out = [];
   for (const nome of fs.readdirSync(path.join(RAIZ, dir))) {
     if (ignorar.has(nome)) continue;

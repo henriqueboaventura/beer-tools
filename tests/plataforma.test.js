@@ -12,8 +12,13 @@ const existe = (p) => fs.existsSync(path.join(RAIZ, p));
 // Todas as páginas HTML publicadas (fora de pastas de ferramentas de dev).
 // As páginas geradas de levedura (substituicao-leveduras/levedura/)
 // têm testes próprios em tests/seo.test.js.
+// "brewfather-k60" é ferramenta INTERNA: fora do menu (não registrada em
+// shell.js) e sem SEO/PWA/canonical de propósito, então fica fora das
+// auditorias de páginas públicas abaixo.
+const INTERNAS = ["brewfather-k60"];
+
 function paginas(dir = "") {
-  const ignorar = new Set([".git", "node_modules", "examples", "docs", "tests", "dados", "scripts", ".github", "levedura"]);
+  const ignorar = new Set([".git", "node_modules", "examples", "docs", "tests", "dados", "scripts", ".github", "levedura", ...INTERNAS]);
   let out = [];
   for (const nome of fs.readdirSync(path.join(RAIZ, dir))) {
     if (ignorar.has(nome)) continue;
@@ -49,10 +54,10 @@ describe("registro de ferramentas (shell.js)", () => {
     });
   }
 
-  test("toda pasta na raiz é uma ferramenta do registro ou da plataforma", () => {
+  test("toda pasta na raiz é uma ferramenta do registro, da plataforma ou interna", () => {
     const plataforma = ["assets", "dados", "docs", "examples", "scripts", "tests", "node_modules"];
     const pastas = fs.readdirSync(RAIZ).filter((n) => !n.startsWith(".") && !plataforma.includes(n) &&
-      fs.statSync(path.join(RAIZ, n)).isDirectory());
+      !INTERNAS.includes(n) && fs.statSync(path.join(RAIZ, n)).isDirectory());
     assert.deepEqual(pastas.sort(), [...slugs].sort());
   });
 });
